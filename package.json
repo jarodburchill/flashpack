@@ -1,0 +1,23 @@
+{
+  "name": "flashpack",
+  "version": "1.0.0",
+  "description": "A flash card Electron application written with Typescript",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "lint": "tslint -c tslint.json -p tsconfig.json",
+    "start": "npm run build && electron ./dist/main.js"
+  },
+  "repository": "https://github.com/jarodburchill/flashpack",
+  "keywords": [
+    "electron",
+    "typescript"
+  ],
+  "author": "Jarod Burchill",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^6.0.8",
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.0"
+  }
+}
