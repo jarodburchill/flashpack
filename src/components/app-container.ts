@@ -4,8 +4,8 @@ import "./test-container";
 
 @customElement("app-container")
 export class AppContainer extends LitElement {
-  @property() bool: boolean = false;
-  @property() name: string = "Test";
+  @property({ type: Boolean }) bool = false;
+  @property({ type: String }) name = "Test";
   contentDesc = html`
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic aspernatur
