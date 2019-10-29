@@ -1,13 +1,14 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
 
-let mainWindow: Electron.BrowserWindow;
+let mainWindow: BrowserWindow;
 
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     height: 600,
     webPreferences: {
+      nodeIntegration: true,
       preload: path.join(__dirname, "preload.js"),
     },
     width: 800,
