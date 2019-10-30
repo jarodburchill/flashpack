@@ -1,11 +1,11 @@
 import { css } from "lit-element";
 
-export const frostedContainer = css`
+export const frostedStyles = css`
   .frosted-container {
-    margin: 0 1% 5vh 1%;
-    padding: 10%;
+    margin: 0 2.5vw 5vh 2.5vw;
+    padding: 5vh;
     border-radius: 10px;
-    width: 98%;
+    width: 95%;
     position: relative;
     background: inherit;
     overflow: hidden;

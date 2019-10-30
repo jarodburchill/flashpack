@@ -1,5 +1,5 @@
 import { css, customElement, html, LitElement, property } from "lit-element";
-import { frostedContainer } from "./styles/frosted-container";
+import { frostedStyles } from "./styles/frosted-styles";
 import { globalStyles } from "./styles/global-styles";
 import "./test-container";
 
@@ -21,7 +21,7 @@ export class AppContainer extends LitElement {
   static get styles() {
     return [
       globalStyles,
-      frostedContainer,
+      frostedStyles,
       css`
         :host {
           background: inherit;
@@ -29,6 +29,10 @@ export class AppContainer extends LitElement {
         #app {
           min-height: 100vh;
           background: inherit;
+        }
+        .test {
+          background: inherit;
+          width: 50%;
         }
       `,
     ];
@@ -44,8 +48,10 @@ export class AppContainer extends LitElement {
         <div class="frosted-container">
           ${this.bool ? this.contentDesc : null}
         </div>
-        <div class="frosted-container">
-          ${this.bool ? this.contentDesc : null}
+        <div class="test">
+          <div class="frosted-container">
+            ${this.bool ? this.contentDesc : null}
+          </div>
         </div>
         <test-container></test-container>
       </div>
