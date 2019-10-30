@@ -1,6 +1,6 @@
 import { css, customElement, html, LitElement, property } from "lit-element";
-import { frostedStyles } from "./styles/frosted-styles";
-import { globalStyles } from "./styles/global-styles";
+import { frostedStyles } from "../styles/frosted-styles";
+import { globalStyles } from "../styles/global-styles";
 import "./test-container";
 
 @customElement("app-container")

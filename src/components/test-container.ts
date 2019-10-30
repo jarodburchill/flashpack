@@ -1,5 +1,5 @@
 import { css, customElement, html, LitElement } from "lit-element";
-import { globalStyles } from "./styles/global-styles";
+import { globalStyles } from "../styles/global-styles";
 
 @customElement("test-container")
 export class TestContainer extends LitElement {
