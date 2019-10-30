@@ -1,10 +1,9 @@
 import { css, customElement, html, LitElement, property } from "lit-element";
-import { frostedStyles } from "../styles/frosted-styles";
 import { globalStyles } from "../styles/global-styles";
-import "./test-container";
+import "./shared/frosted-component";
 
-@customElement("app-container")
-export class AppContainer extends LitElement {
+@customElement("app-component")
+export class AppComponent extends LitElement {
   @property({ type: Boolean }) bool = false;
   @property({ type: String }) name = "Test";
   contentDesc = html`
@@ -21,14 +20,13 @@ export class AppContainer extends LitElement {
   static get styles() {
     return [
       globalStyles,
-      frostedStyles,
       css`
         :host {
           background: inherit;
         }
-        #app {
-          min-height: 100vh;
+        #app-container {
           background: inherit;
+          height: max-content;
         }
         .test {
           background: inherit;
@@ -39,21 +37,20 @@ export class AppContainer extends LitElement {
   }
   render() {
     return html`
-      <div id="app">
+      <div id="app-container">
         <h1>${this.name}</h1>
         <button @click="${this.handleClick}">Test</button>
-        <div class="frosted-container">
+        <frosted-component>
           ${this.bool ? this.contentDesc : null}
-        </div>
-        <div class="frosted-container">
+        </frosted-component>
+        <frosted-component>
           ${this.bool ? this.contentDesc : null}
-        </div>
+        </frosted-component>
         <div class="test">
-          <div class="frosted-container">
+          <frosted-component>
             ${this.bool ? this.contentDesc : null}
-          </div>
+          </frosted-component>
         </div>
-        <test-container></test-container>
       </div>
     `;
   }
