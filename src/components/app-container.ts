@@ -1,4 +1,5 @@
-import { customElement, html, LitElement, property } from "lit-element";
+import { css, customElement, html, LitElement, property } from "lit-element";
+import { frostedContainer } from "./styles/frosted-container";
 import { globalStyles } from "./styles/global-styles";
 import "./test-container";
 
@@ -18,14 +19,35 @@ export class AppContainer extends LitElement {
     this.bool = !this.bool;
   }
   static get styles() {
-    return globalStyles;
+    return [
+      globalStyles,
+      frostedContainer,
+      css`
+        #app {
+          min-height: 100vh;
+          background-image: url("src/assets/background.jpg");
+          background-position: 50%;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          background-size: cover;
+        }
+      `,
+    ];
   }
   render() {
     return html`
-      <div>
+      <div id="app">
         <h1>${this.name}</h1>
         <button @click="${this.handleClick}">Test</button>
-        ${this.bool ? this.contentDesc : null}
+        <div class="frosted-container">
+          ${this.bool ? this.contentDesc : null}
+        </div>
+        <div class="frosted-container">
+          ${this.bool ? this.contentDesc : null}
+        </div>
+        <div class="frosted-container">
+          ${this.bool ? this.contentDesc : null}
+        </div>
         <test-container></test-container>
       </div>
     `;
