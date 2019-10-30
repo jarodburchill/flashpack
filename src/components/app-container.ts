@@ -23,13 +23,12 @@ export class AppContainer extends LitElement {
       globalStyles,
       frostedContainer,
       css`
+        :host {
+          background: inherit;
+        }
         #app {
           min-height: 100vh;
-          background-image: url("src/assets/background.jpg");
-          background-position: 50%;
-          background-repeat: no-repeat;
-          background-attachment: fixed;
-          background-size: cover;
+          background: inherit;
         }
       `,
     ];
