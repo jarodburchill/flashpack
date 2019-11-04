@@ -16,6 +16,7 @@ export class AppComponent extends LitElement {
   `;
   handleClick() {
     this.bool = !this.bool;
+    console.log(this.name);
   }
   static get styles() {
     return [
@@ -39,6 +40,12 @@ export class AppComponent extends LitElement {
     return html`
       <div id="app-container">
         <h1>${this.name}</h1>
+        <input
+          type="text"
+          id="test"
+          value="${this.name}"
+          @keyup="${(e: any) => (this.name = e.target.value)}"
+        />
         <button @click="${this.handleClick}">Test</button>
         <frosted-component>
           ${this.bool ? this.contentDesc : null}
