@@ -10,7 +10,7 @@ export class FrostedComponent extends LitElement {
         :host {
           background: inherit;
         }
-        .frosted-container {
+        .frosted {
           margin: 0 2.5vw 5vh 2.5vw;
           padding: 5vh;
           border-radius: 10px;
@@ -21,7 +21,7 @@ export class FrostedComponent extends LitElement {
           box-shadow: 0px 1px 5px hsl(0, 0%, 0%);
           z-index: 1;
         }
-        .frosted-container::before {
+        .frosted::before {
           content: "";
           position: absolute;
           background: inherit;
@@ -39,7 +39,7 @@ export class FrostedComponent extends LitElement {
   }
   render() {
     return html`
-      <div class="frosted-container">
+      <div class="frosted">
         <slot></slot>
       </div>
     `;

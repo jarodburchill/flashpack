@@ -25,7 +25,7 @@ export class AppComponent extends LitElement {
         :host {
           background: inherit;
         }
-        #app-container {
+        #app {
           background: inherit;
           height: max-content;
         }
@@ -38,7 +38,7 @@ export class AppComponent extends LitElement {
   }
   render() {
     return html`
-      <div id="app-container">
+      <div id="app">
         <h1>${this.name}</h1>
         <input
           type="text"
