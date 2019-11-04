@@ -1,2 +1,4 @@
-// All of the Node.js APIs are available in the preload process.
-// It has the same sandbox as a Chrome extension.
+// tslint:disable-next-line: no-var-requires
+require = require("esm")(module);
+// tslint:disable-next-line: no-var-requires
+module.exports = require("./renderer");

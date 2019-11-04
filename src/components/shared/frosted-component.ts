@@ -18,6 +18,7 @@ export class FrostedComponent extends LitElement {
           position: relative;
           background: inherit;
           overflow: hidden;
+          box-shadow: 0px 1px 5px hsl(0, 0%, 0%);
           z-index: 1;
         }
         .frosted-container::before {
@@ -28,7 +29,7 @@ export class FrostedComponent extends LitElement {
           left: 0;
           right: 0;
           bottom: 0;
-          box-shadow: inset 0 0 0 2000px rgba(255, 255, 255, 0.75);
+          box-shadow: inset 0 0 0 2000px var(--theme-frosted);
           filter: blur(10px);
           margin: -20px;
           z-index: -1;
