@@ -29,7 +29,7 @@ export class FrostedComponent extends LitElement {
           left: 0;
           right: 0;
           bottom: 0;
-          box-shadow: inset 0 0 0 2000px var(--theme-frosted);
+          box-shadow: inset 0 0 0 2000px var(--theme-frost);
           filter: blur(10px);
           margin: -20px;
           z-index: -1;
