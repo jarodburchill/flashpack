@@ -46,7 +46,7 @@ export class AppComponent extends LitElement {
           @keyup=${(e: any) => (this.name = e.target.value)}
         />
         <button @click=${this.handleClick}>Test</button>
-        <overlay-component>
+        <overlay-component rounded>
           ${this.bool ? this.contentDesc : null}
         </overlay-component>
         <overlay-component>
