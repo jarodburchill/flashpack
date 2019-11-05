@@ -42,10 +42,10 @@ export class AppComponent extends LitElement {
         <input
           type="text"
           id="test"
-          value="${this.name}"
-          @keyup="${(e: any) => (this.name = e.target.value)}"
+          value=${this.name}
+          @keyup=${(e: any) => (this.name = e.target.value)}
         />
-        <button @click="${this.handleClick}">Test</button>
+        <button @click=${this.handleClick}>Test</button>
         <overlay-component>
           ${this.bool ? this.contentDesc : null}
         </overlay-component>
