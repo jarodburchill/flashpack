@@ -4,7 +4,9 @@ import { globalStyles } from "../../styles/global-styles";
 
 @customElement("overlay-component")
 export class OverlayComponent extends LitElement {
+  @property({ type: Boolean }) frosted = false;
   @property({ type: Boolean }) rounded = false;
+  @property({ type: Boolean }) marginless = false;
   static get styles() {
     return [
       globalStyles,
@@ -13,15 +15,18 @@ export class OverlayComponent extends LitElement {
           background: inherit;
         }
         .overlay {
-          margin: 0 2.5vw 5vh 2.5vw;
+          background: var(--theme-back);
+          margin: 5vh 2.5vw;
           padding: 5vh;
           width: 95%;
+        }
+        .frosted {
           position: relative;
           background: inherit;
           overflow: hidden;
           z-index: 1;
         }
-        .overlay::before {
+        .frosted::before {
           content: "";
           position: absolute;
           background: inherit;
@@ -37,6 +42,10 @@ export class OverlayComponent extends LitElement {
         .rounded {
           border-radius: 10px;
         }
+        .marginless {
+          margin: 0;
+          width: 100%;
+        }
       `,
     ];
   }
@@ -44,6 +53,8 @@ export class OverlayComponent extends LitElement {
     return html`
       <div
         class=${classMap({
+          frosted: this.frosted,
+          marginless: this.marginless,
           overlay: true,
           rounded: this.rounded,
         })}
