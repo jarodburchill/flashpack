@@ -1,6 +1,6 @@
 import { css, customElement, html, LitElement, property } from "lit-element";
 import { globalStyles } from "../styles/global-styles";
-import "./shared/frosted-component";
+import "./shared/overlay-component";
 
 @customElement("app-component")
 export class AppComponent extends LitElement {
@@ -46,16 +46,16 @@ export class AppComponent extends LitElement {
           @keyup="${(e: any) => (this.name = e.target.value)}"
         />
         <button @click="${this.handleClick}">Test</button>
-        <frosted-component>
+        <overlay-component>
           ${this.bool ? this.contentDesc : null}
-        </frosted-component>
-        <frosted-component>
+        </overlay-component>
+        <overlay-component>
           ${this.bool ? this.contentDesc : null}
-        </frosted-component>
+        </overlay-component>
         <div class="test">
-          <frosted-component>
+          <overlay-component>
             ${this.bool ? this.contentDesc : null}
-          </frosted-component>
+          </overlay-component>
         </div>
       </div>
     `;

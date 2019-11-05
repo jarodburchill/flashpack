@@ -1,8 +1,8 @@
 import { css, customElement, html, LitElement } from "lit-element";
 import { globalStyles } from "../../styles/global-styles";
 
-@customElement("frosted-component")
-export class FrostedComponent extends LitElement {
+@customElement("overlay-component")
+export class OverlayComponent extends LitElement {
   static get styles() {
     return [
       globalStyles,
@@ -10,7 +10,7 @@ export class FrostedComponent extends LitElement {
         :host {
           background: inherit;
         }
-        .frosted {
+        .overlay {
           margin: 0 2.5vw 5vh 2.5vw;
           padding: 5vh;
           border-radius: 10px;
@@ -20,7 +20,7 @@ export class FrostedComponent extends LitElement {
           overflow: hidden;
           z-index: 1;
         }
-        .frosted::before {
+        .overlay::before {
           content: "";
           position: absolute;
           background: inherit;
@@ -38,7 +38,7 @@ export class FrostedComponent extends LitElement {
   }
   render() {
     return html`
-      <div class="frosted">
+      <div class="overlay">
         <slot></slot>
       </div>
     `;
