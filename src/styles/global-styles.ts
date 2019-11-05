@@ -1,6 +1,8 @@
+import Store = require("electron-store");
 import { css } from "lit-element";
 
-const darkMode: boolean = window.localStorage.darkMode === "true";
+const store = new Store();
+const darkMode: boolean = store.get("darkMode");
 
 export const globalStyles = css`
   * {
