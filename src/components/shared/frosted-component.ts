@@ -18,7 +18,6 @@ export class FrostedComponent extends LitElement {
           position: relative;
           background: inherit;
           overflow: hidden;
-          box-shadow: 0px 1px 5px hsl(0, 0%, 0%);
           z-index: 1;
         }
         .frosted::before {
