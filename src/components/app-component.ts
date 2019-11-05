@@ -16,7 +16,6 @@ export class AppComponent extends LitElement {
   `;
   handleClick() {
     this.bool = !this.bool;
-    console.log(this.name);
   }
   static get styles() {
     return [
