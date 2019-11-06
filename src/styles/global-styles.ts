@@ -15,11 +15,11 @@ export const globalStyles = css`
     --theme-back: ${darkMode ? css`hsl(0, 0%, 0%)` : css`hsl(0, 0%, 100%)`};
     --theme-alt: ${darkMode ? css`hsl(0, 0%, 25%)` : css`hsl(0, 0%, 75%)`};
     --theme-frost: ${darkMode
-      ? css`hsla(0, 0%, 0%, 0.75)`
-      : css`hsla(0, 0%, 100%, 0.75)`};
+      ? css`hsla(0, 0%, 0%, 0.5)`
+      : css`hsla(0, 0%, 100%, 0.5)`};
     --theme-frost-con: ${darkMode
-      ? css`hsla(0, 0%, 100%, 0.75)`
-      : css`hsla(0, 0%, 0%, 0.75)`};
+      ? css`hsla(0, 0%, 100%, 0.5)`
+      : css`hsla(0, 0%, 0%, 0.5)`};
     color: var(--theme-fore);
   }
 `;
