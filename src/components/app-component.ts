@@ -46,18 +46,24 @@ export class AppComponent extends LitElement {
           @keyup=${(e: any) => (this.name = e.target.value)}
         />
         <button @click=${this.handleClick}>Test</button>
+        <overlay-component contrast frosted marginless rounded>
+          contrast frosted marginless rounded
+          ${this.bool ? this.contentDesc : null}
+        </overlay-component>
         <overlay-component rounded frosted>
-          ${this.bool ? this.contentDesc : null}
+          rounded frosted ${this.bool ? this.contentDesc : null}
         </overlay-component>
-        <overlay-component rounded>
-          ${this.bool ? this.contentDesc : null}
+        <overlay-component contrast>
+          contrast ${this.bool ? this.contentDesc : null}
         </overlay-component>
-        <overlay-component marginless>
+        <overlay-component>
           ${this.bool ? this.contentDesc : null}
         </overlay-component>
         <div class="test">
-          <overlay-component frosted>
-            ${this.bool ? this.contentDesc : null}
+          <overlay-component frosted rounded>
+            <overlay-component marginless rounded>
+              frosted nested 50% ${this.bool ? this.contentDesc : null}
+            </overlay-component>
           </overlay-component>
         </div>
       </div>
