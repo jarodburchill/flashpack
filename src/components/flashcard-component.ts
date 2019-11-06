@@ -17,37 +17,13 @@ export class FlashcardComponent extends LitElement {
   render() {
     return html`
       <overlay-component frosted rounded>
-        <overlay-component contrast frosted outline rounded shadow>
+        <overlay-component frosted outline rounded shadow>
           Question
         </overlay-component>
-        <overlay-component
-          contrast
-          frosted
-          outline
-          rounded
-          shadow
-        ></overlay-component>
-        <overlay-component
-          contrast
-          frosted
-          outline
-          rounded
-          shadow
-        ></overlay-component>
-        <overlay-component
-          contrast
-          frosted
-          outline
-          rounded
-          shadow
-        ></overlay-component>
-        <overlay-component
-          contrast
-          frosted
-          outline
-          rounded
-          shadow
-        ></overlay-component>
+        <overlay-component frosted outline rounded shadow></overlay-component>
+        <overlay-component frosted outline rounded shadow></overlay-component>
+        <overlay-component frosted outline rounded shadow></overlay-component>
+        <overlay-component frosted outline rounded shadow></overlay-component>
       </overlay-component>
     `;
   }

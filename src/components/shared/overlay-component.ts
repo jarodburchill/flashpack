@@ -19,7 +19,7 @@ export class OverlayComponent extends LitElement {
         }
         .overlay {
           background: var(--theme-back);
-          margin: 5vh 2.5vw;
+          margin: 2.5vh 2.5%;
           padding: 5vh;
           width: 95%;
         }
