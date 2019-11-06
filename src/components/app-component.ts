@@ -46,26 +46,41 @@ export class AppComponent extends LitElement {
           @keyup=${(e: any) => (this.name = e.target.value)}
         />
         <button @click=${this.handleClick}>Test</button>
-        <overlay-component contrast frosted marginless rounded>
+        <overlay-component contrast frosted marginless outline rounded>
           contrast frosted marginless rounded
           ${this.bool ? this.contentDesc : null}
         </overlay-component>
         <overlay-component rounded frosted>
           rounded frosted ${this.bool ? this.contentDesc : null}
         </overlay-component>
+        <!-- <div class="test"> -->
+        <overlay-component frosted rounded>
+          <overlay-component marginless outline rounded>
+            frosted nested 50% ${this.bool ? this.contentDesc : null}
+          </overlay-component>
+        </overlay-component>
+        <overlay-component frosted rounded>
+          <overlay-component frosted marginless outline rounded>
+            frosted nested 50% ${this.bool ? this.contentDesc : null}
+          </overlay-component>
+        </overlay-component>
+        <overlay-component contrast frosted rounded>
+          <overlay-component contrast marginless outline rounded>
+            frosted nested 50% ${this.bool ? this.contentDesc : null}
+          </overlay-component>
+        </overlay-component>
+        <overlay-component contrast frosted rounded>
+          <overlay-component contrast frosted marginless outline rounded>
+            frosted nested 50% ${this.bool ? this.contentDesc : null}
+          </overlay-component>
+        </overlay-component>
+        <!-- </div> -->
         <overlay-component contrast>
           contrast ${this.bool ? this.contentDesc : null}
         </overlay-component>
-        <overlay-component>
+        <overlay-component outline>
           ${this.bool ? this.contentDesc : null}
         </overlay-component>
-        <div class="test">
-          <overlay-component frosted rounded>
-            <overlay-component marginless rounded>
-              frosted nested 50% ${this.bool ? this.contentDesc : null}
-            </overlay-component>
-          </overlay-component>
-        </div>
       </div>
     `;
   }
