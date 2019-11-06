@@ -14,12 +14,13 @@ export const globalStyles = css`
     --theme-fore: ${darkMode ? css`hsl(0, 0%, 100%)` : css`hsl(0, 0%, 0%)`};
     --theme-back: ${darkMode ? css`hsl(0, 0%, 0%)` : css`hsl(0, 0%, 100%)`};
     --theme-alt: ${darkMode ? css`hsl(0, 0%, 25%)` : css`hsl(0, 0%, 75%)`};
+    --theme-alt-con: ${darkMode ? css`hsl(0, 0%, 75%)` : css`hsl(0, 0%, 25%)`};
     --theme-frost: ${darkMode
-      ? css`hsla(0, 0%, 0%, 0.5)`
-      : css`hsla(0, 0%, 100%, 0.5)`};
+      ? css`hsla(0, 0%, 0%, 0.65)`
+      : css`hsla(0, 0%, 100%, 0.65)`};
     --theme-frost-con: ${darkMode
-      ? css`hsla(0, 0%, 100%, 0.5)`
-      : css`hsla(0, 0%, 0%, 0.5)`};
+      ? css`hsla(0, 0%, 100%, 0.65)`
+      : css`hsla(0, 0%, 0%, 0.65)`};
     color: var(--theme-fore);
   }
 `;
