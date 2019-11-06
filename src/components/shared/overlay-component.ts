@@ -9,6 +9,7 @@ export class OverlayComponent extends LitElement {
   @property({ type: Boolean }) marginless = false;
   @property({ type: Boolean }) outline = false;
   @property({ type: Boolean }) rounded = false;
+  @property({ type: Boolean }) shadow = false;
   static get styles() {
     return [
       globalStyles,
@@ -77,6 +78,9 @@ export class OverlayComponent extends LitElement {
         .rounded {
           border-radius: 10px;
         }
+        .shadow {
+          box-shadow: 0px 1px 5px black;
+        }
       `,
     ];
   }
@@ -92,6 +96,7 @@ export class OverlayComponent extends LitElement {
           outlineContrast: this.contrast && this.outline ? true : false,
           overlay: true,
           rounded: this.rounded,
+          shadow: this.shadow,
         })}
       >
         <slot></slot>
