@@ -1,6 +1,6 @@
 import { css, customElement, html, LitElement, property } from "lit-element";
 import { globalStyles } from "../styles/global-styles";
-import "./shared/overlay-component";
+import "./flashcard-component";
 
 @customElement("app-component")
 export class AppComponent extends LitElement {
@@ -30,7 +30,7 @@ export class AppComponent extends LitElement {
         }
         .test {
           background: inherit;
-          width: 50%;
+          width: 75%;
         }
       `,
     ];
@@ -46,41 +46,7 @@ export class AppComponent extends LitElement {
           @keyup=${(e: any) => (this.name = e.target.value)}
         />
         <button @click=${this.handleClick}>Test</button>
-        <overlay-component contrast frosted marginless outline rounded shadow>
-          contrast frosted marginless rounded
-          ${this.bool ? this.contentDesc : null}
-        </overlay-component>
-        <overlay-component rounded frosted>
-          rounded frosted ${this.bool ? this.contentDesc : null}
-        </overlay-component>
-        <!-- <div class="test"> -->
-        <overlay-component frosted rounded>
-          <overlay-component marginless outline rounded>
-            frosted nested 50% ${this.bool ? this.contentDesc : null}
-          </overlay-component>
-        </overlay-component>
-        <overlay-component frosted rounded>
-          <overlay-component frosted marginless outline rounded>
-            frosted nested 50% ${this.bool ? this.contentDesc : null}
-          </overlay-component>
-        </overlay-component>
-        <overlay-component contrast frosted rounded>
-          <overlay-component contrast marginless outline rounded shadow>
-            frosted nested 50% ${this.bool ? this.contentDesc : null}
-          </overlay-component>
-        </overlay-component>
-        <overlay-component contrast frosted rounded>
-          <overlay-component contrast frosted marginless outline rounded shadow>
-            frosted nested 50% ${this.bool ? this.contentDesc : null}
-          </overlay-component>
-        </overlay-component>
-        <!-- </div> -->
-        <overlay-component contrast>
-          contrast ${this.bool ? this.contentDesc : null}
-        </overlay-component>
-        <overlay-component outline>
-          ${this.bool ? this.contentDesc : null}
-        </overlay-component>
+        <flashcard-component></flashcard-component>
       </div>
     `;
   }
