@@ -24,8 +24,7 @@ export class OverlayComponent extends LitElement {
           width: 95%;
         }
         .contrast {
-          background: var(--theme-fore);
-          color: var(--theme-back);
+          background: var(--theme-alt);
         }
         .frosted {
           position: relative;
@@ -60,7 +59,7 @@ export class OverlayComponent extends LitElement {
           left: 0;
           right: 0;
           bottom: 0;
-          box-shadow: inset 0 0 0 2000px var(--theme-frost-con);
+          box-shadow: inset 0 0 0 2000px var(--theme-frost-alt);
           filter: blur(10px);
           margin: -20px;
           z-index: -1;
@@ -73,7 +72,7 @@ export class OverlayComponent extends LitElement {
           border: 2px solid var(--theme-alt);
         }
         .outlineContrast {
-          border: 2px solid var(--theme-alt-con);
+          border: 2px solid var(--theme-back);
         }
         .rounded {
           border-radius: 10px;
