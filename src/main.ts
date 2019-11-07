@@ -10,12 +10,14 @@ let mainWindow: BrowserWindow;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    height: 600,
+    height: 720,
+    minHeight: 720,
+    minWidth: 720,
     titleBarStyle: "hiddenInset",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
-    width: 800,
+    width: 1000,
   });
 
   // and load the index.html of the app.

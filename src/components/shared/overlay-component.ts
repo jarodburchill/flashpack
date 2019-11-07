@@ -7,6 +7,7 @@ export class OverlayComponent extends LitElement {
   @property({ type: Boolean }) contrast = false;
   @property({ type: Boolean }) frosted = false;
   @property({ type: Boolean }) marginless = false;
+  @property({ type: Boolean }) maxHeight = false;
   @property({ type: Boolean }) outline = false;
   @property({ type: Boolean }) rounded = false;
   @property({ type: Boolean }) shadow = false;
@@ -68,6 +69,9 @@ export class OverlayComponent extends LitElement {
           margin: 0;
           width: 100%;
         }
+        .maxHeight {
+          height: 100%;
+        }
         .outline {
           border: 2px solid var(--theme-alt);
         }
@@ -91,6 +95,7 @@ export class OverlayComponent extends LitElement {
           frosted: this.contrast && this.frosted ? false : this.frosted,
           frostedContrast: this.contrast && this.frosted ? true : false,
           marginless: this.marginless,
+          maxHeight: this.maxHeight,
           outline: this.contrast && this.outline ? false : this.outline,
           outlineContrast: this.contrast && this.outline ? true : false,
           overlay: true,

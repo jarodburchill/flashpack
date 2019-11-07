@@ -10,6 +10,7 @@ export class FlashcardComponent extends LitElement {
       css`
         :host {
           background: inherit;
+          width: 100%;
         }
       `,
     ];
