@@ -17,10 +17,11 @@
   "author": "Jarod Burchill",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^7.0.0",
+    "electron": "^7.0.1",
+    "electron-store": "^5.1.0",
     "esm": "^3.2.25",
     "lit-element": "^2.2.1",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.2"
   }
 }
