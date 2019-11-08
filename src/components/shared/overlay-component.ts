@@ -1,6 +1,6 @@
 import { css, customElement, html, LitElement, property } from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
-import { globalStyles } from "../../styles/global-styles";
+import { globalStyles } from "../../styles/globalStyles";
 
 @customElement("overlay-component")
 export class OverlayComponent extends LitElement {

@@ -1,8 +1,8 @@
-import Store = require("electron-store");
 import { css } from "lit-element";
+import { DataAccess } from "../data/DataAccess";
 
-const store = new Store();
-const darkMode: boolean = store.get("darkMode");
+const dal = new DataAccess();
+const darkMode: boolean = dal.getDarkMode();
 
 export const globalStyles = css`
   * {

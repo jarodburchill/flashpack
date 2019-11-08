@@ -1,5 +1,5 @@
 import { css, customElement, html, LitElement, property } from "lit-element";
-import { globalStyles } from "../styles/global-styles";
+import { globalStyles } from "../styles/globalStyles";
 import "./shared/overlay-component";
 
 @customElement("flashcard-component")
