@@ -1,7 +1,8 @@
 import Store = require("electron-store");
 import { css } from "lit-element";
+import { ISchema } from "src/models/Schema";
 
-const store = new Store();
+const store = new Store<ISchema>();
 const darkMode: boolean = store.get("darkMode");
 
 export const globalStyles = css`
