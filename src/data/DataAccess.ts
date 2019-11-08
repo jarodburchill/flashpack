@@ -13,10 +13,10 @@ export class DataAccess {
       },
     });
   }
-  public setDarkMode(darkMode: boolean) {
+  setDarkMode(darkMode: boolean) {
     this.store.set("darkMode", darkMode);
   }
-  public getDarkMode() {
+  getDarkMode() {
     return this.store.get("darkMode");
   }
 }
