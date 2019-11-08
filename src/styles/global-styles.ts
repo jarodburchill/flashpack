@@ -1,9 +1,8 @@
-import Store = require("electron-store");
 import { css } from "lit-element";
-import { ISchema } from "src/models/Schema";
+import { DataAccess } from "../data/DataAccess";
 
-const store = new Store<ISchema>();
-const darkMode: boolean = store.get("darkMode");
+const dal = new DataAccess();
+const darkMode: boolean = dal.getDarkMode();
 
 export const globalStyles = css`
   * {
