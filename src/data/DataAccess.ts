@@ -9,14 +9,23 @@ export class DataAccess {
         cards: [],
         darkMode: false,
         groups: [],
+        nextId: 1,
         packs: [],
       },
     });
   }
-  setDarkMode(darkMode: boolean) {
-    this.store.set("darkMode", darkMode);
+  assignId() {
+    const id = this.store.get("nextId");
+    this.store.set("nextId", id + 1);
+    return id;
   }
   getDarkMode() {
     return this.store.get("darkMode");
+  }
+  setDarkMode(darkMode: boolean) {
+    this.store.set("darkMode", darkMode);
+  }
+  getCards() {
+    return this.store.get("cards");
   }
 }
