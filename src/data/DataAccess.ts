@@ -1,5 +1,5 @@
 import Store = require("electron-store");
-import { IGroup } from "src/models/Group";
+import { IGroup, INewGroup } from "../models/Group";
 import { ISchema } from "../models/Schema";
 
 export class DataAccess {
@@ -15,7 +15,7 @@ export class DataAccess {
       },
     });
   }
-  assignId() {
+  private assignId() {
     const id = this.store.get("nextId");
     this.store.set("nextId", id + 1);
     return id;
@@ -33,8 +33,9 @@ export class DataAccess {
   setGroups(groups: Array<IGroup>) {
     this.store.set("groups", groups);
   }
-  addGroup(group: IGroup) {
+  addGroup(newGroup: INewGroup) {
     const groups = this.getGroups();
+    const group = Object.assign({ id: this.assignId() }, newGroup);
     groups.push(group);
     this.setGroups(groups);
   }
@@ -43,22 +44,34 @@ export class DataAccess {
     const requestedGroup = groups.find((group: IGroup) => {
       return group.id === id;
     });
-    return requestedGroup;
+    if (requestedGroup !== undefined) {
+      return requestedGroup;
+    } else {
+      throw new Error("Could not find matching Group ID.");
+    }
   }
   updateGroup(updatedGroup: IGroup) {
     const groups = this.getGroups();
     const updateIndex = groups.findIndex((group: IGroup) => {
       return group.id === updatedGroup.id;
     });
-    groups[updateIndex] = updatedGroup;
-    this.setGroups(groups);
+    if (updateIndex > -1) {
+      groups[updateIndex] = updatedGroup;
+      this.setGroups(groups);
+    } else {
+      throw new Error("Could not find matching Group ID when updating.");
+    }
   }
-  removeGroup(id: number) {
+  removeGroup(removalGroup: IGroup) {
     const groups = this.getGroups();
     const removeIndex = groups.findIndex((group: IGroup) => {
-      return group.id === id;
+      return group === removalGroup;
     });
-    groups.splice(removeIndex, 1);
-    this.setGroups(groups);
+    if (removeIndex > -1) {
+      groups.splice(removeIndex, 1);
+      this.setGroups(groups);
+    } else {
+      throw new Error("Could not find matching Group object when deleting.");
+    }
   }
 }
