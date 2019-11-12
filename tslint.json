@@ -6,6 +6,7 @@
       "options": [120]
     },
     "member-access": false,
+    "member-ordering": false,
     "new-parens": true,
     "no-arg": true,
     "no-bitwise": true,
