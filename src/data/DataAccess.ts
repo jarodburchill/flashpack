@@ -15,32 +15,32 @@ export class DataAccess {
       },
     });
   }
-  private assignId() {
-    const id = this.store.get("nextId");
+  private assignId(): number {
+    const id: number = this.store.get("nextId");
     this.store.set("nextId", id + 1);
     return id;
   }
-  public getDarkMode() {
+  public getDarkMode(): boolean {
     return this.store.get("darkMode");
   }
-  public setDarkMode(darkMode: boolean) {
+  public setDarkMode(darkMode: boolean): void {
     this.store.set("darkMode", darkMode);
   }
-  public getGroups() {
+  public getGroups(): Array<IGroup> {
     return this.store.get("groups");
   }
-  private setGroups(groups: Array<IGroup>) {
+  private setGroups(groups: Array<IGroup>): void {
     this.store.set("groups", groups);
   }
-  public addGroup(newGroup: INewGroup) {
-    const groups = this.getGroups();
-    const group = Object.assign({ id: this.assignId() }, newGroup);
+  public addGroup(newGroup: INewGroup): void {
+    const groups: Array<IGroup> = this.getGroups();
+    const group: IGroup = Object.assign({ id: this.assignId() }, newGroup);
     groups.push(group);
     this.setGroups(groups);
   }
-  public getGroup(id: number) {
-    const groups = this.getGroups();
-    const requestedGroup = groups.find((group: IGroup) => {
+  public getGroup(id: number): IGroup {
+    const groups: Array<IGroup> = this.getGroups();
+    const requestedGroup: IGroup = groups.find((group: IGroup) => {
       return group.id === id;
     });
     if (requestedGroup !== undefined) {
@@ -49,9 +49,9 @@ export class DataAccess {
       throw new Error("Could not find matching Group ID.");
     }
   }
-  public updateGroup(updatedGroup: IGroup) {
-    const groups = this.getGroups();
-    const updateIndex = groups.findIndex((group: IGroup) => {
+  public updateGroup(updatedGroup: IGroup): void {
+    const groups: Array<IGroup> = this.getGroups();
+    const updateIndex: number = groups.findIndex((group: IGroup) => {
       return group.id === updatedGroup.id;
     });
     if (updateIndex > -1) {
@@ -61,9 +61,9 @@ export class DataAccess {
       throw new Error("Could not find matching Group ID when updating.");
     }
   }
-  public removeGroup(removalGroup: IGroup) {
-    const groups = this.getGroups();
-    const removeIndex = groups.findIndex((group: IGroup) => {
+  public removeGroup(removalGroup: IGroup): void {
+    const groups: Array<IGroup> = this.getGroups();
+    const removeIndex: number = groups.findIndex((group: IGroup) => {
       return group === removalGroup;
     });
     if (removeIndex > -1) {

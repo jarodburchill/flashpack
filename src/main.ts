@@ -7,7 +7,7 @@ import { DataAccess } from "./data/DataAccess";
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow: BrowserWindow;
 
-function createWindow() {
+function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     height: 720,
@@ -59,5 +59,5 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-const dal = new DataAccess();
+const dal: DataAccess = new DataAccess();
 dal.setDarkMode(nativeTheme.shouldUseDarkColors);

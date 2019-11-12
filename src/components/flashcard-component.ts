@@ -1,10 +1,17 @@
-import { css, customElement, html, LitElement, property } from "lit-element";
+import {
+  css,
+  CSSResult,
+  customElement,
+  html,
+  LitElement,
+  TemplateResult,
+} from "lit-element";
 import { globalStyles } from "../styles/globalStyles";
 import "./shared/overlay-component";
 
 @customElement("flashcard-component")
 export class FlashcardComponent extends LitElement {
-  static get styles() {
+  static get styles(): Array<CSSResult> {
     return [
       globalStyles,
       css`
@@ -15,7 +22,7 @@ export class FlashcardComponent extends LitElement {
       `,
     ];
   }
-  public render() {
+  public render(): TemplateResult {
     return html`
       <overlay-component contrast frosted rounded>
         <overlay-component outline rounded shadow>

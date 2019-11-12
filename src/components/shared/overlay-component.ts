@@ -1,17 +1,25 @@
-import { css, customElement, html, LitElement, property } from "lit-element";
+import {
+  css,
+  CSSResult,
+  customElement,
+  html,
+  LitElement,
+  property,
+  TemplateResult,
+} from "lit-element";
 import { classMap } from "lit-html/directives/class-map";
 import { globalStyles } from "../../styles/globalStyles";
 
 @customElement("overlay-component")
 export class OverlayComponent extends LitElement {
-  @property({ type: Boolean }) public contrast = false;
-  @property({ type: Boolean }) public frosted = false;
-  @property({ type: Boolean }) public marginless = false;
-  @property({ type: Boolean }) public maxHeight = false;
-  @property({ type: Boolean }) public outline = false;
-  @property({ type: Boolean }) public rounded = false;
-  @property({ type: Boolean }) public shadow = false;
-  static get styles() {
+  @property({ type: Boolean }) public contrast: boolean = false;
+  @property({ type: Boolean }) public frosted: boolean = false;
+  @property({ type: Boolean }) public marginless: boolean = false;
+  @property({ type: Boolean }) public maxHeight: boolean = false;
+  @property({ type: Boolean }) public outline: boolean = false;
+  @property({ type: Boolean }) public rounded: boolean = false;
+  @property({ type: Boolean }) public shadow: boolean = false;
+  static get styles(): Array<CSSResult> {
     return [
       globalStyles,
       css`
@@ -87,7 +95,7 @@ export class OverlayComponent extends LitElement {
       `,
     ];
   }
-  public render() {
+  public render(): TemplateResult {
     return html`
       <div
         class=${classMap({

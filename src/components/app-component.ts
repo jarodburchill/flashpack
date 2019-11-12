@@ -1,13 +1,21 @@
-import { css, customElement, html, LitElement, property } from "lit-element";
+import {
+  css,
+  CSSResult,
+  customElement,
+  html,
+  LitElement,
+  property,
+  TemplateResult,
+} from "lit-element";
 import { globalStyles } from "../styles/globalStyles";
 import "./flashcard-component";
 import "./shared/overlay-component";
 
 @customElement("app-component")
 export class AppComponent extends LitElement {
-  @property({ type: Boolean }) public bool = false;
-  @property({ type: String }) public name = "Test";
-  private contentDesc = html`
+  @property({ type: Boolean }) public bool: boolean = false;
+  @property({ type: String }) public name: string = "Test";
+  private contentDesc: TemplateResult = html`
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic aspernatur
       quidem animi id cupiditate repellat sit. Asperiores delectus nam
@@ -15,10 +23,10 @@ export class AppComponent extends LitElement {
       delectus libero!
     </p>
   `;
-  private handleClick() {
+  private handleClick(): void {
     this.bool = !this.bool;
   }
-  static get styles() {
+  static get styles(): Array<CSSResult> {
     return [
       globalStyles,
       css`
@@ -51,7 +59,7 @@ export class AppComponent extends LitElement {
       `,
     ];
   }
-  public render() {
+  public render(): TemplateResult {
     return html`
       <div id="app">
         <!-- <h1>${this.name}</h1>
@@ -59,7 +67,7 @@ export class AppComponent extends LitElement {
           type="text"
           id="test"
           value=${this.name}
-          @keyup=${(e: any) => (this.name = e.target.value)}
+          @keyup=${(e: any): void => (this.name = e.target.value)}
         />
         <button @click=${this.handleClick}>Test</button> -->
         <div class="menu">
