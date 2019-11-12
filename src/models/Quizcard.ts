@@ -1,6 +1,6 @@
 export interface IQuizcard {
-  id: number;
-  packId: number;
+  readonly id: number;
+  readonly packId: number;
   type: "mc" | "tf" | "chk" | "blanks";
   question: string;
   answers: Array<{

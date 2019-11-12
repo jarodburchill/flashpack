@@ -1,4 +1,4 @@
 export interface IGroup {
-  id: number;
+  readonly id: number;
   name: string;
 }

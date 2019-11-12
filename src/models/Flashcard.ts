@@ -1,6 +1,6 @@
 export interface IFlashcard {
-  id: number;
-  packId: number;
+  readonly id: number;
+  readonly packId: number;
   term: string;
   definition: string;
   starred: boolean;
