@@ -15,7 +15,7 @@ export class FlashcardComponent extends LitElement {
       `,
     ];
   }
-  render() {
+  public render() {
     return html`
       <overlay-component contrast frosted rounded>
         <overlay-component outline rounded shadow>

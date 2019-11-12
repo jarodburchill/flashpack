@@ -4,13 +4,13 @@ import { globalStyles } from "../../styles/globalStyles";
 
 @customElement("overlay-component")
 export class OverlayComponent extends LitElement {
-  @property({ type: Boolean }) contrast = false;
-  @property({ type: Boolean }) frosted = false;
-  @property({ type: Boolean }) marginless = false;
-  @property({ type: Boolean }) maxHeight = false;
-  @property({ type: Boolean }) outline = false;
-  @property({ type: Boolean }) rounded = false;
-  @property({ type: Boolean }) shadow = false;
+  @property({ type: Boolean }) public contrast = false;
+  @property({ type: Boolean }) public frosted = false;
+  @property({ type: Boolean }) public marginless = false;
+  @property({ type: Boolean }) public maxHeight = false;
+  @property({ type: Boolean }) public outline = false;
+  @property({ type: Boolean }) public rounded = false;
+  @property({ type: Boolean }) public shadow = false;
   static get styles() {
     return [
       globalStyles,
@@ -87,7 +87,7 @@ export class OverlayComponent extends LitElement {
       `,
     ];
   }
-  render() {
+  public render() {
     return html`
       <div
         class=${classMap({

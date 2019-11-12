@@ -5,9 +5,9 @@ import "./shared/overlay-component";
 
 @customElement("app-component")
 export class AppComponent extends LitElement {
-  @property({ type: Boolean }) bool = false;
-  @property({ type: String }) name = "Test";
-  contentDesc = html`
+  @property({ type: Boolean }) public bool = false;
+  @property({ type: String }) public name = "Test";
+  private contentDesc = html`
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic aspernatur
       quidem animi id cupiditate repellat sit. Asperiores delectus nam
@@ -15,7 +15,7 @@ export class AppComponent extends LitElement {
       delectus libero!
     </p>
   `;
-  handleClick() {
+  private handleClick() {
     this.bool = !this.bool;
   }
   static get styles() {
@@ -51,7 +51,7 @@ export class AppComponent extends LitElement {
       `,
     ];
   }
-  render() {
+  public render() {
     return html`
       <div id="app">
         <!-- <h1>${this.name}</h1>
