@@ -1,8 +1,8 @@
 import { css, CSSResult } from "lit-element";
-import { DataAccess } from "../data/DataAccess";
+import { DAL } from "../data/DAL";
 
-const dal: DataAccess = new DataAccess();
-const darkMode: boolean = dal.getDarkMode();
+const dal: DAL = new DAL();
+const darkMode: boolean = dal.darkMode.getDarkMode();
 
 export const globalStyles: CSSResult = css`
   * {
