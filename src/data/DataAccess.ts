@@ -26,20 +26,20 @@ export class DataAccess {
   public setDarkMode(darkMode: boolean): void {
     this.store.set("darkMode", darkMode);
   }
-  public getGroups(): Array<IGroup> {
+  public getGroups(): IGroup[] {
     return this.store.get("groups");
   }
-  private setGroups(groups: Array<IGroup>): void {
+  private setGroups(groups: IGroup[]): void {
     this.store.set("groups", groups);
   }
   public addGroup(newGroup: INewGroup): void {
-    const groups: Array<IGroup> = this.getGroups();
+    const groups: IGroup[] = this.getGroups();
     const group: IGroup = Object.assign({ id: this.assignId() }, newGroup);
     groups.push(group);
     this.setGroups(groups);
   }
   public getGroup(id: number): IGroup {
-    const groups: Array<IGroup> = this.getGroups();
+    const groups: IGroup[] = this.getGroups();
     const requestedGroup: IGroup = groups.find((group: IGroup) => {
       return group.id === id;
     });
@@ -50,7 +50,7 @@ export class DataAccess {
     }
   }
   public updateGroup(updatedGroup: IGroup): void {
-    const groups: Array<IGroup> = this.getGroups();
+    const groups: IGroup[] = this.getGroups();
     const updateIndex: number = groups.findIndex((group: IGroup) => {
       return group.id === updatedGroup.id;
     });
@@ -62,7 +62,7 @@ export class DataAccess {
     }
   }
   public removeGroup(removalGroup: IGroup): void {
-    const groups: Array<IGroup> = this.getGroups();
+    const groups: IGroup[] = this.getGroups();
     const removeIndex: number = groups.findIndex((group: IGroup) => {
       return group === removalGroup;
     });

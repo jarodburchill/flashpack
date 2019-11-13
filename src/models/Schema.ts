@@ -4,9 +4,9 @@ import { IPack } from "./Pack";
 import { IQuizcard } from "./Quizcard";
 
 export interface ISchema {
-  cards: Array<IFlashcard | IQuizcard>;
+  cards: (IFlashcard | IQuizcard)[];
   darkMode: boolean;
-  groups: Array<IGroup>;
+  groups: IGroup[];
   nextId: number;
-  packs: Array<IPack>;
+  packs: IPack[];
 }

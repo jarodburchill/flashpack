@@ -11,7 +11,7 @@ import "./shared/overlay-component";
 
 @customElement("flashcard-component")
 export class FlashcardComponent extends LitElement {
-  static get styles(): Array<CSSResult> {
+  static get styles(): CSSResult[] {
     return [
       globalStyles,
       css`

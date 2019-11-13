@@ -3,9 +3,9 @@ export interface IQuizcard {
   readonly packId: number;
   type: "mc" | "tf" | "chk" | "blanks";
   question: string;
-  answers: Array<{
+  answers: {
     text: string;
     correct: boolean;
-  }>;
+  }[];
   starred: boolean;
 }

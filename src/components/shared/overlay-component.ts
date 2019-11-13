@@ -19,7 +19,7 @@ export class OverlayComponent extends LitElement {
   @property({ type: Boolean }) public outline: boolean = false;
   @property({ type: Boolean }) public rounded: boolean = false;
   @property({ type: Boolean }) public shadow: boolean = false;
-  static get styles(): Array<CSSResult> {
+  static get styles(): CSSResult[] {
     return [
       globalStyles,
       css`

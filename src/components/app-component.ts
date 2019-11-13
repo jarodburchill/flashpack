@@ -26,7 +26,7 @@ export class AppComponent extends LitElement {
   private handleClick(): void {
     this.bool = !this.bool;
   }
-  static get styles(): Array<CSSResult> {
+  static get styles(): CSSResult[] {
     return [
       globalStyles,
       css`
