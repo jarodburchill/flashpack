@@ -1,10 +1,10 @@
-import { css } from "lit-element";
+import { css, CSSResult } from "lit-element";
 import { DataAccess } from "../data/DataAccess";
 
-const dal = new DataAccess();
+const dal: DataAccess = new DataAccess();
 const darkMode: boolean = dal.getDarkMode();
 
-export const globalStyles = css`
+export const globalStyles: CSSResult = css`
   * {
     margin: 0;
     padding: 0;
