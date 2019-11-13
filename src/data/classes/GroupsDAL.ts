@@ -1,31 +1,7 @@
-import Store = require("electron-store");
-import { IGroup, INewGroup } from "../models/Group";
-import { ISchema } from "../models/Schema";
+import { IGroup, INewGroup } from "../../models/Group";
+import { BaseDAL } from "./BaseDAL";
 
-export class DataAccess {
-  private store: Store<ISchema>;
-  constructor() {
-    this.store = new Store<ISchema>({
-      defaults: {
-        cards: [],
-        darkMode: false,
-        groups: [],
-        nextId: 1,
-        packs: [],
-      },
-    });
-  }
-  private assignId(): number {
-    const id: number = this.store.get("nextId");
-    this.store.set("nextId", id + 1);
-    return id;
-  }
-  public getDarkMode(): boolean {
-    return this.store.get("darkMode");
-  }
-  public setDarkMode(darkMode: boolean): void {
-    this.store.set("darkMode", darkMode);
-  }
+export class GroupsDAL extends BaseDAL {
   public getGroups(): IGroup[] {
     return this.store.get("groups");
   }
