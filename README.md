@@ -14,7 +14,7 @@
 &nbsp;
 <a href="https://jestjs.io/">
   <img src="https://github.com/jarodburchill/flashpack/blob/master/img/jest.png" title="Jest" width="80" height="80">
-</a><pre>
+</a><pre></pre>
 
 - [electron-store](https://github.com/sindresorhus/electron-store)
 - [esm](https://github.com/standard-things/esm)
