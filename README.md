@@ -9,7 +9,7 @@
 </a>
 &nbsp;
 <a href="https://lit-element.polymer-project.org/">
-  <img src="https://github.com/jarodburchill/flashpack/blob/master/img/lit-element.png" title="lit-element" width="180" height="80">
+  <img src="https://github.com/jarodburchill/flashpack/blob/master/img/lit-element.png" title="lit-element" width="220" height="80">
 </a>
 &nbsp;
 <a href="https://jestjs.io/">
