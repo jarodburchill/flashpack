@@ -1,3 +1,4 @@
+import { IGroup } from "src/models/Group";
 import { INewPack, IPack } from "../../models/Pack";
 import { BaseDAL } from "./BaseDAL";
 
@@ -15,10 +16,17 @@ export class PacksDAL extends BaseDAL {
     });
     return groupPacks;
   }
-  public addPack(groupId: number, newPack: INewPack): void {
+  public removeGroupPacks(groupId: number): void {
+    const packs: IPack[] = this.getPacks();
+    const remainingPacks: IPack[] = packs.filter((pack: IPack) => {
+      return pack.groupId !== groupId;
+    });
+    this.setPacks(remainingPacks);
+  }
+  public addPack(group: IGroup, newPack: INewPack): void {
     const packs: IPack[] = this.getPacks();
     const pack: IPack = Object.assign(
-      { id: this.assignId(), groupId },
+      { id: this.assignId(), groupId: group.id },
       newPack
     );
     packs.push(pack);
@@ -40,23 +48,15 @@ export class PacksDAL extends BaseDAL {
     const updateIndex: number = packs.findIndex((pack: IPack) => {
       return pack.id === updatedPack.id;
     });
-    if (updateIndex > -1) {
-      packs[updateIndex] = updatedPack;
-      this.setPacks(packs);
-    } else {
-      throw new Error("Could not find matching Pack ID when updating.");
-    }
+    packs[updateIndex] = updatedPack;
+    this.setPacks(packs);
   }
   public removePack(removalPack: IPack): void {
     const packs: IPack[] = this.getPacks();
     const removeIndex: number = packs.findIndex((pack: IPack) => {
-      return pack === removalPack;
+      return pack.id === removalPack.id;
     });
-    if (removeIndex > -1) {
-      packs.splice(removeIndex, 1);
-      this.setPacks(packs);
-    } else {
-      throw new Error("Could not find matching Pack object when deleting.");
-    }
+    packs.splice(removeIndex, 1);
+    this.setPacks(packs);
   }
 }

@@ -1,5 +1,6 @@
 import { IGroup, INewGroup } from "../../models/Group";
 import { BaseDAL } from "./BaseDAL";
+import { PacksDAL } from "./PacksDAL";
 
 export class GroupsDAL extends BaseDAL {
   public getGroups(): IGroup[] {
@@ -30,23 +31,16 @@ export class GroupsDAL extends BaseDAL {
     const updateIndex: number = groups.findIndex((group: IGroup) => {
       return group.id === updatedGroup.id;
     });
-    if (updateIndex > -1) {
-      groups[updateIndex] = updatedGroup;
-      this.setGroups(groups);
-    } else {
-      throw new Error("Could not find matching Group ID when updating.");
-    }
+    groups[updateIndex] = updatedGroup;
+    this.setGroups(groups);
   }
   public removeGroup(removalGroup: IGroup): void {
     const groups: IGroup[] = this.getGroups();
     const removeIndex: number = groups.findIndex((group: IGroup) => {
-      return group === removalGroup;
+      return group.id === removalGroup.id;
     });
-    if (removeIndex > -1) {
-      groups.splice(removeIndex, 1);
-      this.setGroups(groups);
-    } else {
-      throw new Error("Could not find matching Group object when deleting.");
-    }
+    groups.splice(removeIndex, 1);
+    new PacksDAL().removeGroupPacks(removalGroup.id);
+    this.setGroups(groups);
   }
 }
