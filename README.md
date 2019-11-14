@@ -16,5 +16,8 @@
   <img src="https://github.com/jarodburchill/flashpack/blob/master/img/jest.png" title="Jest" width="80" height="80">
 </a>
 
-
+- [electron-store](https://github.com/sindresorhus/electron-store)
+- [esm](https://github.com/standard-things/esm)
+- [ts-jest](https://kulshekhar.github.io/ts-jest/)
+- [ts-lint](https://palantir.github.io/tslint/)
 
