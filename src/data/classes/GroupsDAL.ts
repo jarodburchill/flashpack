@@ -40,7 +40,7 @@ export class GroupsDAL extends BaseDAL {
       return group.id === removalGroup.id;
     });
     groups.splice(removeIndex, 1);
-    new PacksDAL().removeGroupPacks(removalGroup.id);
+    new PacksDAL(this.store).removeGroupPacks(removalGroup.id);
     this.setGroups(groups);
   }
 }

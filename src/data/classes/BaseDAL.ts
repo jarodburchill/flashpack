@@ -1,18 +1,11 @@
-import Store = require("electron-store");
+import ElectronStore = require("electron-store");
+import { ElectronStoreStub } from "tests/stubs/ElectronStoreStub";
 import { ISchema } from "../../models/Schema";
 
 export class BaseDAL {
-  protected store: Store<ISchema>;
-  constructor() {
-    this.store = new Store<ISchema>({
-      defaults: {
-        cards: [],
-        darkMode: false,
-        groups: [],
-        nextId: 1,
-        packs: [],
-      },
-    });
+  protected store: ElectronStore<ISchema> | ElectronStoreStub;
+  constructor(store: ElectronStore<ISchema> | ElectronStoreStub) {
+    this.store = store;
   }
   protected assignId(): number {
     const id: number = this.store.get("nextId");
