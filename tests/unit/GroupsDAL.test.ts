@@ -54,3 +54,20 @@ describe("addGroup", () => {
     expect(groupsDAL.getGroup(2).name).toBe("Science");
   });
 });
+
+describe("getGroup", () => {
+  it("gets a specified group from a given groups array", () => {
+    const store: ElectronStoreStub = new ElectronStoreStub(storeData);
+    const groupsDAL: GroupsDAL = new GroupsDAL(store);
+    expect(groupsDAL.getGroup(1)).toEqual({ id: 1, name: "Math" });
+  });
+  it("throws an error when a specified group cannot be found", () => {
+    const store: ElectronStoreStub = new ElectronStoreStub();
+    const groupsDAL: GroupsDAL = new GroupsDAL(store);
+    try {
+      groupsDAL.getGroup(1);
+    } catch (error) {
+      expect(error).toEqual(new Error("Could not find matching Group ID."));
+    }
+  });
+});
