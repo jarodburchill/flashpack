@@ -1,6 +1,7 @@
 class ElectronStore<T = any> {
   public store: any;
   constructor(options?: { defaults: T }) {
+    // TODO: find a better way
     this.store = JSON.parse(JSON.stringify(options.defaults));
   }
   public get(key: string): any {
