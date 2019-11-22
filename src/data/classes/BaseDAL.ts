@@ -1,10 +1,10 @@
 import ElectronStore = require("electron-store");
-import { ElectronStoreStub } from "tests/stubs/ElectronStoreStub";
 import { ISchema } from "../../models/Schema";
 
 export class BaseDAL {
-  protected store: ElectronStore<ISchema> | ElectronStoreStub;
-  constructor(store: ElectronStore<ISchema> | ElectronStoreStub) {
+  // TODO: rename to electronStore
+  protected store: ElectronStore<ISchema>;
+  constructor(store: ElectronStore<ISchema>) {
     this.store = store;
   }
   protected assignId(): number {
