@@ -65,7 +65,7 @@ describe("addGroup", () => {
       { id: 3, name: "Web Development" },
     ]);
   });
-  it("auto increments next id", () => {
+  it("auto increments next id upon adding a group", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     groupsDAL.addGroup({ name: "Math" });
