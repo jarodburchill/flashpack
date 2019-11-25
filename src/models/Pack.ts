@@ -1,6 +1,6 @@
 export interface INewPack {
   name: string;
-  type: "flash" | "quiz";
+  readonly type: "flash" | "quiz";
   timed: boolean;
   liveResults: boolean;
 }
