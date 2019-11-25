@@ -1,5 +1,6 @@
 import ElectronStore = require("electron-store");
 import { GroupsDAL } from "../../src/data/classes/GroupsDAL";
+import { IGroup } from "../../src/models/Group";
 import { ISchema } from "../../src/models/Schema";
 
 jest.mock("electron-store");
@@ -90,5 +91,30 @@ describe("getGroup", () => {
     } catch (error) {
       expect(error).toEqual(new Error("Could not find matching Group ID."));
     }
+  });
+});
+
+describe("updateGroup", () => {
+  it("updates the name of the first group in an existing groups array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    const group: IGroup = electronStore.store.groups[0];
+    group.name = "Updated";
+    groupsDAL.updateGroup(group);
+    expect(electronStore.store.groups[0]).toEqual({ id: 1, name: "Updated" });
+  });
+  it("updates the name of the both groups in an existing groups array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    const first: IGroup = electronStore.store.groups[0];
+    const second: IGroup = electronStore.store.groups[1];
+    first.name = "Update";
+    second.name = "Next Update";
+    groupsDAL.updateGroup(first);
+    groupsDAL.updateGroup(second);
+    expect(electronStore.store.groups).toEqual([
+      { id: 1, name: "Update" },
+      { id: 2, name: "Next Update" },
+    ]);
   });
 });
