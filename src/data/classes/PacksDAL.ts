@@ -25,10 +25,10 @@ export class PacksDAL extends BaseDAL {
   }
   public addPack(group: IGroup, newPack: INewPack): void {
     const packs: IPack[] = this.getPacks();
-    const pack: IPack = Object.assign(
-      { id: this.assignId(), groupId: group.id },
-      newPack
-    );
+    const pack: IPack = {
+      ...{ id: this.assignId(), groupId: group.id },
+      ...newPack,
+    };
     packs.push(pack);
     this.setPacks(packs);
   }
