@@ -25,18 +25,17 @@ const populatedStore: ISchema = {
 
 describe("getGroups", () => {
   it("gets an empty groups array", () => {
-    // TODO: rename to electronStore
-    const store: ElectronStore<ISchema> = new ElectronStore<ISchema>({
+    const electronStore: ElectronStore<ISchema> = new ElectronStore<ISchema>({
       defaults: emptyStore,
     });
-    const groupDAL: GroupsDAL = new GroupsDAL(store);
+    const groupDAL: GroupsDAL = new GroupsDAL(electronStore);
     expect(groupDAL.getGroups()).toEqual([]);
   });
   it("gets a given groups array", () => {
-    const store: ElectronStore<ISchema> = new ElectronStore<ISchema>({
+    const electronStore: ElectronStore<ISchema> = new ElectronStore<ISchema>({
       defaults: populatedStore,
     });
-    const groupsDAL: GroupsDAL = new GroupsDAL(store);
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     expect(groupsDAL.getGroups()).toEqual([
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
@@ -46,33 +45,33 @@ describe("getGroups", () => {
 
 describe("addGroup", () => {
   it("adds a new group to an empty groups array", () => {
-    const store: ElectronStore<ISchema> = new ElectronStore<ISchema>({
-      defaults: Object.assign({}, emptyStore),
+    const electronStore: ElectronStore<ISchema> = new ElectronStore<ISchema>({
+      defaults: emptyStore,
     });
-    const groupsDAL: GroupsDAL = new GroupsDAL(store);
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     groupsDAL.addGroup({ name: "Math" });
-    expect(store.store.groups).toEqual([{ id: 1, name: "Math" }]);
+    expect(electronStore.store.groups).toEqual([{ id: 1, name: "Math" }]);
   });
   it("adds a new group to an existing groups array", () => {
-    const store: ElectronStore<ISchema> = new ElectronStore<ISchema>({
+    const electronStore: ElectronStore<ISchema> = new ElectronStore<ISchema>({
       defaults: populatedStore,
     });
-    const groupsDAL: GroupsDAL = new GroupsDAL(store);
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     groupsDAL.addGroup({ name: "Web Development" });
-    expect(store.store.groups).toEqual([
+    expect(electronStore.store.groups).toEqual([
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
       { id: 3, name: "Web Development" },
     ]);
   });
   it("auto increments next id", () => {
-    const store: ElectronStore<ISchema> = new ElectronStore<ISchema>({
-      defaults: Object.assign({}, emptyStore),
+    const electronStore: ElectronStore<ISchema> = new ElectronStore<ISchema>({
+      defaults: emptyStore,
     });
-    const groupsDAL: GroupsDAL = new GroupsDAL(store);
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     groupsDAL.addGroup({ name: "Math" });
     groupsDAL.addGroup({ name: "Science" });
-    expect(store.store.groups).toEqual([
+    expect(electronStore.store.groups).toEqual([
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
     ]);
@@ -81,18 +80,18 @@ describe("addGroup", () => {
 
 describe("getGroup", () => {
   it("gets a specified group from a given groups array", () => {
-    const store: ElectronStore<ISchema> = new ElectronStore<ISchema>({
+    const electronStore: ElectronStore<ISchema> = new ElectronStore<ISchema>({
       defaults: populatedStore,
     });
 
-    const groupsDAL: GroupsDAL = new GroupsDAL(store);
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     expect(groupsDAL.getGroup(1)).toEqual({ id: 1, name: "Math" });
   });
   it("throws an error when a specified group cannot be found", () => {
-    const store: ElectronStore<ISchema> = new ElectronStore<ISchema>({
+    const electronStore: ElectronStore<ISchema> = new ElectronStore<ISchema>({
       defaults: emptyStore,
     });
-    const groupsDAL: GroupsDAL = new GroupsDAL(store);
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     try {
       groupsDAL.getGroup(1);
     } catch (error) {
