@@ -2,7 +2,6 @@ import ElectronStore = require("electron-store");
 import { ISchema } from "../../models/Schema";
 
 export class BaseDAL {
-  // TODO: rename to electronStore
   protected electronStore: ElectronStore<ISchema>;
   constructor(electronStore: ElectronStore<ISchema>) {
     this.electronStore = electronStore;
