@@ -4,13 +4,13 @@ import { BaseDAL } from "./BaseDAL";
 
 export class PacksDAL extends BaseDAL {
   private getPacks(): IPack[] {
-    return this.store.get("packs");
+    return this.electronStore.get("packs");
   }
   private setPacks(packs: IPack[]): void {
-    this.store.set("packs", packs);
+    this.electronStore.set("packs", packs);
   }
   public getGroupPacks(groupId: number): IPack[] {
-    const packs: IPack[] = this.store.get("packs");
+    const packs: IPack[] = this.getPacks();
     const groupPacks: IPack[] = packs.filter((pack: IPack) => {
       return pack.groupId === groupId;
     });

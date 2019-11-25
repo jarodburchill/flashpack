@@ -4,10 +4,10 @@ import { PacksDAL } from "./PacksDAL";
 
 export class GroupsDAL extends BaseDAL {
   public getGroups(): IGroup[] {
-    return this.store.get("groups");
+    return this.electronStore.get("groups");
   }
   private setGroups(groups: IGroup[]): void {
-    this.store.set("groups", groups);
+    this.electronStore.set("groups", groups);
   }
   public addGroup(newGroup: INewGroup): void {
     const groups: IGroup[] = this.getGroups();
@@ -40,7 +40,7 @@ export class GroupsDAL extends BaseDAL {
       return group.id === removalGroup.id;
     });
     groups.splice(removeIndex, 1);
-    new PacksDAL(this.store).removeGroupPacks(removalGroup.id);
+    new PacksDAL(this.electronStore).removeGroupPacks(removalGroup.id);
     this.setGroups(groups);
   }
 }

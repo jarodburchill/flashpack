@@ -2,9 +2,9 @@ import { BaseDAL } from "./BaseDAL";
 
 export class DarkModeDAL extends BaseDAL {
   public getDarkMode(): boolean {
-    return this.store.get("darkMode");
+    return this.electronStore.get("darkMode");
   }
   public setDarkMode(darkMode: boolean): void {
-    this.store.set("darkMode", darkMode);
+    this.electronStore.set("darkMode", darkMode);
   }
 }

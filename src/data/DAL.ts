@@ -9,7 +9,7 @@ export class DAL {
   public groups: GroupsDAL;
   public packs: PacksDAL;
   constructor() {
-    const store: ElectronStore<ISchema> = new ElectronStore<ISchema>({
+    const electronStore: ElectronStore<ISchema> = new ElectronStore<ISchema>({
       defaults: {
         cards: [],
         darkMode: false,
@@ -18,8 +18,8 @@ export class DAL {
         packs: [],
       },
     });
-    this.darkMode = new DarkModeDAL(store);
-    this.groups = new GroupsDAL(store);
-    this.packs = new PacksDAL(store);
+    this.darkMode = new DarkModeDAL(electronStore);
+    this.groups = new GroupsDAL(electronStore);
+    this.packs = new PacksDAL(electronStore);
   }
 }
