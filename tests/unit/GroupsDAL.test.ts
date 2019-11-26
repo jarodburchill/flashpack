@@ -26,8 +26,33 @@ const getPopulatedStore: () => ElectronStore<ISchema> = () => {
         { id: 1, name: "Math" },
         { id: 2, name: "Science" },
       ],
-      nextId: 3,
-      packs: [],
+      nextId: 6,
+      packs: [
+        {
+          id: 3,
+          groupId: 1,
+          name: "Unit 1",
+          type: "flash",
+          timed: false,
+          liveResults: false,
+        },
+        {
+          id: 4,
+          groupId: 1,
+          name: "Unit 2",
+          type: "flash",
+          timed: false,
+          liveResults: false,
+        },
+        {
+          id: 5,
+          groupId: 2,
+          name: "Semester 1",
+          type: "quiz",
+          timed: true,
+          liveResults: false,
+        },
+      ],
     },
   });
 };
@@ -62,7 +87,7 @@ describe("addGroup", () => {
     expect(electronStore.store.groups).toEqual([
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
-      { id: 3, name: "Web Development" },
+      { id: 6, name: "Web Development" },
     ]);
   });
   it("auto increments next id upon adding a group", () => {
@@ -116,5 +141,47 @@ describe("updateGroup", () => {
       { id: 1, name: "Update" },
       { id: 2, name: "Next Update" },
     ]);
+  });
+  it("throws an error when attempting to update a non-existing group", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    try {
+      groupsDAL.updateGroup({ id: 1, name: "Does not exist" });
+    } catch (error) {
+      expect(error).toEqual(
+        new Error("Could not find matching Group to update.")
+      );
+    }
+  });
+});
+
+describe("removeGroup", () => {
+  it("works", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    const group: IGroup = electronStore.store.groups[0];
+    groupsDAL.removeGroup(group);
+    expect(electronStore.store.groups).toEqual([{ id: 2, name: "Science" }]);
+    expect(electronStore.store.packs).toEqual([
+      {
+        id: 5,
+        groupId: 2,
+        name: "Semester 1",
+        type: "quiz",
+        timed: true,
+        liveResults: false,
+      },
+    ]);
+  });
+  it("throws an error when attempting to delete a non-existing group", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    try {
+      groupsDAL.removeGroup({ id: 1, name: "Does not exist" });
+    } catch (error) {
+      expect(error).toEqual(
+        new Error("Could not find matching Group to delete.")
+      );
+    }
   });
 });
