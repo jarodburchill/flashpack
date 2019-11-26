@@ -31,16 +31,24 @@ export class GroupsDAL extends BaseDAL {
     const updateIndex: number = groups.findIndex((group: IGroup) => {
       return group.id === updatedGroup.id;
     });
-    groups[updateIndex] = updatedGroup;
-    this.setGroups(groups);
+    if (updateIndex !== -1) {
+      groups[updateIndex] = updatedGroup;
+      this.setGroups(groups);
+    } else {
+      throw new Error("Could not find matching Group to update.");
+    }
   }
   public removeGroup(removalGroup: IGroup): void {
     const groups: IGroup[] = this.getGroups();
     const removeIndex: number = groups.findIndex((group: IGroup) => {
       return group.id === removalGroup.id;
     });
-    groups.splice(removeIndex, 1);
-    new PacksDAL(this.electronStore).removeGroupPacks(removalGroup.id);
-    this.setGroups(groups);
+    if (removeIndex !== -1) {
+      groups.splice(removeIndex, 1);
+      new PacksDAL(this.electronStore).removeGroupPacks(removalGroup.id);
+      this.setGroups(groups);
+    } else {
+      throw new Error("Could not find matching Group to delete.");
+    }
   }
 }
