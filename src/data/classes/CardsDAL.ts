@@ -36,4 +36,15 @@ export class CardsDAL extends BaseDAL {
     cards.push(card);
     this.setCards(cards);
   }
+  public getCard<T extends Card>(id: number): T {
+    const cards: Card[] = this.getCards();
+    const requestedCard: Card = cards.find((card: Card) => {
+      return card.id === id;
+    });
+    if (requestedCard !== undefined) {
+      return requestedCard as T;
+    } else {
+      throw new Error("Could not find matching Card ID.");
+    }
+  }
 }
