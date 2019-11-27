@@ -1,6 +1,7 @@
 import { IGroup } from "src/models/Group";
 import { INewPack, IPack } from "../../models/Pack";
 import { BaseDAL } from "./BaseDAL";
+import { CardsDAL } from "./CardsDAL";
 
 export class PacksDAL extends BaseDAL {
   private getPacks(): IPack[] {
@@ -19,7 +20,11 @@ export class PacksDAL extends BaseDAL {
   public removeGroupPacks(group: IGroup): void {
     const packs: IPack[] = this.getPacks();
     const remainingPacks: IPack[] = packs.filter((pack: IPack) => {
-      return pack.groupId !== group.id;
+      if (pack.groupId !== group.id) {
+        return pack;
+      } else {
+        new CardsDAL(this.electronStore).removePackCards(pack);
+      }
     });
     this.setPacks(remainingPacks);
   }
@@ -48,15 +53,24 @@ export class PacksDAL extends BaseDAL {
     const updateIndex: number = packs.findIndex((pack: IPack) => {
       return pack.id === updatedPack.id;
     });
-    packs[updateIndex] = updatedPack;
-    this.setPacks(packs);
+    if (updateIndex !== -1) {
+      packs[updateIndex] = updatedPack;
+      this.setPacks(packs);
+    } else {
+      throw new Error("Could not find matching Pack to update.");
+    }
   }
   public removePack(removalPack: IPack): void {
     const packs: IPack[] = this.getPacks();
     const removeIndex: number = packs.findIndex((pack: IPack) => {
       return pack.id === removalPack.id;
     });
-    packs.splice(removeIndex, 1);
-    this.setPacks(packs);
+    if (removeIndex !== -1) {
+      packs.splice(removeIndex, 1);
+      new CardsDAL(this.electronStore).removePackCards(removalPack);
+      this.setPacks(packs);
+    } else {
+      throw new Error("Could not find matching Pack to remove.");
+    }
   }
 }
