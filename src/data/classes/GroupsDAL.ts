@@ -48,7 +48,7 @@ export class GroupsDAL extends BaseDAL {
       new PacksDAL(this.electronStore).removeGroupPacks(removalGroup);
       this.setGroups(groups);
     } else {
-      throw new Error("Could not find matching Group to delete.");
+      throw new Error("Could not find matching Group to remove.");
     }
   }
 }
