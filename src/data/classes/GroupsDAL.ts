@@ -45,7 +45,7 @@ export class GroupsDAL extends BaseDAL {
     });
     if (removeIndex !== -1) {
       groups.splice(removeIndex, 1);
-      new PacksDAL(this.electronStore).removeGroupPacks(removalGroup.id);
+      new PacksDAL(this.electronStore).removeGroupPacks(removalGroup);
       this.setGroups(groups);
     } else {
       throw new Error("Could not find matching Group to delete.");

@@ -9,17 +9,17 @@ export class PacksDAL extends BaseDAL {
   private setPacks(packs: IPack[]): void {
     this.electronStore.set("packs", packs);
   }
-  public getGroupPacks(groupId: number): IPack[] {
+  public getGroupPacks(group: IGroup): IPack[] {
     const packs: IPack[] = this.getPacks();
     const groupPacks: IPack[] = packs.filter((pack: IPack) => {
-      return pack.groupId === groupId;
+      return pack.groupId === group.id;
     });
     return groupPacks;
   }
-  public removeGroupPacks(groupId: number): void {
+  public removeGroupPacks(group: IGroup): void {
     const packs: IPack[] = this.getPacks();
     const remainingPacks: IPack[] = packs.filter((pack: IPack) => {
-      return pack.groupId !== groupId;
+      return pack.groupId !== group.id;
     });
     this.setPacks(remainingPacks);
   }
