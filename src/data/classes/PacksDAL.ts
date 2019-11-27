@@ -11,6 +11,7 @@ export class PacksDAL extends BaseDAL {
     this.electronStore.set("packs", packs);
   }
   public getGroupPacks(group: IGroup): IPack[] {
+    // TODO: handle group not found
     const packs: IPack[] = this.getPacks();
     const groupPacks: IPack[] = packs.filter((pack: IPack) => {
       return pack.groupId === group.id;
@@ -18,6 +19,8 @@ export class PacksDAL extends BaseDAL {
     return groupPacks;
   }
   public removeGroupPacks(group: IGroup): void {
+    // TODO: handle group not found
+    // TODO: move to GroupsDAL remove function
     const packs: IPack[] = this.getPacks();
     const remainingPacks: IPack[] = packs.filter((pack: IPack) => {
       if (pack.groupId !== group.id) {
