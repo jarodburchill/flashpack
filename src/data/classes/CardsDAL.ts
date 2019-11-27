@@ -20,4 +20,11 @@ export class CardsDAL extends BaseDAL {
     });
     return packCards as T[];
   }
+  public removePackCards(pack: IPack): void {
+    const cards: Card[] = this.getCards();
+    const remainingCards: Card[] = cards.filter((card: Card) => {
+      return card.packId !== pack.id;
+    });
+    this.setCards(remainingCards);
+  }
 }
