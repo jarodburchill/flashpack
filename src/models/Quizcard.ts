@@ -1,6 +1,4 @@
-export interface IQuizcard {
-  readonly id: number;
-  readonly packId: number;
+export interface INewQuizcard {
   readonly type: "mc" | "tf" | "chk" | "blanks";
   question: string;
   answers: {
@@ -8,4 +6,9 @@ export interface IQuizcard {
     correct: boolean;
   }[];
   starred: boolean;
+}
+
+export interface IQuizcard extends INewQuizcard {
+  readonly id: number;
+  readonly packId: number;
 }
