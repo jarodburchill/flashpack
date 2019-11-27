@@ -27,4 +27,13 @@ export class CardsDAL extends BaseDAL {
     });
     this.setCards(remainingCards);
   }
+  public addCard(pack: IPack, newCard: NewCard): void {
+    const cards: Card[] = this.getCards();
+    const card: Card = {
+      ...{ id: this.assignId(), packId: pack.id },
+      ...newCard,
+    };
+    cards.push(card);
+    this.setCards(cards);
+  }
 }
