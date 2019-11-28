@@ -90,10 +90,14 @@ export class CardsDAL extends BaseDAL {
     }
   }
   public addCard(pack: IPack, newCard: NewCard): void {
+    // TODO: Do I have to validate Quizcard answers prop?
     if (new PacksDAL(this.electronStore).findPack(pack)) {
       const cards: Card[] = this.getCards();
       const card: Card = {
-        ...{ id: this.assignId(), packId: pack.id },
+        ...{
+          id: this.assignId(),
+          packId: pack.id,
+        },
         ...newCard,
       };
       if (pack.type === card.type) {
@@ -123,6 +127,18 @@ export class CardsDAL extends BaseDAL {
       this.setCards(cards);
     } else {
       throw new Error("Could not find matching Card to update.");
+    }
+  }
+  public removeCard(removalCard: Card): void {
+    const cards: Card[] = this.getCards();
+    const removeIndex: number = cards.findIndex((card: Card) => {
+      return _.isEqual(card, removalCard);
+    });
+    if (removeIndex !== -1) {
+      cards.splice(removeIndex, 1);
+      this.setCards(cards);
+    } else {
+      throw new Error("Could not find matching Card to remove.");
     }
   }
 }
