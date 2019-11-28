@@ -72,6 +72,22 @@ export class CardsDAL extends BaseDAL {
       throw new Error("Could not find matching Card ID.");
     }
   }
+  public getFlashcard(id: number): IFlashcard {
+    const card: IFlashcard = this.getCard<IFlashcard>(id);
+    if (card.type === "flash") {
+      return card;
+    } else {
+      throw new Error("Card was found, but it is a Quizcard, not a Flashcard.");
+    }
+  }
+  public getQuizcard(id: number): IQuizcard {
+    const card: IQuizcard = this.getCard<IQuizcard>(id);
+    if (card.type === "quiz") {
+      return card;
+    } else {
+      throw new Error("Card was found, but it is a Falshcard, not a Quizcard.");
+    }
+  }
   public addCard(pack: IPack, newCard: NewCard): void {
     if (new PacksDAL(this.electronStore).findPack(pack)) {
       const cards: Card[] = this.getCards();
@@ -91,22 +107,6 @@ export class CardsDAL extends BaseDAL {
       }
     } else {
       throw new Error("Could not find matching Pack to add Cards to.");
-    }
-  }
-  public getFlashcard(id: number): IFlashcard {
-    const card: IFlashcard = this.getCard<IFlashcard>(id);
-    if (card.type === "flash") {
-      return card;
-    } else {
-      throw new Error("Card was found, but it is a Quizcard, not a Flashcard.");
-    }
-  }
-  public getQuizcard(id: number): IQuizcard {
-    const card: IQuizcard = this.getCard<IQuizcard>(id);
-    if (card.type === "quiz") {
-      return card;
-    } else {
-      throw new Error("Card was found, but it is a Falshcard, not a Quizcard.");
     }
   }
 }
