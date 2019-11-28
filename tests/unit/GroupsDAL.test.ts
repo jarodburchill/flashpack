@@ -180,7 +180,7 @@ describe("removeGroup", () => {
       groupsDAL.removeGroup({ id: 1, name: "Does not exist" });
     } catch (error) {
       expect(error).toEqual(
-        new Error("Could not find matching Group to delete.")
+        new Error("Could not find matching Group to remove.")
       );
     }
   });
