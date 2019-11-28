@@ -9,11 +9,12 @@ export class GroupsDAL extends BaseDAL {
   private setGroups(groups: IGroup[]): void {
     this.electronStore.set("groups", groups);
   }
-  public addGroup(newGroup: INewGroup): void {
+  public findGroup(searchGroup: IGroup): boolean {
     const groups: IGroup[] = this.getGroups();
-    const group: IGroup = { ...{ id: this.assignId() }, ...newGroup };
-    groups.push(group);
-    this.setGroups(groups);
+    const requestedGroup: IGroup = groups.find((group: IGroup) => {
+      return group.id === searchGroup.id;
+    });
+    return requestedGroup !== undefined;
   }
   public getGroup(id: number): IGroup {
     const groups: IGroup[] = this.getGroups();
@@ -25,6 +26,12 @@ export class GroupsDAL extends BaseDAL {
     } else {
       throw new Error("Could not find matching Group ID.");
     }
+  }
+  public addGroup(newGroup: INewGroup): void {
+    const groups: IGroup[] = this.getGroups();
+    const group: IGroup = { ...{ id: this.assignId() }, ...newGroup };
+    groups.push(group);
+    this.setGroups(groups);
   }
   public updateGroup(updatedGroup: IGroup): void {
     const groups: IGroup[] = this.getGroups();
