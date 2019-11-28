@@ -1,3 +1,4 @@
+import _ = require("lodash");
 import { IGroup, INewGroup } from "../../models/Group";
 import { BaseDAL } from "./BaseDAL";
 import { PacksDAL } from "./PacksDAL";
@@ -12,7 +13,7 @@ export class GroupsDAL extends BaseDAL {
   public findGroup(searchGroup: IGroup): boolean {
     const groups: IGroup[] = this.getGroups();
     const requestedGroup: IGroup = groups.find((group: IGroup) => {
-      return group.id === searchGroup.id;
+      return _.isEqual(group, searchGroup);
     });
     return requestedGroup !== undefined;
   }
@@ -46,10 +47,9 @@ export class GroupsDAL extends BaseDAL {
     }
   }
   public removeGroup(removalGroup: IGroup): void {
-    // TODO: check that all removal group props are equal to group props
     const groups: IGroup[] = this.getGroups();
     const removeIndex: number = groups.findIndex((group: IGroup) => {
-      return group.id === removalGroup.id;
+      return _.isEqual(group, removalGroup);
     });
     if (removeIndex !== -1) {
       new PacksDAL(this.electronStore).removeGroupPacks(removalGroup);

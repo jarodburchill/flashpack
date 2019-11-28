@@ -1,3 +1,4 @@
+import _ = require("lodash");
 import { IGroup } from "src/models/Group";
 import { INewPack, IPack } from "../../models/Pack";
 import { BaseDAL } from "./BaseDAL";
@@ -40,7 +41,7 @@ export class PacksDAL extends BaseDAL {
   public findPack(searchPack: IPack): boolean {
     const packs: IPack[] = this.getPacks();
     const requestedPack: IPack = packs.find((pack: IPack) => {
-      return pack.id === searchPack.id;
+      return _.isEqual(pack, searchPack);
     });
     return requestedPack !== undefined;
   }
@@ -69,10 +70,10 @@ export class PacksDAL extends BaseDAL {
     }
   }
   public updatePack(updatedPack: IPack): void {
-    // TODO: check that readonly props haven't changed
     const packs: IPack[] = this.getPacks();
+    const readonlyProps: string[] = ["id", "groupId", "type"];
     const updateIndex: number = packs.findIndex((pack: IPack) => {
-      return pack.id === updatedPack.id;
+      return _.pick(pack, readonlyProps) === _.pick(updatedPack, readonlyProps);
     });
     if (updateIndex !== -1) {
       packs[updateIndex] = updatedPack;
@@ -82,10 +83,9 @@ export class PacksDAL extends BaseDAL {
     }
   }
   public removePack(removalPack: IPack): void {
-    // TODO: check that all removal pack props are equal to pack props
     const packs: IPack[] = this.getPacks();
     const removeIndex: number = packs.findIndex((pack: IPack) => {
-      return pack.id === removalPack.id;
+      return _.isEqual(pack, removalPack);
     });
     if (removeIndex !== -1) {
       new CardsDAL(this.electronStore).removePackCards(removalPack);
