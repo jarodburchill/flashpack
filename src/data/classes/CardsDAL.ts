@@ -1,3 +1,4 @@
+import _ = require("lodash");
 import { IFlashcard, INewFlashcard } from "src/models/Flashcard";
 import { IPack } from "src/models/Pack";
 import { INewQuizcard, IQuizcard } from "src/models/Quizcard";
@@ -107,6 +108,21 @@ export class CardsDAL extends BaseDAL {
       }
     } else {
       throw new Error("Could not find matching Pack to add Cards to.");
+    }
+  }
+  public updateCard(updatedCard: Card): void {
+    // TODO: Do I have to validate Quizcard answers prop?
+    const cards: Card[] = this.getCards();
+    const readonlyProps: string[] = ["id", "packId", "type", "quizType"];
+    const updateIndex: number = cards.findIndex((card: Card) => {
+      return _.pick(card, readonlyProps) === _.pick(updatedCard, readonlyProps);
+    });
+    if (updateIndex !== -1) {
+      // TODO: is this the right way to do it (all 3 DALs)?
+      cards[updateIndex] = updatedCard;
+      this.setCards(cards);
+    } else {
+      throw new Error("Could not find matching Card to update.");
     }
   }
 }
