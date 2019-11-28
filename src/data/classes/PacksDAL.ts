@@ -82,13 +82,14 @@ export class PacksDAL extends BaseDAL {
     }
   }
   public removePack(removalPack: IPack): void {
+    // TODO: check that all removal pack props are equal to pack props
     const packs: IPack[] = this.getPacks();
     const removeIndex: number = packs.findIndex((pack: IPack) => {
       return pack.id === removalPack.id;
     });
     if (removeIndex !== -1) {
-      packs.splice(removeIndex, 1);
       new CardsDAL(this.electronStore).removePackCards(removalPack);
+      packs.splice(removeIndex, 1);
       this.setPacks(packs);
     } else {
       throw new Error("Could not find matching Pack to remove.");

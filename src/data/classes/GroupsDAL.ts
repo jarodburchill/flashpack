@@ -46,13 +46,14 @@ export class GroupsDAL extends BaseDAL {
     }
   }
   public removeGroup(removalGroup: IGroup): void {
+    // TODO: check that all removal group props are equal to group props
     const groups: IGroup[] = this.getGroups();
     const removeIndex: number = groups.findIndex((group: IGroup) => {
       return group.id === removalGroup.id;
     });
     if (removeIndex !== -1) {
-      groups.splice(removeIndex, 1);
       new PacksDAL(this.electronStore).removeGroupPacks(removalGroup);
+      groups.splice(removeIndex, 1);
       this.setGroups(groups);
     } else {
       throw new Error("Could not find matching Group to remove.");
