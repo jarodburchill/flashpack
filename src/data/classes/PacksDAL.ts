@@ -31,15 +31,6 @@ export class PacksDAL extends BaseDAL {
     });
     this.setPacks(remainingPacks);
   }
-  public addPack(group: IGroup, newPack: INewPack): void {
-    const packs: IPack[] = this.getPacks();
-    const pack: IPack = {
-      ...{ id: this.assignId(), groupId: group.id },
-      ...newPack,
-    };
-    packs.push(pack);
-    this.setPacks(packs);
-  }
   public findPack(searchPack: IPack): boolean {
     const packs: IPack[] = this.getPacks();
     const requestedPack: IPack = packs.find((pack: IPack) => {
@@ -57,6 +48,15 @@ export class PacksDAL extends BaseDAL {
     } else {
       throw new Error("Could not find matching Pack ID.");
     }
+  }
+  public addPack(group: IGroup, newPack: INewPack): void {
+    const packs: IPack[] = this.getPacks();
+    const pack: IPack = {
+      ...{ id: this.assignId(), groupId: group.id },
+      ...newPack,
+    };
+    packs.push(pack);
+    this.setPacks(packs);
   }
   public updatePack(updatedPack: IPack): void {
     const packs: IPack[] = this.getPacks();
