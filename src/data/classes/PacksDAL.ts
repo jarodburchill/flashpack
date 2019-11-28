@@ -40,6 +40,13 @@ export class PacksDAL extends BaseDAL {
     packs.push(pack);
     this.setPacks(packs);
   }
+  public findPack(searchPack: IPack): boolean {
+    const packs: IPack[] = this.getPacks();
+    const requestedPack: IPack = packs.find((pack: IPack) => {
+      return pack.id === searchPack.id;
+    });
+    return requestedPack !== undefined;
+  }
   public getPack(id: number): IPack {
     const packs: IPack[] = this.getPacks();
     const requestedPack: IPack = packs.find((pack: IPack) => {
