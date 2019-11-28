@@ -1,5 +1,6 @@
 export interface INewQuizcard {
-  readonly type: "mc" | "tf" | "chk" | "blanks";
+  readonly type: "quiz";
+  readonly quizType: "mc" | "tf" | "chk" | "blanks";
   question: string;
   answers: {
     text: string;
