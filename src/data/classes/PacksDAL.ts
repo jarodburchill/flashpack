@@ -20,7 +20,6 @@ export class PacksDAL extends BaseDAL {
   }
   public removeGroupPacks(group: IGroup): void {
     // TODO: handle group not found
-    // TODO: move to GroupsDAL remove function
     const packs: IPack[] = this.getPacks();
     const remainingPacks: IPack[] = packs.filter((pack: IPack) => {
       if (pack.groupId !== group.id) {
@@ -50,6 +49,7 @@ export class PacksDAL extends BaseDAL {
     }
   }
   public addPack(group: IGroup, newPack: INewPack): void {
+    // TODO: handle group not found
     const packs: IPack[] = this.getPacks();
     const pack: IPack = {
       ...{ id: this.assignId(), groupId: group.id },
