@@ -2,6 +2,7 @@ import { IGroup } from "src/models/Group";
 import { INewPack, IPack } from "../../models/Pack";
 import { BaseDAL } from "./BaseDAL";
 import { CardsDAL } from "./CardsDAL";
+import { GroupsDAL } from "./GroupsDAL";
 
 export class PacksDAL extends BaseDAL {
   private getPacks(): IPack[] {
@@ -11,24 +12,30 @@ export class PacksDAL extends BaseDAL {
     this.electronStore.set("packs", packs);
   }
   public getGroupPacks(group: IGroup): IPack[] {
-    // TODO: handle group not found
-    const packs: IPack[] = this.getPacks();
-    const groupPacks: IPack[] = packs.filter((pack: IPack) => {
-      return pack.groupId === group.id;
-    });
-    return groupPacks;
+    if (new GroupsDAL(this.electronStore).findGroup(group)) {
+      const packs: IPack[] = this.getPacks();
+      const groupPacks: IPack[] = packs.filter((pack: IPack) => {
+        return pack.groupId === group.id;
+      });
+      return groupPacks;
+    } else {
+      throw new Error("Could not find matching Group to get Packs from.");
+    }
   }
   public removeGroupPacks(group: IGroup): void {
-    // TODO: handle group not found
-    const packs: IPack[] = this.getPacks();
-    const remainingPacks: IPack[] = packs.filter((pack: IPack) => {
-      if (pack.groupId !== group.id) {
-        return pack;
-      } else {
-        new CardsDAL(this.electronStore).removePackCards(pack);
-      }
-    });
-    this.setPacks(remainingPacks);
+    if (new GroupsDAL(this.electronStore).findGroup(group)) {
+      const packs: IPack[] = this.getPacks();
+      const remainingPacks: IPack[] = packs.filter((pack: IPack) => {
+        if (pack.groupId !== group.id) {
+          return pack;
+        } else {
+          new CardsDAL(this.electronStore).removePackCards(pack);
+        }
+      });
+      this.setPacks(remainingPacks);
+    } else {
+      throw new Error("Could not find matching Group to remove Packs from.");
+    }
   }
   public findPack(searchPack: IPack): boolean {
     const packs: IPack[] = this.getPacks();
@@ -49,16 +56,20 @@ export class PacksDAL extends BaseDAL {
     }
   }
   public addPack(group: IGroup, newPack: INewPack): void {
-    // TODO: handle group not found
-    const packs: IPack[] = this.getPacks();
-    const pack: IPack = {
-      ...{ id: this.assignId(), groupId: group.id },
-      ...newPack,
-    };
-    packs.push(pack);
-    this.setPacks(packs);
+    if (new GroupsDAL(this.electronStore).findGroup(group)) {
+      const packs: IPack[] = this.getPacks();
+      const pack: IPack = {
+        ...{ id: this.assignId(), groupId: group.id },
+        ...newPack,
+      };
+      packs.push(pack);
+      this.setPacks(packs);
+    } else {
+      throw new Error("Could not find matching Group to add Pack to.");
+    }
   }
   public updatePack(updatedPack: IPack): void {
+    // TODO: check that readonly props haven't changed
     const packs: IPack[] = this.getPacks();
     const updateIndex: number = packs.findIndex((pack: IPack) => {
       return pack.id === updatedPack.id;
