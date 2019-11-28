@@ -54,6 +54,24 @@ export class CardsDAL extends BaseDAL {
       throw new Error("Could not find matching Pack to remove Cards from.");
     }
   }
+  public findCard(searchCard: Card): boolean {
+    const cards: Card[] = this.getCards();
+    const requestedCard: Card = cards.find((card: Card) => {
+      return card.id === searchCard.id;
+    });
+    return requestedCard !== undefined;
+  }
+  private getCard<T extends Card>(id: number): T {
+    const cards: Card[] = this.getCards();
+    const requestedCard: Card = cards.find((card: Card) => {
+      return card.id === id;
+    });
+    if (requestedCard !== undefined) {
+      return requestedCard as T;
+    } else {
+      throw new Error("Could not find matching Card ID.");
+    }
+  }
   public addCard(pack: IPack, newCard: NewCard): void {
     if (new PacksDAL(this.electronStore).findPack(pack)) {
       const cards: Card[] = this.getCards();
@@ -73,17 +91,6 @@ export class CardsDAL extends BaseDAL {
       }
     } else {
       throw new Error("Could not find matching Pack to add Cards to.");
-    }
-  }
-  private getCard<T extends Card>(id: number): T {
-    const cards: Card[] = this.getCards();
-    const requestedCard: Card = cards.find((card: Card) => {
-      return card.id === id;
-    });
-    if (requestedCard !== undefined) {
-      return requestedCard as T;
-    } else {
-      throw new Error("Could not find matching Card ID.");
     }
   }
   public getFlashcard(id: number): IFlashcard {
