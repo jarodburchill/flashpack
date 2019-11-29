@@ -90,7 +90,6 @@ export class CardsDAL extends BaseDAL {
     }
   }
   public addCard(pack: IPack, newCard: NewCard): void {
-    // TODO: Do I have to validate Quizcard answers prop?
     if (new PacksDAL(this.electronStore).findPack(pack)) {
       const cards: Card[] = this.getCards();
       const card: Card = {
@@ -115,14 +114,12 @@ export class CardsDAL extends BaseDAL {
     }
   }
   public updateCard(updatedCard: Card): void {
-    // TODO: Do I have to validate Quizcard answers prop?
     const cards: Card[] = this.getCards();
     const readonlyProps: string[] = ["id", "packId", "type", "quizType"];
     const updateIndex: number = cards.findIndex((card: Card) => {
       return _.pick(card, readonlyProps) === _.pick(updatedCard, readonlyProps);
     });
     if (updateIndex !== -1) {
-      // TODO: is this the right way to do it (all 3 DALs)?
       cards[updateIndex] = updatedCard;
       this.setCards(cards);
     } else {
