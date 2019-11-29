@@ -22,10 +22,29 @@ describe("getGroups", () => {
   });
 });
 
-describe("findGroup", () => {});
+describe("findGroup", () => {
+  it("finds the given group in an existing groups array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    const group: IGroup = { id: 1, name: "Math" };
+    expect(groupsDAL.findGroup(group)).toBe(true);
+  });
+  it("does not find a given group in an existing groups array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    const group: IGroup = { id: 3, name: "Does Not Exist" };
+    expect(groupsDAL.findGroup(group)).toBe(false);
+  });
+  it("given group id exists but is not exactly equal to the group in storage", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    const group: IGroup = { id: 2, name: "Wrong Name" };
+    expect(groupsDAL.findGroup(group)).toBe(false);
+  });
+});
 
 describe("getGroup", () => {
-  it("gets a specified group from a given groups array", () => {
+  it("gets a specified group from an existing groups array", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     expect(groupsDAL.getGroup(1)).toEqual({ id: 1, name: "Math" });
