@@ -52,11 +52,9 @@ describe("getGroup", () => {
   it("throws an error when a specified group cannot be found", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    try {
+    expect(() => {
       groupsDAL.getGroup(1);
-    } catch (error) {
-      expect(error).toEqual(new Error("Could not find matching Group ID."));
-    }
+    }).toThrow(new Error("Could not find matching Group ID."));
   });
 });
 
@@ -115,13 +113,10 @@ describe("updateGroup", () => {
   it("throws an error when attempting to update a non-existing group", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    try {
-      groupsDAL.updateGroup({ id: 1, name: "Does not exist" });
-    } catch (error) {
-      expect(error).toEqual(
-        new Error("Could not find matching Group to update.")
-      );
-    }
+    const group: IGroup = { id: 1, name: "Does not exist" };
+    expect(() => {
+      groupsDAL.updateGroup(group);
+    }).toThrow(new Error("Could not find matching Group to update."));
   });
 });
 
@@ -144,25 +139,22 @@ describe("removeGroup", () => {
     ]);
   });
   it("throws an error when attempting to remove an existing group with modified values", () => {
-    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    try {
-      groupsDAL.removeGroup({ id: 1, name: "Wrong name" });
-    } catch (error) {
-      expect(error).toEqual(
-        new Error("Could not find matching Group to remove.")
-      );
-    }
+    const group: IGroup = { id: 1, name: "Wrong name" };
+    expect(() => {
+      groupsDAL.removeGroup(group);
+    }).toThrow(new Error("Could not find matching Group to remove."));
   });
   it("throws an error when attempting to remove a non-existing group", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    try {
-      groupsDAL.removeGroup({ id: 1, name: "Does not exist" });
-    } catch (error) {
-      expect(error).toEqual(
-        new Error("Could not find matching Group to remove.")
-      );
-    }
+    const group: IGroup = { id: 1, name: "Does not exist" };
+    expect(() => {
+      groupsDAL.removeGroup(group);
+    }).toThrow(new Error("Could not find matching Group to remove."));
   });
 });
+// TODO:
+// change test data and refactor
+// re evaluate coverage for this file
