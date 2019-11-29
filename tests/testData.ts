@@ -6,11 +6,11 @@ jest.mock("electron-store");
 export const getEmptyStore: () => ElectronStore<ISchema> = () => {
   return new ElectronStore<ISchema>({
     defaults: {
-      cards: [],
       darkMode: false,
-      groups: [],
       nextId: 1,
+      groups: [],
       packs: [],
+      cards: [],
     },
   });
 };
@@ -18,13 +18,12 @@ export const getEmptyStore: () => ElectronStore<ISchema> = () => {
 export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
   return new ElectronStore<ISchema>({
     defaults: {
-      cards: [],
       darkMode: false,
+      nextId: 6,
       groups: [
         { id: 1, name: "Math" },
         { id: 2, name: "Science" },
       ],
-      nextId: 6,
       packs: [
         {
           id: 3,
@@ -51,6 +50,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           liveResults: false,
         },
       ],
+      cards: [],
     },
   });
 };

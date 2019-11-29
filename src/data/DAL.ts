@@ -13,11 +13,11 @@ export class DAL {
   constructor() {
     const electronStore: ElectronStore<ISchema> = new ElectronStore<ISchema>({
       defaults: {
-        cards: [],
         darkMode: false,
-        groups: [],
         nextId: 1,
+        groups: [],
         packs: [],
+        cards: [],
       },
     });
     this.darkMode = new DarkModeDAL(electronStore);
