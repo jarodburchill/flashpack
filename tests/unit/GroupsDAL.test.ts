@@ -143,7 +143,17 @@ describe("removeGroup", () => {
       },
     ]);
   });
-  it("throws an error when attempting to remove an existing group with modified values", () => {});
+  it("throws an error when attempting to remove an existing group with modified values", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    try {
+      groupsDAL.removeGroup({ id: 1, name: "Wrong name" });
+    } catch (error) {
+      expect(error).toEqual(
+        new Error("Could not find matching Group to remove.")
+      );
+    }
+  });
   it("throws an error when attempting to remove a non-existing group", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
