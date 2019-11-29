@@ -32,13 +32,13 @@ describe("findGroup", () => {
   it("does not find a given group in an existing groups array", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    const group: IGroup = { id: 3, name: "Does Not Exist" };
+    const group: IGroup = { id: 3, name: "Does not exist" };
     expect(groupsDAL.findGroup(group)).toBe(false);
   });
   it("given group id exists but is not exactly equal to the group in storage", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    const group: IGroup = { id: 2, name: "Wrong Name" };
+    const group: IGroup = { id: 2, name: "Wrong name" };
     expect(groupsDAL.findGroup(group)).toBe(false);
   });
 });
