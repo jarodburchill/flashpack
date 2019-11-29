@@ -2,60 +2,9 @@ import ElectronStore = require("electron-store");
 import { GroupsDAL } from "../../src/data/classes/GroupsDAL";
 import { IGroup } from "../../src/models/Group";
 import { ISchema } from "../../src/models/Schema";
+import { getEmptyStore, getPopulatedStore } from "../testData";
 
 jest.mock("electron-store");
-
-const getEmptyStore: () => ElectronStore<ISchema> = () => {
-  return new ElectronStore<ISchema>({
-    defaults: {
-      cards: [],
-      darkMode: false,
-      groups: [],
-      nextId: 1,
-      packs: [],
-    },
-  });
-};
-
-const getPopulatedStore: () => ElectronStore<ISchema> = () => {
-  return new ElectronStore<ISchema>({
-    defaults: {
-      cards: [],
-      darkMode: false,
-      groups: [
-        { id: 1, name: "Math" },
-        { id: 2, name: "Science" },
-      ],
-      nextId: 6,
-      packs: [
-        {
-          id: 3,
-          groupId: 1,
-          name: "Unit 1",
-          type: "flash",
-          timed: false,
-          liveResults: false,
-        },
-        {
-          id: 4,
-          groupId: 1,
-          name: "Unit 2",
-          type: "flash",
-          timed: false,
-          liveResults: false,
-        },
-        {
-          id: 5,
-          groupId: 2,
-          name: "Semester 1",
-          type: "quiz",
-          timed: true,
-          liveResults: false,
-        },
-      ],
-    },
-  });
-};
 
 describe("getGroups", () => {
   it("gets an empty groups array", () => {
@@ -70,6 +19,25 @@ describe("getGroups", () => {
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
     ]);
+  });
+});
+
+describe("findGroup", () => {});
+
+describe("getGroup", () => {
+  it("gets a specified group from a given groups array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    expect(groupsDAL.getGroup(1)).toEqual({ id: 1, name: "Math" });
+  });
+  it("throws an error when a specified group cannot be found", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    try {
+      groupsDAL.getGroup(1);
+    } catch (error) {
+      expect(error).toEqual(new Error("Could not find matching Group ID."));
+    }
   });
 });
 
@@ -99,23 +67,6 @@ describe("addGroup", () => {
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
     ]);
-  });
-});
-
-describe("getGroup", () => {
-  it("gets a specified group from a given groups array", () => {
-    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
-    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    expect(groupsDAL.getGroup(1)).toEqual({ id: 1, name: "Math" });
-  });
-  it("throws an error when a specified group cannot be found", () => {
-    const electronStore: ElectronStore<ISchema> = getEmptyStore();
-    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    try {
-      groupsDAL.getGroup(1);
-    } catch (error) {
-      expect(error).toEqual(new Error("Could not find matching Group ID."));
-    }
   });
 });
 
@@ -156,7 +107,7 @@ describe("updateGroup", () => {
 });
 
 describe("removeGroup", () => {
-  it("works", () => {
+  it("removes existing group and all associated packs and cards", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     const group: IGroup = electronStore.store.groups[0];
@@ -173,7 +124,8 @@ describe("removeGroup", () => {
       },
     ]);
   });
-  it("throws an error when attempting to delete a non-existing group", () => {
+  it("throws an error when attempting to remove an existing group with modified values", () => {});
+  it("throws an error when attempting to remove a non-existing group", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     try {
