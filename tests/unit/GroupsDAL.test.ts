@@ -18,6 +18,7 @@ describe("getGroups", () => {
     expect(groupsDAL.getGroups()).toEqual([
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
+      { id: 3, name: "Art" },
     ]);
   });
 });
@@ -32,7 +33,7 @@ describe("findGroup", () => {
   it("does not find a given group in an existing groups array", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    const group: IGroup = { id: 3, name: "Does not exist" };
+    const group: IGroup = { id: 4, name: "Does not exist" };
     expect(groupsDAL.findGroup(group)).toBe(false);
   });
   it("given group id exists but is not exactly equal to the group in storage", () => {
@@ -72,7 +73,8 @@ describe("addGroup", () => {
     expect(electronStore.store.groups).toEqual([
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
-      { id: 12, name: "Web Development" },
+      { id: 3, name: "Art" },
+      { id: 13, name: "Web Development" },
     ]);
   });
   it("auto increments next id upon adding a group", () => {
@@ -96,7 +98,7 @@ describe("updateGroup", () => {
     groupsDAL.updateGroup(group);
     expect(electronStore.store.groups[0]).toEqual({ id: 1, name: "Updated" });
   });
-  it("updates the name of the both groups in an existing groups array", () => {
+  it("updates the name of the multiple groups in an existing groups array", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     const first: IGroup = electronStore.store.groups[0];
@@ -108,6 +110,7 @@ describe("updateGroup", () => {
     expect(electronStore.store.groups).toEqual([
       { id: 1, name: "Update" },
       { id: 2, name: "Next Update" },
+      { id: 3, name: "Art" },
     ]);
   });
   it("throws an error when attempting to update a non-existing group", () => {
@@ -126,10 +129,13 @@ describe("removeGroup", () => {
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     const group: IGroup = electronStore.store.groups[1];
     groupsDAL.removeGroup(group);
-    expect(electronStore.store.groups).toEqual([{ id: 1, name: "Math" }]);
+    expect(electronStore.store.groups).toEqual([
+      { id: 1, name: "Math" },
+      { id: 3, name: "Art" },
+    ]);
     expect(electronStore.store.packs).toEqual([
       {
-        id: 3,
+        id: 4,
         groupId: 1,
         name: "Unit 1",
         type: "flash",
@@ -137,7 +143,7 @@ describe("removeGroup", () => {
         liveResults: false,
       },
       {
-        id: 4,
+        id: 5,
         groupId: 1,
         name: "Unit 2",
         type: "flash",
@@ -147,16 +153,16 @@ describe("removeGroup", () => {
     ]);
     expect(electronStore.store.cards).toEqual([
       {
-        id: 6,
-        packId: 3,
+        id: 7,
+        packId: 4,
         type: "flash",
         term: "2 + 2",
         definition: "4",
         starred: false,
       },
       {
-        id: 7,
-        packId: 3,
+        id: 8,
+        packId: 4,
         type: "flash",
         term: "2 - 2",
         definition: "0",

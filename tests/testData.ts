@@ -19,14 +19,15 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
   return new ElectronStore<ISchema>({
     defaults: {
       darkMode: false,
-      nextId: 12,
+      nextId: 13,
       groups: [
         { id: 1, name: "Math" },
         { id: 2, name: "Science" },
+        { id: 3, name: "Art" },
       ],
       packs: [
         {
-          id: 3,
+          id: 4,
           groupId: 1,
           name: "Unit 1",
           type: "flash",
@@ -34,7 +35,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           liveResults: false,
         },
         {
-          id: 4,
+          id: 5,
           groupId: 1,
           name: "Unit 2",
           type: "flash",
@@ -42,7 +43,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           liveResults: false,
         },
         {
-          id: 5,
+          id: 6,
           groupId: 2,
           name: "Semester 1",
           type: "quiz",
@@ -52,24 +53,24 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
       ],
       cards: [
         {
-          id: 6,
-          packId: 3,
+          id: 7,
+          packId: 4,
           type: "flash",
           term: "2 + 2",
           definition: "4",
           starred: false,
         },
         {
-          id: 7,
-          packId: 3,
+          id: 8,
+          packId: 4,
           type: "flash",
           term: "2 - 2",
           definition: "0",
           starred: true,
         },
         {
-          id: 8,
-          packId: 5,
+          id: 9,
+          packId: 6,
           type: "quiz",
           quizType: "mc",
           question: "what is the symbol for water?",
@@ -82,8 +83,8 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           starred: false,
         },
         {
-          id: 9,
-          packId: 5,
+          id: 10,
+          packId: 6,
           type: "quiz",
           quizType: "tf",
           question: "water boils at 100 degrees celsius.",
@@ -94,8 +95,8 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           starred: true,
         },
         {
-          id: 10,
-          packId: 5,
+          id: 11,
+          packId: 6,
           type: "quiz",
           quizType: "chk",
           question: "which of the following are states of matter.",
@@ -109,8 +110,8 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           starred: false,
         },
         {
-          id: 11,
-          packId: 5,
+          id: 12,
+          packId: 6,
           type: "quiz",
           quizType: "blanks",
           question: "$_$ is the study of the natural $_$.",
