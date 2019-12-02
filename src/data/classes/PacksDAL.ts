@@ -68,20 +68,23 @@ export class PacksDAL extends BaseDAL {
       throw new Error("Could not find matching Pack to update.");
     }
   }
+  private removePackCards(pack: IPack): void {
+    const cardsDAL: CardsDAL = new CardsDAL(this.electronStore);
+    const cards: Card[] = cardsDAL.getCards();
+    const removalCards: Card[] = cards.filter((card: Card) => {
+      return card.packId === pack.id;
+    });
+    removalCards.forEach((card: Card) => {
+      cardsDAL.removeCard(card);
+    });
+  }
   public removePack(removalPack: IPack): void {
     const packs: IPack[] = this.getPacks();
     const removeIndex: number = packs.findIndex((pack: IPack) => {
       return _.isEqual(pack, removalPack);
     });
     if (removeIndex !== -1) {
-      const cardsDAL: CardsDAL = new CardsDAL(this.electronStore);
-      const cards: Card[] = cardsDAL.getCards();
-      const removalCards: Card[] = cards.filter((card: Card) => {
-        return card.packId === removalPack.id;
-      });
-      removalCards.forEach((card: Card) => {
-        cardsDAL.removeCard(card);
-      });
+      this.removePackCards(removalPack);
       packs.splice(removeIndex, 1);
       this.setPacks(packs);
     } else {

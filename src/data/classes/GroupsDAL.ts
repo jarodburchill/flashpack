@@ -47,20 +47,23 @@ export class GroupsDAL extends BaseDAL {
       throw new Error("Could not find matching Group to update.");
     }
   }
+  private removeGroupPacks(group: IGroup): void {
+    const packsDAL: PacksDAL = new PacksDAL(this.electronStore);
+    const packs: IPack[] = packsDAL.getPacks();
+    const removalPacks: IPack[] = packs.filter((pack: IPack) => {
+      return pack.groupId === group.id;
+    });
+    removalPacks.forEach((pack: IPack) => {
+      packsDAL.removePack(pack);
+    });
+  }
   public removeGroup(removalGroup: IGroup): void {
     const groups: IGroup[] = this.getGroups();
     const removeIndex: number = groups.findIndex((group: IGroup) => {
       return _.isEqual(group, removalGroup);
     });
     if (removeIndex !== -1) {
-      const packsDAL: PacksDAL = new PacksDAL(this.electronStore);
-      const packs: IPack[] = packsDAL.getPacks();
-      const removalPacks: IPack[] = packs.filter((pack: IPack) => {
-        return pack.groupId === removalGroup.id;
-      });
-      removalPacks.forEach((pack: IPack) => {
-        packsDAL.removePack(pack);
-      });
+      this.removeGroupPacks(removalGroup);
       groups.splice(removeIndex, 1);
       this.setGroups(groups);
     } else {
