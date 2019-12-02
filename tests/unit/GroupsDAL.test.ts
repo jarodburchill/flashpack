@@ -181,5 +181,3 @@ describe("removeGroup", () => {
     }).toThrow(new Error("Could not find matching Group to remove."));
   });
 });
-// TODO:
-// re evaluate coverage for this file
