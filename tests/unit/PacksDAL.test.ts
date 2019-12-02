@@ -134,3 +134,25 @@ describe("findPack", () => {
     expect(groupsDAL.findPack(pack)).toBe(false);
   });
 });
+
+describe("getPack", () => {
+  it("gets a specified pack from an existing packs array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
+    expect(groupsDAL.getPack(4)).toEqual({
+      id: 4,
+      groupId: 1,
+      name: "Unit 1",
+      type: "flash",
+      timed: false,
+      liveResults: false,
+    });
+  });
+  it("throws an error when a specified pack cannot be found", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
+    expect(() => {
+      groupsDAL.getPack(4);
+    }).toThrow(new Error("Could not find matching Pack ID."));
+  });
+});
