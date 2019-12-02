@@ -1,12 +1,13 @@
 import _ = require("lodash");
 import { IGroup } from "src/models/Group";
+import { Card } from "src/models/Schema";
 import { INewPack, IPack } from "../../models/Pack";
 import { BaseDAL } from "./BaseDAL";
 import { CardsDAL } from "./CardsDAL";
 import { GroupsDAL } from "./GroupsDAL";
 
 export class PacksDAL extends BaseDAL {
-  private getPacks(): IPack[] {
+  public getPacks(): IPack[] {
     return this.electronStore.get("packs");
   }
   private setPacks(packs: IPack[]): void {
@@ -21,21 +22,6 @@ export class PacksDAL extends BaseDAL {
       return groupPacks;
     } else {
       throw new Error("Could not find matching Group to get Packs from.");
-    }
-  }
-  public removeGroupPacks(group: IGroup): void {
-    if (new GroupsDAL(this.electronStore).findGroup(group)) {
-      const packs: IPack[] = this.getPacks();
-      const remainingPacks: IPack[] = packs.filter((pack: IPack) => {
-        if (pack.groupId !== group.id) {
-          return pack;
-        } else {
-          new CardsDAL(this.electronStore).removePackCards(pack);
-        }
-      });
-      this.setPacks(remainingPacks);
-    } else {
-      throw new Error("Could not find matching Group to remove Packs from.");
     }
   }
   public findPack(searchPack: IPack): boolean {
@@ -88,7 +74,14 @@ export class PacksDAL extends BaseDAL {
       return _.isEqual(pack, removalPack);
     });
     if (removeIndex !== -1) {
-      new CardsDAL(this.electronStore).removePackCards(removalPack);
+      const cardsDAL: CardsDAL = new CardsDAL(this.electronStore);
+      const cards: Card[] = cardsDAL.getCards();
+      const removalCards: Card[] = cards.filter((card: Card) => {
+        return card.packId === removalPack.id;
+      });
+      removalCards.forEach((card: Card) => {
+        cardsDAL.removeCard(card);
+      });
       packs.splice(removeIndex, 1);
       this.setPacks(packs);
     } else {

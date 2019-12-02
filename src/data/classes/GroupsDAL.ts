@@ -1,4 +1,5 @@
 import _ = require("lodash");
+import { IPack } from "src/models/Pack";
 import { IGroup, INewGroup } from "../../models/Group";
 import { BaseDAL } from "./BaseDAL";
 import { PacksDAL } from "./PacksDAL";
@@ -52,7 +53,14 @@ export class GroupsDAL extends BaseDAL {
       return _.isEqual(group, removalGroup);
     });
     if (removeIndex !== -1) {
-      new PacksDAL(this.electronStore).removeGroupPacks(removalGroup);
+      const packsDAL: PacksDAL = new PacksDAL(this.electronStore);
+      const packs: IPack[] = packsDAL.getPacks();
+      const removalPacks: IPack[] = packs.filter((pack: IPack) => {
+        return pack.groupId === removalGroup.id;
+      });
+      removalPacks.forEach((pack: IPack) => {
+        packsDAL.removePack(pack);
+      });
       groups.splice(removeIndex, 1);
       this.setGroups(groups);
     } else {

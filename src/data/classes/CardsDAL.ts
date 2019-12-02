@@ -2,14 +2,12 @@ import _ = require("lodash");
 import { IFlashcard, INewFlashcard } from "src/models/Flashcard";
 import { IPack } from "src/models/Pack";
 import { INewQuizcard, IQuizcard } from "src/models/Quizcard";
+import { Card } from "src/models/Schema";
 import { BaseDAL } from "./BaseDAL";
 import { PacksDAL } from "./PacksDAL";
 
-type Card = IFlashcard | IQuizcard;
-type NewCard = INewFlashcard | INewQuizcard;
-
 export class CardsDAL extends BaseDAL {
-  private getCards(): Card[] {
+  public getCards(): Card[] {
     return this.electronStore.get("cards");
   }
   private setCards(cards: Card[]): void {
@@ -42,17 +40,6 @@ export class CardsDAL extends BaseDAL {
       throw new Error(
         "Pack was found, but it is a Falshcard Pack, not a Quizcard Pack."
       );
-    }
-  }
-  public removePackCards(pack: IPack): void {
-    if (new PacksDAL(this.electronStore).findPack(pack)) {
-      const cards: Card[] = this.getCards();
-      const remainingCards: Card[] = cards.filter((card: Card) => {
-        return card.packId !== pack.id;
-      });
-      this.setCards(remainingCards);
-    } else {
-      throw new Error("Could not find matching Pack to remove Cards from.");
     }
   }
   public findCard(searchCard: Card): boolean {
@@ -89,7 +76,7 @@ export class CardsDAL extends BaseDAL {
       throw new Error("Card was found, but it is a Falshcard, not a Quizcard.");
     }
   }
-  public addCard(pack: IPack, newCard: NewCard): void {
+  public addCard(pack: IPack, newCard: INewFlashcard | INewQuizcard): void {
     if (new PacksDAL(this.electronStore).findPack(pack)) {
       const cards: Card[] = this.getCards();
       const card: Card = {
