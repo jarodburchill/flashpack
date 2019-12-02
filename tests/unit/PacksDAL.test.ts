@@ -8,7 +8,7 @@ import { getEmptyStore, getPopulatedStore } from "../testData";
 jest.mock("electron-store");
 
 describe("getPacks", () => {
-  it("gets an empty packss array", () => {
+  it("gets an empty packs array", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const packsDAL: PacksDAL = new PacksDAL(electronStore);
     expect(packsDAL.getPacks()).toEqual([]);
@@ -90,5 +90,47 @@ describe("getGroupPacks", () => {
     expect(() => {
       packsDAL.getGroupPacks(group);
     }).toThrow(new Error("Could not find matching Group to get Packs from."));
+  });
+});
+
+describe("findPack", () => {
+  it("finds the given pack in an existing packs array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = {
+      id: 4,
+      groupId: 1,
+      name: "Unit 1",
+      type: "flash",
+      timed: false,
+      liveResults: false,
+    };
+    expect(groupsDAL.findPack(pack)).toBe(true);
+  });
+  it("does not find a given pack in an existing packs array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = {
+      id: 20,
+      groupId: 1,
+      name: "Does not exist",
+      type: "flash",
+      timed: false,
+      liveResults: false,
+    };
+    expect(groupsDAL.findPack(pack)).toBe(false);
+  });
+  it("given pack id exists but is not exactly equal to the pack in storage", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = {
+      id: 4,
+      groupId: 1,
+      name: "Wrong name",
+      type: "flash",
+      timed: true,
+      liveResults: false,
+    };
+    expect(groupsDAL.findPack(pack)).toBe(false);
   });
 });
