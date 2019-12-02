@@ -7,6 +7,44 @@ import { getEmptyStore, getPopulatedStore } from "../testData";
 
 jest.mock("electron-store");
 
+describe("getPacks", () => {
+  it("gets an empty packss array", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    expect(packsDAL.getPacks()).toEqual([]);
+  });
+  it("gets a given packs array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    expect(packsDAL.getPacks()).toEqual([
+      {
+        id: 4,
+        groupId: 1,
+        name: "Unit 1",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 5,
+        groupId: 1,
+        name: "Unit 2",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 6,
+        groupId: 2,
+        name: "Semester 1",
+        type: "quiz",
+        timed: true,
+        liveResults: false,
+      },
+    ]);
+  });
+});
+
 describe("getGroupPacks", () => {
   it("gets an array of packs that belong to an existing group", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
