@@ -31,7 +31,7 @@ export class GroupsDAL extends BaseDAL {
   }
   public addGroup(newGroup: INewGroup): void {
     const groups: IGroup[] = this.getGroups();
-    const group: IGroup = { ...{ id: this.assignId() }, ...newGroup };
+    const group: IGroup = _.merge({ id: this.assignId() }, newGroup);
     groups.push(group);
     this.setGroups(groups);
   }

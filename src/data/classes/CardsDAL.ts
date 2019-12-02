@@ -79,13 +79,10 @@ export class CardsDAL extends BaseDAL {
   public addCard(pack: IPack, newCard: INewFlashcard | INewQuizcard): void {
     if (new PacksDAL(this.electronStore).findPack(pack)) {
       const cards: Card[] = this.getCards();
-      const card: Card = {
-        ...{
-          id: this.assignId(),
-          packId: pack.id,
-        },
-        ...newCard,
-      };
+      const card: Card = _.merge(
+        { id: this.assignId(), packId: pack.id },
+        newCard
+      );
       if (pack.type === card.type) {
         cards.push(card);
         this.setCards(cards);
