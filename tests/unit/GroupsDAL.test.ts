@@ -72,7 +72,7 @@ describe("addGroup", () => {
     expect(electronStore.store.groups).toEqual([
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
-      { id: 6, name: "Web Development" },
+      { id: 12, name: "Web Development" },
     ]);
   });
   it("auto increments next id upon adding a group", () => {
@@ -124,17 +124,43 @@ describe("removeGroup", () => {
   it("removes existing group and all associated packs and cards", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    const group: IGroup = electronStore.store.groups[0];
+    const group: IGroup = electronStore.store.groups[1];
     groupsDAL.removeGroup(group);
-    expect(electronStore.store.groups).toEqual([{ id: 2, name: "Science" }]);
+    expect(electronStore.store.groups).toEqual([{ id: 1, name: "Math" }]);
     expect(electronStore.store.packs).toEqual([
       {
-        id: 5,
-        groupId: 2,
-        name: "Semester 1",
-        type: "quiz",
-        timed: true,
+        id: 3,
+        groupId: 1,
+        name: "Unit 1",
+        type: "flash",
+        timed: false,
         liveResults: false,
+      },
+      {
+        id: 4,
+        groupId: 1,
+        name: "Unit 2",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+    ]);
+    expect(electronStore.store.cards).toEqual([
+      {
+        id: 6,
+        packId: 3,
+        type: "flash",
+        term: "2 + 2",
+        definition: "4",
+        starred: false,
+      },
+      {
+        id: 7,
+        packId: 3,
+        type: "flash",
+        term: "2 - 2",
+        definition: "0",
+        starred: true,
       },
     ]);
   });
@@ -156,5 +182,4 @@ describe("removeGroup", () => {
   });
 });
 // TODO:
-// change test data and refactor
 // re evaluate coverage for this file
