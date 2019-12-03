@@ -59,7 +59,10 @@ export class PacksDAL extends BaseDAL {
     const packs: IPack[] = this.getPacks();
     const readonlyProps: string[] = ["id", "groupId", "type"];
     const updateIndex: number = packs.findIndex((pack: IPack) => {
-      return _.pick(pack, readonlyProps) === _.pick(updatedPack, readonlyProps);
+      return _.isEqual(
+        _.pick(pack, readonlyProps),
+        _.pick(updatedPack, readonlyProps)
+      );
     });
     if (updateIndex !== -1) {
       packs[updateIndex] = updatedPack;

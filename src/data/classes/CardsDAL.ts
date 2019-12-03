@@ -101,7 +101,10 @@ export class CardsDAL extends BaseDAL {
     const cards: Card[] = this.getCards();
     const readonlyProps: string[] = ["id", "packId", "type", "quizType"];
     const updateIndex: number = cards.findIndex((card: Card) => {
-      return _.pick(card, readonlyProps) === _.pick(updatedCard, readonlyProps);
+      return _.isEqual(
+        _.pick(card, readonlyProps),
+        _.pick(updatedCard, readonlyProps)
+      );
     });
     if (updateIndex !== -1) {
       cards[updateIndex] = updatedCard;
