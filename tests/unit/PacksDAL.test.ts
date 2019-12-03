@@ -96,7 +96,7 @@ describe("getGroupPacks", () => {
 describe("findPack", () => {
   it("finds the given pack in an existing packs array", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
-    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
     const pack: IPack = {
       id: 4,
       groupId: 1,
@@ -105,11 +105,11 @@ describe("findPack", () => {
       timed: false,
       liveResults: false,
     };
-    expect(groupsDAL.findPack(pack)).toBe(true);
+    expect(packsDAL.findPack(pack)).toBe(true);
   });
   it("does not find a given pack in an existing packs array", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
-    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
     const pack: IPack = {
       id: 20,
       groupId: 1,
@@ -118,11 +118,11 @@ describe("findPack", () => {
       timed: false,
       liveResults: false,
     };
-    expect(groupsDAL.findPack(pack)).toBe(false);
+    expect(packsDAL.findPack(pack)).toBe(false);
   });
   it("given pack id exists but is not exactly equal to the pack in storage", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
-    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
     const pack: IPack = {
       id: 4,
       groupId: 1,
@@ -131,15 +131,15 @@ describe("findPack", () => {
       timed: true,
       liveResults: false,
     };
-    expect(groupsDAL.findPack(pack)).toBe(false);
+    expect(packsDAL.findPack(pack)).toBe(false);
   });
 });
 
 describe("getPack", () => {
   it("gets a specified pack from an existing packs array", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
-    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
-    expect(groupsDAL.getPack(4)).toEqual({
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    expect(packsDAL.getPack(4)).toEqual({
       id: 4,
       groupId: 1,
       name: "Unit 1",
@@ -150,9 +150,9 @@ describe("getPack", () => {
   });
   it("throws an error when a specified pack cannot be found", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
-    const groupsDAL: PacksDAL = new PacksDAL(electronStore);
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
     expect(() => {
-      groupsDAL.getPack(4);
+      packsDAL.getPack(4);
     }).toThrow(new Error("Could not find matching Pack ID."));
   });
 });
