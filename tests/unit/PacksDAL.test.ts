@@ -156,3 +156,123 @@ describe("getPack", () => {
     }).toThrow(new Error("Could not find matching Pack ID."));
   });
 });
+
+describe("addPack", () => {
+  it("adds a new pack to an existing group", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const group: IGroup = electronStore.store.groups[0];
+    packsDAL.addPack(group, {
+      name: "New pack",
+      type: "flash",
+      timed: false,
+      liveResults: false,
+    });
+    expect(electronStore.store.packs).toEqual([
+      {
+        id: 4,
+        groupId: 1,
+        name: "Unit 1",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 5,
+        groupId: 1,
+        name: "Unit 2",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 6,
+        groupId: 2,
+        name: "Semester 1",
+        type: "quiz",
+        timed: true,
+        liveResults: false,
+      },
+      {
+        id: 13,
+        groupId: 1,
+        name: "New pack",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+    ]);
+  });
+  it("throws an error when attempting to add a pack to a non existing group", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const group: IGroup = { id: 1, name: "Does not exist" };
+    expect(() => {
+      packsDAL.addPack(group, {
+        name: "New pack",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      });
+    }).toThrow(new Error("Could not find matching Group to add Pack to."));
+  });
+  it("auto increments next id upon adding a pack", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const group: IGroup = electronStore.store.groups[0];
+    packsDAL.addPack(group, {
+      name: "Pack 1",
+      type: "flash",
+      timed: false,
+      liveResults: false,
+    });
+    packsDAL.addPack(group, {
+      name: "Pack 2",
+      type: "quiz",
+      timed: true,
+      liveResults: false,
+    });
+    expect(electronStore.store.packs).toEqual([
+      {
+        id: 4,
+        groupId: 1,
+        name: "Unit 1",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 5,
+        groupId: 1,
+        name: "Unit 2",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 6,
+        groupId: 2,
+        name: "Semester 1",
+        type: "quiz",
+        timed: true,
+        liveResults: false,
+      },
+      {
+        id: 13,
+        groupId: 1,
+        name: "Pack 1",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 14,
+        groupId: 1,
+        name: "Pack 2",
+        type: "quiz",
+        timed: true,
+        liveResults: false,
+      },
+    ]);
+  });
+});
