@@ -276,3 +276,39 @@ describe("addPack", () => {
     ]);
   });
 });
+
+describe("updatePack", () => {
+  it("updates the name of the first pack in an existing packs array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = electronStore.store.packs[0];
+    pack.name = "Updated";
+    packsDAL.updatePack(pack);
+    expect(electronStore.store.packs).toEqual([
+      {
+        id: 4,
+        groupId: 1,
+        name: "Updated",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 5,
+        groupId: 1,
+        name: "Unit 2",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 6,
+        groupId: 2,
+        name: "Semester 1",
+        type: "quiz",
+        timed: true,
+        liveResults: false,
+      },
+    ]);
+  });
+});
