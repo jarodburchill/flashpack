@@ -9,5 +9,5 @@
     "moduleResolution": "node",
     "experimentalDecorators": true
   },
-  "include": ["src/**/*", "tests/stubs"]
+  "include": ["src/**/*", "global.d.ts"]
 }
