@@ -1,8 +1,8 @@
+import { Card } from "global";
 import _ = require("lodash");
 import { IFlashcard, INewFlashcard } from "src/models/Flashcard";
 import { IPack } from "src/models/Pack";
 import { INewQuizcard, IQuizcard } from "src/models/Quizcard";
-import { Card } from "src/models/Schema";
 import { BaseDAL } from "./BaseDAL";
 import { PacksDAL } from "./PacksDAL";
 

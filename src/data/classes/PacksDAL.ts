@@ -1,6 +1,6 @@
+import { Card } from "global";
 import _ = require("lodash");
 import { IGroup } from "src/models/Group";
-import { Card } from "src/models/Schema";
 import { INewPack, IPack } from "../../models/Pack";
 import { BaseDAL } from "./BaseDAL";
 import { CardsDAL } from "./CardsDAL";

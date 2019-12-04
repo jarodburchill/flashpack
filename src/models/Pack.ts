@@ -1,5 +1,7 @@
+import { PackType } from "global";
+
 export interface INewPack {
-  readonly type: "flash" | "quiz";
+  readonly type: PackType;
   name: string;
   timed: boolean;
   liveResults: boolean;
