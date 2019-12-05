@@ -39,7 +39,7 @@ export class GroupsDAL extends BaseDAL {
       groups.push(group);
       this.setGroups(groups);
     } else {
-      throw new Error(`Invalid Group:${Utilities.mapErrors(errors)}`);
+      throw new Error(`Invalid Group:${Utilities.mapErrorsToString(errors)}.`);
     }
   }
   public updateGroup(updatedGroup: IGroup): void {
@@ -56,7 +56,7 @@ export class GroupsDAL extends BaseDAL {
         throw new Error("Could not find matching Group to update.");
       }
     } else {
-      throw new Error(`Invalid Group:${Utilities.mapErrors(errors)}`);
+      throw new Error(`Invalid Group:${Utilities.mapErrorsToString(errors)}.`);
     }
   }
   private removeGroupPacks(group: IGroup): void {

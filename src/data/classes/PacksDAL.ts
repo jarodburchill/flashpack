@@ -56,7 +56,7 @@ export class PacksDAL extends BaseDAL {
         packs.push(pack);
         this.setPacks(packs);
       } else {
-        throw new Error(`Invalid Pack:${Utilities.mapErrors(errors)}`);
+        throw new Error(`Invalid Pack:${Utilities.mapErrorsToString(errors)}.`);
       }
     } else {
       throw new Error("Could not find matching Group to add Pack to.");
@@ -80,7 +80,7 @@ export class PacksDAL extends BaseDAL {
         throw new Error("Could not find matching Pack to update.");
       }
     } else {
-      throw new Error(`Invalid Pack:${Utilities.mapErrors(errors)}`);
+      throw new Error(`Invalid Pack:${Utilities.mapErrorsToString(errors)}.`);
     }
   }
   private removePackCards(pack: IPack): void {

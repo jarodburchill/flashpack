@@ -1,5 +1,5 @@
 export abstract class Utilities {
-  public static mapErrors(errors: string[]): string {
+  public static mapErrorsToString(errors: string[]): string {
     return `${errors.map((error: string) => {
       return `\n${error}`;
     })}`;
