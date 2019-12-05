@@ -87,6 +87,15 @@ describe("addGroup", () => {
       { id: 2, name: "Science" },
     ]);
   });
+  it("throws an error when group name is too short", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    expect(() => {
+      groupsDAL.addGroup({ name: "A" });
+    }).toThrow(
+      new Error("Invalid Group:\nName must be at least 2 characters.")
+    );
+  });
 });
 
 describe("updateGroup", () => {
@@ -120,6 +129,17 @@ describe("updateGroup", () => {
     expect(() => {
       groupsDAL.updateGroup(group);
     }).toThrow(new Error("Could not find matching Group to update."));
+  });
+  it("throws an error when group name is too short", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
+    const group: IGroup = electronStore.store.groups[0];
+    group.name = "A";
+    expect(() => {
+      groupsDAL.updateGroup(group);
+    }).toThrow(
+      new Error("Invalid Group:\nName must be at least 2 characters.")
+    );
   });
 });
 
