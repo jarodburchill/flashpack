@@ -8,7 +8,7 @@ enum PackType {
 }
 
 export abstract class Validation {
-  private static minNameLength: number = 5;
+  private static minNameLength: number = 2;
   public static isValidGroup(group: IGroup, errorsRef: string[]): boolean {
     if (!_.isEmpty(errorsRef)) {
       throw new Error(
@@ -25,7 +25,7 @@ export abstract class Validation {
       errorsRef.push("Name cannot be empty.");
     }
     if (group.name.length < this.minNameLength) {
-      errorsRef.push("Name must be at least 5 characters.");
+      errorsRef.push(`Name must be at least ${this.minNameLength} characters.`);
     }
     return _.isEmpty(errorsRef);
   }
@@ -56,7 +56,7 @@ export abstract class Validation {
       errorsRef.push("Name cannot be empty.");
     }
     if (pack.name.length < this.minNameLength) {
-      errorsRef.push("Name must be at least 5 characters.");
+      errorsRef.push(`Name must be at least ${this.minNameLength} characters.`);
     }
     if (!_.isBoolean(pack.timed)) {
       errorsRef.push("Timed must be a boolean.");
