@@ -203,19 +203,6 @@ describe("addPack", () => {
       },
     ]);
   });
-  it("throws an error when attempting to add a pack to a non existing group", () => {
-    const electronStore: ElectronStore<ISchema> = getEmptyStore();
-    const packsDAL: PacksDAL = new PacksDAL(electronStore);
-    const group: IGroup = { id: 1, name: "Does not exist" };
-    expect(() => {
-      packsDAL.addPack(group, {
-        name: "New pack",
-        type: "flash",
-        timed: false,
-        liveResults: false,
-      });
-    }).toThrow(new Error("Could not find matching Group to add Pack to."));
-  });
   it("auto increments next id upon adding a pack", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const packsDAL: PacksDAL = new PacksDAL(electronStore);
@@ -274,6 +261,38 @@ describe("addPack", () => {
         liveResults: false,
       },
     ]);
+  });
+  it("throws an error when pack name is too short and bool values are invalid", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const group: IGroup = electronStore.store.groups[0];
+    expect(() => {
+      packsDAL.addPack(group, {
+        name: "A",
+        type: "flash",
+        timed: true,
+        liveResults: true,
+      });
+    }).toThrow(
+      new Error(
+        "Invalid Pack:" +
+          "\nIf type is 'flash' then timed and liveResults must be false," +
+          "\nName must be at least 2 characters."
+      )
+    );
+  });
+  it("throws an error when attempting to add a pack to a non existing group", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const group: IGroup = { id: 1, name: "Does not exist" };
+    expect(() => {
+      packsDAL.addPack(group, {
+        name: "New pack",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      });
+    }).toThrow(new Error("Could not find matching Group to add Pack to."));
   });
 });
 
