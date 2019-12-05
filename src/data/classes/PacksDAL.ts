@@ -16,15 +16,14 @@ export class PacksDAL extends BaseDAL {
     this.electronStore.set("packs", packs);
   }
   public getGroupPacks(group: IGroup): IPack[] {
-    if (new GroupsDAL(this.electronStore).findGroup(group)) {
-      const packs: IPack[] = this.getPacks();
-      const groupPacks: IPack[] = packs.filter((pack: IPack) => {
-        return pack.groupId === group.id;
-      });
-      return groupPacks;
-    } else {
+    if (!new GroupsDAL(this.electronStore).findGroup(group)) {
       throw new Error("Could not find matching Group to get Packs from.");
     }
+    const packs: IPack[] = this.getPacks();
+    const groupPacks: IPack[] = packs.filter((pack: IPack) => {
+      return pack.groupId === group.id;
+    });
+    return groupPacks;
   }
   public findPack(searchPack: IPack): boolean {
     const packs: IPack[] = this.getPacks();
@@ -38,50 +37,45 @@ export class PacksDAL extends BaseDAL {
     const requestedPack: IPack = packs.find((pack: IPack) => {
       return pack.id === id;
     });
-    if (requestedPack !== undefined) {
-      return requestedPack;
-    } else {
+    if (requestedPack === undefined) {
       throw new Error("Could not find matching Pack ID.");
     }
+    return requestedPack;
   }
   public addPack(group: IGroup, newPack: INewPack): void {
-    if (new GroupsDAL(this.electronStore).findGroup(group)) {
-      const pack: IPack = _.merge(
-        { id: this.assignId(), groupId: group.id },
-        newPack
-      );
-      const errors: string[] = [];
-      if (Validation.isValidPack(pack, errors)) {
-        const packs: IPack[] = this.getPacks();
-        packs.push(pack);
-        this.setPacks(packs);
-      } else {
-        throw new Error(`Invalid Pack:${Utilities.mapErrorsToString(errors)}.`);
-      }
-    } else {
+    if (!new GroupsDAL(this.electronStore).findGroup(group)) {
       throw new Error("Could not find matching Group to add Pack to.");
     }
+    const errors: string[] = [];
+    const pack: IPack = _.merge(
+      { id: this.assignId(), groupId: group.id },
+      newPack
+    );
+    if (!Validation.isValidPack(pack, errors)) {
+      throw new Error(`Invalid Pack:${Utilities.mapErrorsToString(errors)}.`);
+    }
+    const packs: IPack[] = this.getPacks();
+    packs.push(pack);
+    this.setPacks(packs);
   }
   public updatePack(updatedPack: IPack): void {
     const errors: string[] = [];
-    if (Validation.isValidPack(updatedPack, errors)) {
-      const packs: IPack[] = this.getPacks();
-      const readonlyProps: string[] = ["id", "groupId", "type"];
-      const updateIndex: number = packs.findIndex((pack: IPack) => {
-        return _.isEqual(
-          _.pick(pack, readonlyProps),
-          _.pick(updatedPack, readonlyProps)
-        );
-      });
-      if (updateIndex !== -1) {
-        packs[updateIndex] = updatedPack;
-        this.setPacks(packs);
-      } else {
-        throw new Error("Could not find matching Pack to update.");
-      }
-    } else {
+    const packs: IPack[] = this.getPacks();
+    const readonlyProps: string[] = ["id", "groupId", "type"];
+    const updateIndex: number = packs.findIndex((pack: IPack) => {
+      return _.isEqual(
+        _.pick(pack, readonlyProps),
+        _.pick(updatedPack, readonlyProps)
+      );
+    });
+    if (updateIndex === -1) {
+      throw new Error("Could not find matching Pack to update.");
+    }
+    if (!Validation.isValidPack(updatedPack, errors)) {
       throw new Error(`Invalid Pack:${Utilities.mapErrorsToString(errors)}.`);
     }
+    packs[updateIndex] = updatedPack;
+    this.setPacks(packs);
   }
   private removePackCards(pack: IPack): void {
     const cardsDAL: CardsDAL = new CardsDAL(this.electronStore);
@@ -98,12 +92,11 @@ export class PacksDAL extends BaseDAL {
     const removeIndex: number = packs.findIndex((pack: IPack) => {
       return _.isEqual(pack, removalPack);
     });
-    if (removeIndex !== -1) {
-      this.removePackCards(removalPack);
-      packs.splice(removeIndex, 1);
-      this.setPacks(packs);
-    } else {
+    if (removeIndex === -1) {
       throw new Error("Could not find matching Pack to remove.");
     }
+    this.removePackCards(removalPack);
+    packs.splice(removeIndex, 1);
+    this.setPacks(packs);
   }
 }

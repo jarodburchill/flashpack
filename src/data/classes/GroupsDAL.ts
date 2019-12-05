@@ -25,39 +25,35 @@ export class GroupsDAL extends BaseDAL {
     const requestedGroup: IGroup = groups.find((group: IGroup) => {
       return group.id === id;
     });
-    if (requestedGroup !== undefined) {
-      return requestedGroup;
-    } else {
+    if (requestedGroup === undefined) {
       throw new Error("Could not find matching Group ID.");
     }
+    return requestedGroup;
   }
   public addGroup(newGroup: INewGroup): void {
-    const group: IGroup = _.merge({ id: this.assignId() }, newGroup);
     const errors: string[] = [];
-    if (Validation.isValidGroup(group, errors)) {
-      const groups: IGroup[] = this.getGroups();
-      groups.push(group);
-      this.setGroups(groups);
-    } else {
+    const group: IGroup = _.merge({ id: this.assignId() }, newGroup);
+    if (!Validation.isValidGroup(group, errors)) {
       throw new Error(`Invalid Group:${Utilities.mapErrorsToString(errors)}.`);
     }
+    const groups: IGroup[] = this.getGroups();
+    groups.push(group);
+    this.setGroups(groups);
   }
   public updateGroup(updatedGroup: IGroup): void {
     const errors: string[] = [];
-    if (Validation.isValidGroup(updatedGroup, errors)) {
-      const groups: IGroup[] = this.getGroups();
-      const updateIndex: number = groups.findIndex((group: IGroup) => {
-        return group.id === updatedGroup.id;
-      });
-      if (updateIndex !== -1) {
-        groups[updateIndex] = updatedGroup;
-        this.setGroups(groups);
-      } else {
-        throw new Error("Could not find matching Group to update.");
-      }
-    } else {
+    const groups: IGroup[] = this.getGroups();
+    const updateIndex: number = groups.findIndex((group: IGroup) => {
+      return group.id === updatedGroup.id;
+    });
+    if (updateIndex === -1) {
+      throw new Error("Could not find matching Group to update.");
+    }
+    if (!Validation.isValidGroup(updatedGroup, errors)) {
       throw new Error(`Invalid Group:${Utilities.mapErrorsToString(errors)}.`);
     }
+    groups[updateIndex] = updatedGroup;
+    this.setGroups(groups);
   }
   private removeGroupPacks(group: IGroup): void {
     const packsDAL: PacksDAL = new PacksDAL(this.electronStore);
@@ -74,12 +70,11 @@ export class GroupsDAL extends BaseDAL {
     const removeIndex: number = groups.findIndex((group: IGroup) => {
       return _.isEqual(group, removalGroup);
     });
-    if (removeIndex !== -1) {
-      this.removeGroupPacks(removalGroup);
-      groups.splice(removeIndex, 1);
-      this.setGroups(groups);
-    } else {
+    if (removeIndex === -1) {
       throw new Error("Could not find matching Group to remove.");
     }
+    this.removeGroupPacks(removalGroup);
+    groups.splice(removeIndex, 1);
+    this.setGroups(groups);
   }
 }
