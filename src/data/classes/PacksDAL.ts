@@ -2,6 +2,8 @@ import { Card } from "global";
 import _ = require("lodash");
 import { IGroup } from "src/models/Group";
 import { INewPack, IPack } from "../../models/Pack";
+import { Utilities } from "../../util/Utilities";
+import { Validation } from "../../validation/Validation";
 import { BaseDAL } from "./BaseDAL";
 import { CardsDAL } from "./CardsDAL";
 import { GroupsDAL } from "./GroupsDAL";
@@ -44,31 +46,41 @@ export class PacksDAL extends BaseDAL {
   }
   public addPack(group: IGroup, newPack: INewPack): void {
     if (new GroupsDAL(this.electronStore).findGroup(group)) {
-      const packs: IPack[] = this.getPacks();
       const pack: IPack = _.merge(
         { id: this.assignId(), groupId: group.id },
         newPack
       );
-      packs.push(pack);
-      this.setPacks(packs);
+      const errors: string[] = [];
+      if (Validation.isValidPack(pack, errors)) {
+        const packs: IPack[] = this.getPacks();
+        packs.push(pack);
+        this.setPacks(packs);
+      } else {
+        throw new Error(`Invalid Pack: ${Utilities.mapErrors(errors)}`);
+      }
     } else {
       throw new Error("Could not find matching Group to add Pack to.");
     }
   }
   public updatePack(updatedPack: IPack): void {
-    const packs: IPack[] = this.getPacks();
-    const readonlyProps: string[] = ["id", "groupId", "type"];
-    const updateIndex: number = packs.findIndex((pack: IPack) => {
-      return _.isEqual(
-        _.pick(pack, readonlyProps),
-        _.pick(updatedPack, readonlyProps)
-      );
-    });
-    if (updateIndex !== -1) {
-      packs[updateIndex] = updatedPack;
-      this.setPacks(packs);
+    const errors: string[] = [];
+    if (Validation.isValidPack(updatedPack, errors)) {
+      const packs: IPack[] = this.getPacks();
+      const readonlyProps: string[] = ["id", "groupId", "type"];
+      const updateIndex: number = packs.findIndex((pack: IPack) => {
+        return _.isEqual(
+          _.pick(pack, readonlyProps),
+          _.pick(updatedPack, readonlyProps)
+        );
+      });
+      if (updateIndex !== -1) {
+        packs[updateIndex] = updatedPack;
+        this.setPacks(packs);
+      } else {
+        throw new Error("Could not find matching Pack to update.");
+      }
     } else {
-      throw new Error("Could not find matching Pack to update.");
+      throw new Error(`Invalid Pack: ${Utilities.mapErrors(errors)}`);
     }
   }
   private removePackCards(pack: IPack): void {
