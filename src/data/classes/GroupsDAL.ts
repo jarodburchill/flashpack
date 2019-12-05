@@ -1,6 +1,8 @@
 import _ = require("lodash");
-import { IPack } from "src/models/Pack";
 import { IGroup, INewGroup } from "../../models/Group";
+import { IPack } from "../../models/Pack";
+import { Utilities } from "../../util/Utilities";
+import { Validation } from "../../validation/Validation";
 import { BaseDAL } from "./BaseDAL";
 import { PacksDAL } from "./PacksDAL";
 
@@ -30,21 +32,31 @@ export class GroupsDAL extends BaseDAL {
     }
   }
   public addGroup(newGroup: INewGroup): void {
-    const groups: IGroup[] = this.getGroups();
     const group: IGroup = _.merge({ id: this.assignId() }, newGroup);
-    groups.push(group);
-    this.setGroups(groups);
-  }
-  public updateGroup(updatedGroup: IGroup): void {
-    const groups: IGroup[] = this.getGroups();
-    const updateIndex: number = groups.findIndex((group: IGroup) => {
-      return group.id === updatedGroup.id;
-    });
-    if (updateIndex !== -1) {
-      groups[updateIndex] = updatedGroup;
+    const errors: string[] = [];
+    if (Validation.isValidGroup(group, errors)) {
+      const groups: IGroup[] = this.getGroups();
+      groups.push(group);
       this.setGroups(groups);
     } else {
-      throw new Error("Could not find matching Group to update.");
+      throw new Error(`Invalid Group: ${Utilities.mapErrors(errors)}`);
+    }
+  }
+  public updateGroup(updatedGroup: IGroup): void {
+    const errors: string[] = [];
+    if (Validation.isValidGroup(updatedGroup, errors)) {
+      const groups: IGroup[] = this.getGroups();
+      const updateIndex: number = groups.findIndex((group: IGroup) => {
+        return group.id === updatedGroup.id;
+      });
+      if (updateIndex !== -1) {
+        groups[updateIndex] = updatedGroup;
+        this.setGroups(groups);
+      } else {
+        throw new Error("Could not find matching Group to update.");
+      }
+    } else {
+      throw new Error(`Invalid Group: ${Utilities.mapErrors(errors)}`);
     }
   }
   private removeGroupPacks(group: IGroup): void {
