@@ -14,33 +14,30 @@ export class CardsDAL extends BaseDAL {
     this.electronStore.set("cards", cards);
   }
   private getPackCards<T extends Card>(pack: IPack): T[] {
-    if (new PacksDAL(this.electronStore).findPack(pack)) {
-      const cards: Card[] = this.getCards();
-      const packCards: Card[] = cards.filter((card: Card) => {
-        return card.packId === pack.id;
-      });
-      return packCards as T[];
-    } else {
+    const cards: Card[] = this.getCards();
+    const packCards: Card[] = cards.filter((card: Card) => {
+      return card.packId === pack.id;
+    });
+    if (!new PacksDAL(this.electronStore).findPack(pack)) {
       throw new Error("Could not find matching Pack to get Cards from.");
     }
+    return packCards as T[];
   }
   public getPackFlashcards(pack: IPack): IFlashcard[] {
-    if (pack.type === "flash") {
-      return this.getPackCards<IFlashcard>(pack);
-    } else {
+    if (pack.type !== "flash") {
       throw new Error(
         "Pack was found, but it is a Quizcard Pack, not a Flashcard Pack."
       );
     }
+    return this.getPackCards<IFlashcard>(pack);
   }
   public getPackQuizcards(pack: IPack): IQuizcard[] {
-    if (pack.type === "quiz") {
-      return this.getPackCards<IQuizcard>(pack);
-    } else {
+    if (pack.type !== "quiz") {
       throw new Error(
         "Pack was found, but it is a Falshcard Pack, not a Quizcard Pack."
       );
     }
+    return this.getPackCards<IQuizcard>(pack);
   }
   public findCard(searchCard: Card): boolean {
     const cards: Card[] = this.getCards();
@@ -55,47 +52,43 @@ export class CardsDAL extends BaseDAL {
       return card.id === id;
     });
     if (requestedCard !== undefined) {
-      return requestedCard as T;
-    } else {
       throw new Error("Could not find matching Card ID.");
     }
+    return requestedCard as T;
   }
   public getFlashcard(id: number): IFlashcard {
     const card: IFlashcard = this.getCard<IFlashcard>(id);
-    if (card.type === "flash") {
-      return card;
-    } else {
+    if (card.type !== "flash") {
       throw new Error("Card was found, but it is a Quizcard, not a Flashcard.");
     }
+    return card;
   }
   public getQuizcard(id: number): IQuizcard {
     const card: IQuizcard = this.getCard<IQuizcard>(id);
-    if (card.type === "quiz") {
-      return card;
-    } else {
+    if (card.type !== "quiz") {
       throw new Error("Card was found, but it is a Falshcard, not a Quizcard.");
     }
+    return card;
   }
   public addCard(pack: IPack, newCard: INewFlashcard | INewQuizcard): void {
-    if (new PacksDAL(this.electronStore).findPack(pack)) {
-      const cards: Card[] = this.getCards();
-      const card: Card = _.merge(
-        { id: this.assignId(), packId: pack.id },
-        newCard
-      );
-      if (pack.type === card.type) {
-        cards.push(card);
-        this.setCards(cards);
-      } else {
-        throw new Error(
-          `A Pack with type '${pack.type}' can only contain ${
-            pack.type === "flash" ? "Flashcards" : "Quizcards"
-          }.`
-        );
-      }
-    } else {
+    const card: Card = _.merge(
+      { id: this.assignId(), packId: pack.id },
+      newCard
+    );
+    const cards: Card[] = this.getCards();
+    if (!new PacksDAL(this.electronStore).findPack(pack)) {
       throw new Error("Could not find matching Pack to add Cards to.");
     }
+    if (pack.type !== card.type) {
+      throw new Error(
+        `A Pack with type '${pack.type}' can only contain ${
+          pack.type === "flash" ? "Flashcards" : "Quizcards"
+        }.`
+      );
+    }
+    // TODO: Validation
+    cards.push(card);
+    this.setCards(cards);
   }
   public updateCard(updatedCard: Card): void {
     const cards: Card[] = this.getCards();
@@ -106,23 +99,22 @@ export class CardsDAL extends BaseDAL {
         _.pick(updatedCard, readonlyProps)
       );
     });
-    if (updateIndex !== -1) {
-      cards[updateIndex] = updatedCard;
-      this.setCards(cards);
-    } else {
+    if (updateIndex === -1) {
       throw new Error("Could not find matching Card to update.");
     }
+    // TODO: Validation
+    cards[updateIndex] = updatedCard;
+    this.setCards(cards);
   }
   public removeCard(removalCard: Card): void {
     const cards: Card[] = this.getCards();
     const removeIndex: number = cards.findIndex((card: Card) => {
       return _.isEqual(card, removalCard);
     });
-    if (removeIndex !== -1) {
-      cards.splice(removeIndex, 1);
-      this.setCards(cards);
-    } else {
+    if (removeIndex === -1) {
       throw new Error("Could not find matching Card to remove.");
     }
+    cards.splice(removeIndex, 1);
+    this.setCards(cards);
   }
 }
