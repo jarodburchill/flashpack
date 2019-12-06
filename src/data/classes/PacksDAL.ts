@@ -16,13 +16,13 @@ export class PacksDAL extends BaseDAL {
     this.electronStore.set("packs", packs);
   }
   public getGroupPacks(group: IGroup): IPack[] {
-    if (!new GroupsDAL(this.electronStore).findGroup(group)) {
-      throw new Error("Could not find matching Group to get Packs from.");
-    }
     const packs: IPack[] = this.getPacks();
     const groupPacks: IPack[] = packs.filter((pack: IPack) => {
       return pack.groupId === group.id;
     });
+    if (!new GroupsDAL(this.electronStore).findGroup(group)) {
+      throw new Error("Could not find matching Group to get Packs from.");
+    }
     return groupPacks;
   }
   public findPack(searchPack: IPack): boolean {
@@ -43,18 +43,18 @@ export class PacksDAL extends BaseDAL {
     return requestedPack;
   }
   public addPack(group: IGroup, newPack: INewPack): void {
-    if (!new GroupsDAL(this.electronStore).findGroup(group)) {
-      throw new Error("Could not find matching Group to add Pack to.");
-    }
     const errors: string[] = [];
     const pack: IPack = _.merge(
       { id: this.assignId(), groupId: group.id },
       newPack
     );
+    const packs: IPack[] = this.getPacks();
+    if (!new GroupsDAL(this.electronStore).findGroup(group)) {
+      throw new Error("Could not find matching Group to add Pack to.");
+    }
     if (!Validation.isValidPack(pack, errors)) {
       throw new Error(`Invalid Pack:${Utilities.mapErrorsToString(errors)}.`);
     }
-    const packs: IPack[] = this.getPacks();
     packs.push(pack);
     this.setPacks(packs);
   }

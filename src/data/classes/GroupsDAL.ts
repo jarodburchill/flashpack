@@ -33,10 +33,10 @@ export class GroupsDAL extends BaseDAL {
   public addGroup(newGroup: INewGroup): void {
     const errors: string[] = [];
     const group: IGroup = _.merge({ id: this.assignId() }, newGroup);
+    const groups: IGroup[] = this.getGroups();
     if (!Validation.isValidGroup(group, errors)) {
       throw new Error(`Invalid Group:${Utilities.mapErrorsToString(errors)}.`);
     }
-    const groups: IGroup[] = this.getGroups();
     groups.push(group);
     this.setGroups(groups);
   }
