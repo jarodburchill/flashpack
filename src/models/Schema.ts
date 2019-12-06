@@ -1,4 +1,4 @@
-import { Card } from "global";
+import { Card } from "./Card";
 import { IGroup } from "./Group";
 import { IPack } from "./Pack";
 
