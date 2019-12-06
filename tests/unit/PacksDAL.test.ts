@@ -330,4 +330,87 @@ describe("updatePack", () => {
       },
     ]);
   });
+  it("updates the name of the multiple packs in an existing packs array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const first: IPack = electronStore.store.packs[0];
+    const second: IPack = electronStore.store.packs[1];
+    first.name = "Update";
+    second.name = "Next Update";
+    packsDAL.updatePack(first);
+    packsDAL.updatePack(second);
+    expect(electronStore.store.packs).toEqual([
+      {
+        id: 4,
+        groupId: 1,
+        name: "Update",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 5,
+        groupId: 1,
+        name: "Next Update",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 6,
+        groupId: 2,
+        name: "Semester 1",
+        type: "quiz",
+        timed: true,
+        liveResults: false,
+      },
+    ]);
+  });
+  it("throws an error when attempting to update a non-existing pack", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = {
+      id: 2,
+      groupId: 1,
+      name: "Does not exist",
+      type: "flash",
+      timed: false,
+      liveResults: false,
+    };
+    expect(() => {
+      packsDAL.updatePack(pack);
+    }).toThrow(new Error("Could not find matching Pack to update."));
+  });
+  it("throws an error when attempting to update an existing group with modified readonly values", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = {
+      id: 4,
+      groupId: 2,
+      name: "Does not exist",
+      type: "quiz",
+      timed: false,
+      liveResults: false,
+    };
+    expect(() => {
+      packsDAL.updatePack(pack);
+    }).toThrow(new Error("Could not find matching Pack to update."));
+  });
+  it("throws an error when pack name is too short and bool values are invalid", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = electronStore.store.packs[0];
+    pack.name = "A";
+    pack.timed = true;
+    pack.liveResults = true;
+    expect(() => {
+      packsDAL.updatePack(pack);
+    }).toThrow(
+      new Error(
+        "Invalid Pack:" +
+          "\nIf type is 'flash' then timed and liveResults must be false," +
+          "\nName must be at least 2 characters."
+      )
+    );
+  });
 });
