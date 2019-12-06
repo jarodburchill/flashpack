@@ -414,3 +414,78 @@ describe("updatePack", () => {
     );
   });
 });
+
+describe("removePack", () => {
+  it("removes existing pack and all associated cards", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = electronStore.store.packs[2];
+    packsDAL.removePack(pack);
+    expect(electronStore.store.packs).toEqual([
+      {
+        id: 4,
+        groupId: 1,
+        name: "Unit 1",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+      {
+        id: 5,
+        groupId: 1,
+        name: "Unit 2",
+        type: "flash",
+        timed: false,
+        liveResults: false,
+      },
+    ]);
+    expect(electronStore.store.cards).toEqual([
+      {
+        id: 7,
+        packId: 4,
+        type: "flash",
+        term: "2 + 2",
+        definition: "4",
+        starred: false,
+      },
+      {
+        id: 8,
+        packId: 4,
+        type: "flash",
+        term: "2 - 2",
+        definition: "0",
+        starred: true,
+      },
+    ]);
+  });
+  it("throws an error when attempting to remove an existing pack with modified values", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = {
+      id: 4,
+      groupId: 1,
+      name: "Wrong name",
+      type: "quiz",
+      timed: false,
+      liveResults: true,
+    };
+    expect(() => {
+      packsDAL.removePack(pack);
+    }).toThrow(new Error("Could not find matching Pack to remove."));
+  });
+  it("throws an error when attempting to remove a non-existing pack", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const packsDAL: PacksDAL = new PacksDAL(electronStore);
+    const pack: IPack = {
+      id: 2,
+      groupId: 1,
+      name: "Does not exist",
+      type: "quiz",
+      timed: true,
+      liveResults: true,
+    };
+    expect(() => {
+      packsDAL.removePack(pack);
+    }).toThrow(new Error("Could not find matching Pack to remove."));
+  });
+});
