@@ -1,5 +1,5 @@
 import ElectronStore = require("electron-store");
-import { ISchema } from "src/models/Schema";
+import { ISchema } from "../models/Schema";
 import { CardsDAL } from "./classes/CardsDAL";
 import { DarkModeDAL } from "./classes/DarkModeDAL";
 import { GroupsDAL } from "./classes/GroupsDAL";

@@ -1,6 +1,6 @@
 import _ = require("lodash");
-import { IGroup } from "src/models/Group";
-import { IPack } from "src/models/Pack";
+import { IGroup } from "../models/Group";
+import { IPack } from "../models/Pack";
 
 enum PackType {
   flash = "flash",

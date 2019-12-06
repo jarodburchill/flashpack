@@ -1,6 +1,6 @@
 import _ = require("lodash");
-import { IGroup } from "src/models/Group";
 import { Card } from "../../models/Card";
+import { IGroup } from "../../models/Group";
 import { INewPack, IPack } from "../../models/Pack";
 import { Utilities } from "../../util/Utilities";
 import { Validation } from "../../validation/Validation";
