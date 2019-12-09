@@ -55,16 +55,6 @@ export class GroupsDAL extends BaseDAL {
     groups[updateIndex] = updatedGroup;
     this.setGroups(groups);
   }
-  private removeGroupPacks(group: IGroup): void {
-    const packsDAL: PacksDAL = new PacksDAL(this.electronStore);
-    const packs: IPack[] = packsDAL.getPacks();
-    const removalPacks: IPack[] = packs.filter((pack: IPack) => {
-      return pack.groupId === group.id;
-    });
-    removalPacks.forEach((pack: IPack) => {
-      packsDAL.removePack(pack);
-    });
-  }
   public removeGroup(removalGroup: IGroup): void {
     const groups: IGroup[] = this.getGroups();
     const removeIndex: number = groups.findIndex((group: IGroup) => {
@@ -76,5 +66,15 @@ export class GroupsDAL extends BaseDAL {
     this.removeGroupPacks(removalGroup);
     groups.splice(removeIndex, 1);
     this.setGroups(groups);
+  }
+  private removeGroupPacks(group: IGroup): void {
+    const packsDAL: PacksDAL = new PacksDAL(this.electronStore);
+    const packs: IPack[] = packsDAL.getPacks();
+    const removalPacks: IPack[] = packs.filter((pack: IPack) => {
+      return pack.groupId === group.id;
+    });
+    removalPacks.forEach((pack: IPack) => {
+      packsDAL.removePack(pack);
+    });
   }
 }

@@ -77,16 +77,6 @@ export class PacksDAL extends BaseDAL {
     packs[updateIndex] = updatedPack;
     this.setPacks(packs);
   }
-  private removePackCards(pack: IPack): void {
-    const cardsDAL: CardsDAL = new CardsDAL(this.electronStore);
-    const cards: Card[] = cardsDAL.getCards();
-    const removalCards: Card[] = cards.filter((card: Card) => {
-      return card.packId === pack.id;
-    });
-    removalCards.forEach((card: Card) => {
-      cardsDAL.removeCard(card);
-    });
-  }
   public removePack(removalPack: IPack): void {
     const packs: IPack[] = this.getPacks();
     const removeIndex: number = packs.findIndex((pack: IPack) => {
@@ -98,5 +88,15 @@ export class PacksDAL extends BaseDAL {
     this.removePackCards(removalPack);
     packs.splice(removeIndex, 1);
     this.setPacks(packs);
+  }
+  private removePackCards(pack: IPack): void {
+    const cardsDAL: CardsDAL = new CardsDAL(this.electronStore);
+    const cards: Card[] = cardsDAL.getCards();
+    const removalCards: Card[] = cards.filter((card: Card) => {
+      return card.packId === pack.id;
+    });
+    removalCards.forEach((card: Card) => {
+      cardsDAL.removeCard(card);
+    });
   }
 }
