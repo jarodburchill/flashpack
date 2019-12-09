@@ -1,11 +1,10 @@
+import { QuizAnswer } from "./QuizAnswer";
+
 export interface INewQuizcard {
   readonly type: "quiz";
   readonly quizType: "mc" | "tf" | "chk" | "blanks";
   question: string;
-  answers: {
-    text: string;
-    correct: boolean;
-  }[];
+  answers: QuizAnswer[];
   starred: boolean;
 }
 
