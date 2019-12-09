@@ -1,4 +1,4 @@
-export type QuizAnswer = {
+export interface IQuizAnswer {
   text: string;
   correct: boolean;
-};
+}
