@@ -245,7 +245,7 @@ export abstract class Validation {
     const blanks: number = question.match(this.blanksRegExp).length;
     if (blanks !== answers.length) {
       errorsRef.push(
-        "Fill in the Blank Quizcards must have the same number of answer objects and blanks in the question string"
+        "Fill in the Blank Quizcards must have the same number of answer objects as blanks in the question string"
       );
     }
     if (answers.length < this.minBlanks) {
