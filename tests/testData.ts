@@ -113,7 +113,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           id: 12,
           packId: 6,
           type: "quiz",
-          quizType: "blanks",
+          quizType: "blank",
           question: "$_$ is the study of the natural $_$.",
           answers: [
             { text: "Science", correct: true },
