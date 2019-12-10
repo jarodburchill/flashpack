@@ -115,4 +115,155 @@ export abstract class Validation {
     }
     return _.isEmpty(errorsRef);
   }
+  public static isValidQuizcard(
+    quizcard: IQuizcard,
+    errorsRef: string[]
+  ): boolean {
+    if (!_.isEmpty(errorsRef)) {
+      throw new Error(
+        "errorsRef parameter must be passed in as an empty string array"
+      );
+    }
+    if (!_.isInteger(quizcard.id)) {
+      errorsRef.push("ID must be an integer");
+    }
+    if (!_.isInteger(quizcard.packId)) {
+      errorsRef.push("PackID must be an integer");
+    }
+    if (quizcard.type !== Type.quiz) {
+      errorsRef.push("Type must be 'quiz'");
+    }
+    if (!_.isString(quizcard.question)) {
+      errorsRef.push("Question must be a string");
+    }
+    if (_.isEmpty(quizcard.question)) {
+      errorsRef.push("Question cannot be empty");
+    }
+    quizcard.answers.forEach((answer: IQuizAnswer) => {
+      if (!_.isString(answer.text)) {
+        errorsRef.push("Answer text must be a string");
+      }
+      if (_.isEmpty(answer.text)) {
+        errorsRef.push("Answer text cannot be empty");
+      }
+      if (!_.isBoolean(answer.correct)) {
+        errorsRef.push("Answer 'correct' property must be a boolean");
+      }
+    });
+    switch (quizcard.quizType) {
+      case QuizType.multipleChoice:
+        this.validateMultipleChoice(quizcard.answers, errorsRef);
+        break;
+      case QuizType.trueFalse:
+        this.validateTrueFalse(quizcard.answers, errorsRef);
+        break;
+      case QuizType.checkbox:
+        this.validateCheckboxes(quizcard.answers, errorsRef);
+        break;
+      case QuizType.blank:
+        this.validateBlanks(quizcard.question, quizcard.answers, errorsRef);
+        break;
+      default:
+        errorsRef.push("QuizType must be 'mc', 'tf', 'chk' or 'blanks'");
+        break;
+    }
+    if (!_.isBoolean(quizcard.starred)) {
+      errorsRef.push("Starred must be a boolean");
+    }
+    return _.isEmpty(errorsRef);
+  }
+  private static validateMultipleChoice(
+    answers: IQuizAnswer[],
+    errorsRef: string[]
+  ): void {
+    if (answers.length < this.minAnswers) {
+      errorsRef.push(
+        `Multiple Choice Quizcards must contain at least ${this.minAnswers} answer objects`
+      );
+    }
+    if (answers.length > this.maxAnswers) {
+      errorsRef.push(
+        `Multiple Choice Quizcards can contain at most ${this.maxAnswers} answer objects`
+      );
+    }
+    if (
+      answers.filter((answer: IQuizAnswer) => {
+        return answer.correct === true;
+      }).length !== this.correctAnswers
+    ) {
+      errorsRef.push(
+        "Multiple Choice Quizcards must have exactly one correct answer"
+      );
+    }
+  }
+  private static validateTrueFalse(
+    answers: IQuizAnswer[],
+    errorsRef: string[]
+  ): void {
+    if (answers.length !== this.trueFalseAnswers) {
+      errorsRef.push("True/False Quizcards must contain only 2 answer objects");
+    }
+    if (
+      answers.filter((answer: IQuizAnswer) => {
+        return answer.correct === true;
+      }).length !== this.correctAnswers
+    ) {
+      errorsRef.push(
+        "True/False Quizcards must have exactly one correct answer"
+      );
+    }
+  }
+  private static validateCheckboxes(
+    answers: IQuizAnswer[],
+    errorsRef: string[]
+  ): void {
+    if (answers.length < this.minAnswers) {
+      errorsRef.push(
+        `Checkbox Quizcards must contain at least ${this.minAnswers} answer objects`
+      );
+    }
+    if (answers.length > this.maxAnswers) {
+      errorsRef.push(
+        `Checkbox Quizcards can contain at most ${this.maxAnswers} answer objects`
+      );
+    }
+    if (
+      answers.filter((answer: IQuizAnswer) => {
+        return answer.correct === true;
+      }).length < this.correctAnswers
+    ) {
+      errorsRef.push(
+        "Checkbox Quizcards must have at least one correct answer"
+      );
+    }
+  }
+  private static validateBlanks(
+    question: string,
+    answers: IQuizAnswer[],
+    errorsRef: string[]
+  ): void {
+    const blanks: number = question.match(this.blanksRegExp).length;
+    if (blanks !== answers.length) {
+      errorsRef.push(
+        "Fill in the Blank Quizcards must have the same number of answer objects and blanks in the question string"
+      );
+    }
+    if (answers.length < this.minBlanks) {
+      errorsRef.push(
+        `Fill in the Blank Quizcards must contain at least ${this.minBlanks} answer objects`
+      );
+    }
+    if (answers.length > this.maxBlanks) {
+      errorsRef.push(
+        `Fill in the Blank Quizcards can contain at most ${this.maxBlanks} answer objects`
+      );
+    }
+    answers.forEach((answer: IQuizAnswer) => {
+      if (!answer.correct) {
+        errorsRef.push(
+          "All answers in Fill in the Blank Quizcards must be set to correct"
+        );
+      }
+    });
+  }
 }
