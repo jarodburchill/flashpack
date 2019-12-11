@@ -5,7 +5,7 @@ import { IGroup } from "../models/Group";
 import { IPack } from "../models/Pack";
 import { IQuizAnswer } from "../models/QuizAnswer";
 import { IQuizcard } from "../models/Quizcard";
-// import { Utilities } from "../util/Utilities";
+import { Utilities } from "../util/Utilities";
 
 enum Types {
   flash = "flash",
@@ -29,6 +29,7 @@ export abstract class Validation {
   private static maxBlanks: number = 24;
   private static blanksRegExp: RegExp = /\$_\$/g;
   public static isValidGroup(group: IGroup, errorsRef: string[]): boolean {
+    // TODO: schema validation
     if (!_.isEmpty(errorsRef)) {
       throw new Error(
         "errorsRef parameter must be passed in as an empty string array"
@@ -40,18 +41,12 @@ export abstract class Validation {
     return _.isEmpty(errorsRef);
   }
   public static isValidPack(pack: IPack, errorsRef: string[]): boolean {
+    // TODO: schema validation
     if (!_.isEmpty(errorsRef)) {
       throw new Error(
         "errorsRef parameter must be passed in as an empty string array"
       );
     }
-    // if (!(pack.type in Types)) {
-    //   errorsRef.push(
-    //     `Type must be one of the following:${Utilities.mapToString(
-    //       _.values(Types)
-    //     )}`
-    //   );
-    // }
     if (pack.type === Types.flash && (pack.timed || pack.liveResults)) {
       errorsRef.push(
         "If type is 'flash' then timed and liveResults must be false"
@@ -69,14 +64,19 @@ export abstract class Validation {
       );
     }
     switch (card.type) {
-      case "flash":
+      case Types.flash:
         this.isValidFlashcard(card, errorsRef);
         break;
-      case "quiz":
+      case Types.quiz:
         this.isValidQuizcard(card, errorsRef);
         break;
       default:
-        // errorsRef.push("Type ");
+        // TODO: print errors better
+        errorsRef.push(
+          `Type must be one of the following:${Utilities.mapToString(
+            _.values(Types)
+          )}`
+        );
         break;
     }
     return _.isEmpty(errorsRef);
@@ -85,6 +85,7 @@ export abstract class Validation {
     flashcard: IFlashcard,
     errorsRef: string[]
   ): void {
+    // TODO: schema validation
     if (flashcard.type !== Types.flash) {
       errorsRef.push("Type must be 'flash'");
     }
@@ -124,11 +125,6 @@ export abstract class Validation {
         this.validateBlanks(quizcard.question, quizcard.answers, errorsRef);
         break;
       default:
-        // errorsRef.push(
-        //   `QuizType must be one of the following:${Utilities.mapToString(
-        //     _.values(QuizTypes)
-        //   )}`
-        // );
         break;
     }
   }
@@ -136,6 +132,7 @@ export abstract class Validation {
     answers: IQuizAnswer[],
     errorsRef: string[]
   ): void {
+    // TODO: schema validation
     if (answers.length < this.minAnswers || answers.length > this.maxAnswers) {
       errorsRef.push(
         `Multiple Choice Quizcards must contain between ${this.minAnswers}-${this.maxAnswers} answer objects`
