@@ -1,10 +1,10 @@
 import _ = require("lodash");
-import { IFlashcard } from "src/models/Flashcard";
-import { IQuizcard } from "src/models/Quizcard";
-import { Utilities } from "src/util/Utilities";
+import { IFlashcard } from "../models/Flashcard";
 import { IGroup } from "../models/Group";
 import { IPack } from "../models/Pack";
 import { IQuizAnswer } from "../models/QuizAnswer";
+import { IQuizcard } from "../models/Quizcard";
+import { Utilities } from "../util/Utilities";
 
 enum Types {
   flash = "flash",
@@ -39,9 +39,6 @@ export abstract class Validation {
     if (!_.isString(group.name)) {
       errorsRef.push("Name must be a string");
     }
-    if (_.isEmpty(group.name)) {
-      errorsRef.push("Name cannot be empty");
-    }
     if (group.name.length < this.minNameLength) {
       errorsRef.push(`Name must be at least ${this.minNameLength} characters`);
     }
@@ -70,9 +67,6 @@ export abstract class Validation {
       errorsRef.push(
         "If type is 'flash' then timed and liveResults must be false"
       );
-    }
-    if (_.isEmpty(pack.name)) {
-      errorsRef.push("Name cannot be empty");
     }
     if (pack.name.length < this.minNameLength) {
       errorsRef.push(`Name must be at least ${this.minNameLength} characters`);
