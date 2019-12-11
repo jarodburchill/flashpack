@@ -82,15 +82,11 @@ export class CardsDAL extends BaseDAL {
     if (!new PacksDAL(this.electronStore).findPack(pack)) {
       throw new Error("Could not find matching Pack to add Cards to.");
     }
+    if (pack.type !== card.type) {
+      throw new Error(`Card type and Pack type must match.`);
+    }
     if (!Validation.isValidCard(card, errors)) {
       throw new Error(`Invalid Card:${Utilities.mapToString(errors)}.`);
-    }
-    if (pack.type !== card.type) {
-      throw new Error(
-        `A Pack with type '${pack.type}' can only contain ${
-          pack.type === "flash" ? "Flashcards" : "Quizcards"
-        }.`
-      );
     }
     cards.push(card);
     this.setCards(cards);
