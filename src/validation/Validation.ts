@@ -1,16 +1,17 @@
 import _ = require("lodash");
 import { IFlashcard } from "src/models/Flashcard";
 import { IQuizcard } from "src/models/Quizcard";
+import { Utilities } from "src/util/Utilities";
 import { IGroup } from "../models/Group";
 import { IPack } from "../models/Pack";
 import { IQuizAnswer } from "../models/QuizAnswer";
 
-enum Type {
+enum Types {
   flash = "flash",
   quiz = "quiz",
 }
 
-enum QuizType {
+enum QuizTypes {
   multipleChoice = "mc",
   trueFalse = "tf",
   checkbox = "chk",
@@ -58,10 +59,14 @@ export abstract class Validation {
     if (!_.isInteger(pack.groupId)) {
       errorsRef.push("GroupID must be an integer");
     }
-    if (!(pack.type in Type)) {
-      errorsRef.push("Type must be either 'flash' or 'quiz'");
+    if (!(pack.type in Types)) {
+      errorsRef.push(
+        `Type must be one of the following:${Utilities.mapToString(
+          _.values(Types)
+        )}`
+      );
     }
-    if (pack.type === Type.flash && (pack.timed || pack.liveResults)) {
+    if (pack.type === Types.flash && (pack.timed || pack.liveResults)) {
       errorsRef.push(
         "If type is 'flash' then timed and liveResults must be false"
       );
@@ -95,7 +100,7 @@ export abstract class Validation {
     if (!_.isInteger(flashcard.packId)) {
       errorsRef.push("PackID must be an integer");
     }
-    if (flashcard.type !== Type.flash) {
+    if (flashcard.type !== Types.flash) {
       errorsRef.push("Type must be 'flash'");
     }
     if (!_.isString(flashcard.term)) {
@@ -130,7 +135,7 @@ export abstract class Validation {
     if (!_.isInteger(quizcard.packId)) {
       errorsRef.push("PackID must be an integer");
     }
-    if (quizcard.type !== Type.quiz) {
+    if (quizcard.type !== Types.quiz) {
       errorsRef.push("Type must be 'quiz'");
     }
     if (!_.isString(quizcard.question)) {
@@ -151,20 +156,24 @@ export abstract class Validation {
       }
     });
     switch (quizcard.quizType) {
-      case QuizType.multipleChoice:
+      case QuizTypes.multipleChoice:
         this.validateMultipleChoice(quizcard.answers, errorsRef);
         break;
-      case QuizType.trueFalse:
+      case QuizTypes.trueFalse:
         this.validateTrueFalse(quizcard.answers, errorsRef);
         break;
-      case QuizType.checkbox:
+      case QuizTypes.checkbox:
         this.validateCheckboxes(quizcard.answers, errorsRef);
         break;
-      case QuizType.blank:
+      case QuizTypes.blank:
         this.validateBlanks(quizcard.question, quizcard.answers, errorsRef);
         break;
       default:
-        errorsRef.push("QuizType must be 'mc', 'tf', 'chk' or 'blanks'");
+        errorsRef.push(
+          `QuizType must be one of the following:${Utilities.mapToString(
+            _.values(QuizTypes)
+          )}`
+        );
         break;
     }
     if (!_.isBoolean(quizcard.starred)) {
@@ -176,14 +185,9 @@ export abstract class Validation {
     answers: IQuizAnswer[],
     errorsRef: string[]
   ): void {
-    if (answers.length < this.minAnswers) {
+    if (answers.length < this.minAnswers || answers.length > this.maxAnswers) {
       errorsRef.push(
-        `Multiple Choice Quizcards must contain at least ${this.minAnswers} answer objects`
-      );
-    }
-    if (answers.length > this.maxAnswers) {
-      errorsRef.push(
-        `Multiple Choice Quizcards can contain at most ${this.maxAnswers} answer objects`
+        `Multiple Choice Quizcards must contain between ${this.minAnswers}-${this.maxAnswers} answer objects`
       );
     }
     if (
@@ -192,7 +196,7 @@ export abstract class Validation {
       }).length !== this.correctAnswers
     ) {
       errorsRef.push(
-        "Multiple Choice Quizcards must have exactly one correct answer"
+        `Multiple Choice Quizcards must have exactly ${this.correctAnswers} correct answer`
       );
     }
   }
@@ -201,7 +205,9 @@ export abstract class Validation {
     errorsRef: string[]
   ): void {
     if (answers.length !== this.trueFalseAnswers) {
-      errorsRef.push("True/False Quizcards must contain only 2 answer objects");
+      errorsRef.push(
+        `True/False Quizcards must contain only ${this.trueFalseAnswers} answer objects`
+      );
     }
     if (
       answers.filter((answer: IQuizAnswer) => {
@@ -209,7 +215,7 @@ export abstract class Validation {
       }).length !== this.correctAnswers
     ) {
       errorsRef.push(
-        "True/False Quizcards must have exactly one correct answer"
+        `True/False Quizcards must have exactly ${this.correctAnswers} correct answer`
       );
     }
   }
@@ -217,14 +223,9 @@ export abstract class Validation {
     answers: IQuizAnswer[],
     errorsRef: string[]
   ): void {
-    if (answers.length < this.minAnswers) {
+    if (answers.length < this.minAnswers || answers.length > this.maxAnswers) {
       errorsRef.push(
-        `Checkbox Quizcards must contain at least ${this.minAnswers} answer objects`
-      );
-    }
-    if (answers.length > this.maxAnswers) {
-      errorsRef.push(
-        `Checkbox Quizcards can contain at most ${this.maxAnswers} answer objects`
+        `Checkbox Quizcards must contain between ${this.minAnswers}-${this.maxAnswers} answer objects`
       );
     }
     if (
@@ -233,7 +234,7 @@ export abstract class Validation {
       }).length < this.correctAnswers
     ) {
       errorsRef.push(
-        "Checkbox Quizcards must have at least one correct answer"
+        `Checkbox Quizcards must have at least ${this.correctAnswers} correct answer`
       );
     }
   }
@@ -248,14 +249,9 @@ export abstract class Validation {
         "Fill in the Blank Quizcards must have the same number of answer objects as blanks in the question string"
       );
     }
-    if (answers.length < this.minBlanks) {
+    if (answers.length < this.minBlanks || answers.length > this.maxBlanks) {
       errorsRef.push(
-        `Fill in the Blank Quizcards must contain at least ${this.minBlanks} answer objects`
-      );
-    }
-    if (answers.length > this.maxBlanks) {
-      errorsRef.push(
-        `Fill in the Blank Quizcards can contain at most ${this.maxBlanks} answer objects`
+        `Fill in the Blank Quizcards must contain between ${this.minBlanks}-${this.maxBlanks} answer objects`
       );
     }
     answers.forEach((answer: IQuizAnswer) => {
