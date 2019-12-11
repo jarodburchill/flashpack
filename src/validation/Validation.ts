@@ -1,4 +1,5 @@
 import _ = require("lodash");
+import { Card } from "../models/Card";
 import { IFlashcard } from "../models/Flashcard";
 import { IGroup } from "../models/Group";
 import { IPack } from "../models/Pack";
@@ -79,15 +80,29 @@ export abstract class Validation {
     // }
     return _.isEmpty(errorsRef);
   }
-  public static isValidFlashcard(
-    flashcard: IFlashcard,
-    errorsRef: string[]
-  ): boolean {
+  public static isValidCard(card: Card, errorsRef: string[]): boolean {
     if (!_.isEmpty(errorsRef)) {
       throw new Error(
         "errorsRef parameter must be passed in as an empty string array"
       );
     }
+    switch (card.type) {
+      case "flash":
+        this.isValidFlashcard(card, errorsRef);
+        break;
+      case "quiz":
+        this.isValidQuizcard(card, errorsRef);
+        break;
+      default:
+        errorsRef.push("Type");
+        break;
+    }
+    return _.isEmpty(errorsRef);
+  }
+  private static isValidFlashcard(
+    flashcard: IFlashcard,
+    errorsRef: string[]
+  ): void {
     // if (!_.isInteger(flashcard.id)) {
     //   errorsRef.push("ID must be an integer");
     // }
@@ -112,17 +127,11 @@ export abstract class Validation {
     // if (!_.isBoolean(flashcard.starred)) {
     //   errorsRef.push("Starred must be a boolean");
     // }
-    return _.isEmpty(errorsRef);
   }
-  public static isValidQuizcard(
+  private static isValidQuizcard(
     quizcard: IQuizcard,
     errorsRef: string[]
-  ): boolean {
-    if (!_.isEmpty(errorsRef)) {
-      throw new Error(
-        "errorsRef parameter must be passed in as an empty string array"
-      );
-    }
+  ): void {
     // if (!_.isInteger(quizcard.id)) {
     //   errorsRef.push("ID must be an integer");
     // }
@@ -173,7 +182,6 @@ export abstract class Validation {
     // if (!_.isBoolean(quizcard.starred)) {
     //   errorsRef.push("Starred must be a boolean");
     // }
-    return _.isEmpty(errorsRef);
   }
   private static validateMultipleChoice(
     answers: IQuizAnswer[],
