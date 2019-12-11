@@ -1,7 +1,7 @@
 export abstract class Utilities {
-  public static mapErrorsToString(errors: string[]): string {
-    return `${errors.map((error: string) => {
-      return `\n${error}`;
+  public static mapToString(array: string[]): string {
+    return `${array.map((item: string) => {
+      return `\n${item}`;
     })}`;
   }
 }

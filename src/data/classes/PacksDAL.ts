@@ -53,7 +53,7 @@ export class PacksDAL extends BaseDAL {
       throw new Error("Could not find matching Group to add Pack to.");
     }
     if (!Validation.isValidPack(pack, errors)) {
-      throw new Error(`Invalid Pack:${Utilities.mapErrorsToString(errors)}.`);
+      throw new Error(`Invalid Pack:${Utilities.mapToString(errors)}.`);
     }
     packs.push(pack);
     this.setPacks(packs);
@@ -72,7 +72,7 @@ export class PacksDAL extends BaseDAL {
       throw new Error("Could not find matching Pack to update.");
     }
     if (!Validation.isValidPack(updatedPack, errors)) {
-      throw new Error(`Invalid Pack:${Utilities.mapErrorsToString(errors)}.`);
+      throw new Error(`Invalid Pack:${Utilities.mapToString(errors)}.`);
     }
     packs[updateIndex] = updatedPack;
     this.setPacks(packs);

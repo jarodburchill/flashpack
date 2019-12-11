@@ -35,7 +35,7 @@ export class GroupsDAL extends BaseDAL {
     const group: IGroup = _.merge({ id: this.assignId() }, newGroup);
     const groups: IGroup[] = this.getGroups();
     if (!Validation.isValidGroup(group, errors)) {
-      throw new Error(`Invalid Group:${Utilities.mapErrorsToString(errors)}.`);
+      throw new Error(`Invalid Group:${Utilities.mapToString(errors)}.`);
     }
     groups.push(group);
     this.setGroups(groups);
@@ -50,7 +50,7 @@ export class GroupsDAL extends BaseDAL {
       throw new Error("Could not find matching Group to update.");
     }
     if (!Validation.isValidGroup(updatedGroup, errors)) {
-      throw new Error(`Invalid Group:${Utilities.mapErrorsToString(errors)}.`);
+      throw new Error(`Invalid Group:${Utilities.mapToString(errors)}.`);
     }
     groups[updateIndex] = updatedGroup;
     this.setGroups(groups);
