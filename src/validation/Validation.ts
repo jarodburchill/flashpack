@@ -34,12 +34,6 @@ export abstract class Validation {
         "errorsRef parameter must be passed in as an empty string array"
       );
     }
-    // if (!_.isInteger(group.id)) {
-    //   errorsRef.push("ID must be an integer");
-    // }
-    // if (!_.isString(group.name)) {
-    //   errorsRef.push("Name must be a string");
-    // }
     if (group.name.length < this.minNameLength) {
       errorsRef.push(`Name must be at least ${this.minNameLength} characters`);
     }
@@ -51,12 +45,6 @@ export abstract class Validation {
         "errorsRef parameter must be passed in as an empty string array"
       );
     }
-    // if (!_.isInteger(pack.id)) {
-    //   errorsRef.push("ID must be an integer");
-    // }
-    // if (!_.isInteger(pack.groupId)) {
-    //   errorsRef.push("GroupID must be an integer");
-    // }
     // if (!(pack.type in Types)) {
     //   errorsRef.push(
     //     `Type must be one of the following:${Utilities.mapToString(
@@ -72,12 +60,6 @@ export abstract class Validation {
     if (pack.name.length < this.minNameLength) {
       errorsRef.push(`Name must be at least ${this.minNameLength} characters`);
     }
-    // if (!_.isBoolean(pack.timed)) {
-    //   errorsRef.push("Timed must be a boolean");
-    // }
-    // if (!_.isBoolean(pack.liveResults)) {
-    //   errorsRef.push("LiveResults must be a boolean");
-    // }
     return _.isEmpty(errorsRef);
   }
   public static isValidCard(card: Card, errorsRef: string[]): boolean {
@@ -94,7 +76,7 @@ export abstract class Validation {
         this.isValidQuizcard(card, errorsRef);
         break;
       default:
-        errorsRef.push("Type");
+        // errorsRef.push("Type ");
         break;
     }
     return _.isEmpty(errorsRef);
@@ -103,60 +85,30 @@ export abstract class Validation {
     flashcard: IFlashcard,
     errorsRef: string[]
   ): void {
-    // if (!_.isInteger(flashcard.id)) {
-    //   errorsRef.push("ID must be an integer");
-    // }
-    // if (!_.isInteger(flashcard.packId)) {
-    //   errorsRef.push("PackID must be an integer");
-    // }
     if (flashcard.type !== Types.flash) {
       errorsRef.push("Type must be 'flash'");
     }
-    // if (!_.isString(flashcard.term)) {
-    //   errorsRef.push("Term must be a string");
-    // }
     if (_.isEmpty(flashcard.term)) {
       errorsRef.push("Term cannot be empty");
     }
-    // if (!_.isString(flashcard.definition)) {
-    //   errorsRef.push("Definition must be a string");
-    // }
     if (_.isEmpty(flashcard.definition)) {
       errorsRef.push("Definition cannot be empty");
     }
-    // if (!_.isBoolean(flashcard.starred)) {
-    //   errorsRef.push("Starred must be a boolean");
-    // }
   }
   private static isValidQuizcard(
     quizcard: IQuizcard,
     errorsRef: string[]
   ): void {
-    // if (!_.isInteger(quizcard.id)) {
-    //   errorsRef.push("ID must be an integer");
-    // }
-    // if (!_.isInteger(quizcard.packId)) {
-    //   errorsRef.push("PackID must be an integer");
-    // }
     if (quizcard.type !== Types.quiz) {
       errorsRef.push("Type must be 'quiz'");
     }
-    // if (!_.isString(quizcard.question)) {
-    //   errorsRef.push("Question must be a string");
-    // }
     if (_.isEmpty(quizcard.question)) {
       errorsRef.push("Question cannot be empty");
     }
     quizcard.answers.forEach((answer: IQuizAnswer) => {
-      // if (!_.isString(answer.text)) {
-      //   errorsRef.push("Answer text must be a string");
-      // }
       if (_.isEmpty(answer.text)) {
         errorsRef.push("Answer text cannot be empty");
       }
-      // if (!_.isBoolean(answer.correct)) {
-      //   errorsRef.push("Answer 'correct' property must be a boolean");
-      // }
     });
     switch (quizcard.quizType) {
       case QuizTypes.multipleChoice:
@@ -179,9 +131,6 @@ export abstract class Validation {
         // );
         break;
     }
-    // if (!_.isBoolean(quizcard.starred)) {
-    //   errorsRef.push("Starred must be a boolean");
-    // }
   }
   private static validateMultipleChoice(
     answers: IQuizAnswer[],
