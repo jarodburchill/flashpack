@@ -3,6 +3,8 @@ import { Card } from "../../models/Card";
 import { IFlashcard, INewFlashcard } from "../../models/Flashcard";
 import { IPack } from "../../models/Pack";
 import { INewQuizcard, IQuizcard } from "../../models/Quizcard";
+import { Utilities } from "../../util/Utilities";
+import { Validation } from "../../validation/Validation";
 import { BaseDAL } from "./BaseDAL";
 import { PacksDAL } from "./PacksDAL";
 
@@ -71,6 +73,7 @@ export class CardsDAL extends BaseDAL {
     return card;
   }
   public addCard(pack: IPack, newCard: INewFlashcard | INewQuizcard): void {
+    const errors: string[] = [];
     const card: Card = _.merge(
       { id: this.assignId(), packId: pack.id },
       newCard
@@ -79,6 +82,9 @@ export class CardsDAL extends BaseDAL {
     if (!new PacksDAL(this.electronStore).findPack(pack)) {
       throw new Error("Could not find matching Pack to add Cards to.");
     }
+    if (!Validation.isValidCard(card, errors)) {
+      throw new Error(`Invalid Card:${Utilities.mapToString(errors)}.`);
+    }
     if (pack.type !== card.type) {
       throw new Error(
         `A Pack with type '${pack.type}' can only contain ${
@@ -86,11 +92,11 @@ export class CardsDAL extends BaseDAL {
         }.`
       );
     }
-    // TODO: Validation
     cards.push(card);
     this.setCards(cards);
   }
   public updateCard(updatedCard: Card): void {
+    const errors: string[] = [];
     const cards: Card[] = this.getCards();
     const readonlyProps: string[] = ["id", "packId", "type", "quizType"];
     const updateIndex: number = cards.findIndex((card: Card) => {
@@ -102,7 +108,9 @@ export class CardsDAL extends BaseDAL {
     if (updateIndex === -1) {
       throw new Error("Could not find matching Card to update.");
     }
-    // TODO: Validation
+    if (!Validation.isValidCard(updatedCard, errors)) {
+      throw new Error(`Invalid Card:${Utilities.mapToString(errors)}.`);
+    }
     cards[updateIndex] = updatedCard;
     this.setCards(cards);
   }
