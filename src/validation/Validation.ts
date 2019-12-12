@@ -5,7 +5,6 @@ import { IGroup } from "../models/Group";
 import { IPack } from "../models/Pack";
 import { IQuizAnswer } from "../models/QuizAnswer";
 import { IQuizcard } from "../models/Quizcard";
-import { Utilities } from "../util/Utilities";
 
 enum Types {
   flash = "flash",
@@ -71,12 +70,7 @@ export abstract class Validation {
         this.isValidQuizcard(card, errorsRef);
         break;
       default:
-        // TODO: print errors better
-        errorsRef.push(
-          `Type must be one of the following:${Utilities.mapToString(
-            _.values(Types)
-          )}`
-        );
+        errorsRef.push(`Type must be '${Types.flash}' or '${Types.quiz}'`);
         break;
     }
     return _.isEmpty(errorsRef);
@@ -191,6 +185,7 @@ export abstract class Validation {
     answers: IQuizAnswer[],
     errorsRef: string[]
   ): void {
+    // TODO: handle question.match is null
     const blanks: number = question.match(this.blanksRegExp).length;
     if (blanks !== answers.length) {
       errorsRef.push(
