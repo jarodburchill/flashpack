@@ -86,6 +86,7 @@ export class CardsDAL extends BaseDAL {
       throw new Error(`Card type and Pack type must match.`);
     }
     if (!Validation.isValidCard(card, errors)) {
+      this.rollbackId();
       throw new Error(`Invalid Card:${Utilities.mapToString(errors)}.`);
     }
     cards.push(card);

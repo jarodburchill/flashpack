@@ -11,7 +11,6 @@ export abstract class BaseDAL {
     this.electronStore.set("nextId", id + 1);
     return id;
   }
-  // TODO: roll back on validation fail?
   protected rollbackId(): void {
     const id: number = this.electronStore.get("nextId");
     this.electronStore.set("nextId", id - 1);

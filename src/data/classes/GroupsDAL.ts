@@ -35,6 +35,7 @@ export class GroupsDAL extends BaseDAL {
     const group: IGroup = _.merge({ id: this.assignId() }, newGroup);
     const groups: IGroup[] = this.getGroups();
     if (!Validation.isValidGroup(group, errors)) {
+      this.rollbackId();
       throw new Error(`Invalid Group:${Utilities.mapToString(errors)}.`);
     }
     groups.push(group);
