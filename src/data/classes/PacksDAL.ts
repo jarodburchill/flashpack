@@ -50,6 +50,7 @@ export class PacksDAL extends BaseDAL {
     );
     const packs: IPack[] = this.getPacks();
     if (!new GroupsDAL(this.electronStore).findGroup(group)) {
+      this.rollbackId();
       throw new Error("Could not find matching Group to add Pack to.");
     }
     if (!Validation.isValidPack(pack, errors)) {

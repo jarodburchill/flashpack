@@ -80,9 +80,11 @@ export class CardsDAL extends BaseDAL {
     );
     const cards: Card[] = this.getCards();
     if (!new PacksDAL(this.electronStore).findPack(pack)) {
+      this.rollbackId();
       throw new Error("Could not find matching Pack to add Cards to.");
     }
     if (pack.type !== card.type) {
+      this.rollbackId();
       throw new Error(`Card type and Pack type must match.`);
     }
     if (!Validation.isValidCard(card, errors)) {
