@@ -185,8 +185,7 @@ export abstract class Validation {
     answers: IQuizAnswer[],
     errorsRef: string[]
   ): void {
-    // TODO: handle question.match is null
-    const blanks: number = question.match(this.blanksRegExp).length;
+    const blanks: number = (question.match(this.blanksRegExp) || []).length;
     if (blanks !== answers.length) {
       errorsRef.push(
         "Fill in the Blank Quizcards must have the same number of answer objects as blanks in the question string"
