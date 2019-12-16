@@ -80,9 +80,6 @@ export abstract class Validation {
     errorsRef: string[]
   ): void {
     // TODO: schema validation
-    if (flashcard.type !== Types.flash) {
-      errorsRef.push("Type must be 'flash'");
-    }
     if (_.isEmpty(flashcard.term)) {
       errorsRef.push("Term cannot be empty");
     }
@@ -95,9 +92,6 @@ export abstract class Validation {
     errorsRef: string[]
   ): void {
     // TODO: schema validation
-    if (quizcard.type !== Types.quiz) {
-      errorsRef.push("Type must be 'quiz'");
-    }
     if (_.isEmpty(quizcard.question)) {
       errorsRef.push("Question cannot be empty");
     }
