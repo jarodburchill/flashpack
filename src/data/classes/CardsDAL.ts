@@ -27,17 +27,13 @@ export class CardsDAL extends BaseDAL {
   }
   public getPackFlashcards(pack: IPack): IFlashcard[] {
     if (pack.type !== "flash") {
-      throw new Error(
-        "Pack was found, but it is a Quizcard Pack, not a Flashcard Pack."
-      );
+      throw new Error("Given Pack is a Quizcard Pack, not a Flashcard Pack.");
     }
     return this.getPackCards<IFlashcard>(pack);
   }
   public getPackQuizcards(pack: IPack): IQuizcard[] {
     if (pack.type !== "quiz") {
-      throw new Error(
-        "Pack was found, but it is a Falshcard Pack, not a Quizcard Pack."
-      );
+      throw new Error("Given Pack is a Falshcard Pack, not a Quizcard Pack.");
     }
     return this.getPackCards<IQuizcard>(pack);
   }
