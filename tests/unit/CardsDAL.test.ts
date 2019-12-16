@@ -1,8 +1,10 @@
 import ElectronStore = require("electron-store");
 import { CardsDAL } from "../../src/data/classes/CardsDAL";
+import { IFlashcard } from "../../src/models/Flashcard";
 import { IPack } from "../../src/models/Pack";
 import { ISchema } from "../../src/models/Schema";
 import { getEmptyStore, getPopulatedStore } from "../testData";
+import { IQuizcard } from "../../src/models/Quizcard";
 
 jest.mock("electron-store");
 
@@ -281,5 +283,71 @@ describe("getPackQuizcards", () => {
     }).toThrow(
       new Error("Given Pack is a Flashcard Pack, not a Quizcard Pack.")
     );
+  });
+});
+
+describe("findCard", () => {
+  it("finds the given flashcard in an existing cards array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IFlashcard = {
+      id: 8,
+      packId: 4,
+      type: "flash",
+      term: "2 + 2",
+      definition: "4",
+      starred: false,
+    };
+    expect(cardsDAL.findCard(card)).toBe(true);
+  });
+  it("finds the given quizcard in an existing cards array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IQuizcard = {
+      id: 10,
+      packId: 6,
+      type: "quiz",
+      quizType: "mc",
+      question: "what is the symbol for water?",
+      answers: [
+        { text: "H3O", correct: false },
+        { text: "H2O", correct: true },
+        { text: "B2O", correct: false },
+        { text: "W2O", correct: false },
+      ],
+      starred: false,
+    };
+    expect(cardsDAL.findCard(card)).toBe(true);
+  });
+  it("does not find a given card in an existing cards array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IFlashcard = {
+      id: 20,
+      packId: 1,
+      type: "flash",
+      term: "Does not exist",
+      definition: "def",
+      starred: false,
+    };
+    expect(cardsDAL.findCard(card)).toBe(false);
+  });
+  it("given card id exists but is not exactly equal to the card in storage", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IQuizcard = {
+      id: 10,
+      packId: 6,
+      type: "quiz",
+      quizType: "tf",
+      question: "what is the symbol for water?",
+      answers: [
+        { text: "H3O", correct: false },
+        { text: "H2O", correct: true },
+        { text: "B2O", correct: false },
+      ],
+      starred: true,
+    };
+    expect(cardsDAL.findCard(card)).toBe(false);
   });
 });
