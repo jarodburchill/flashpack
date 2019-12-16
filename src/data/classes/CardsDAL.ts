@@ -64,7 +64,7 @@ export class CardsDAL extends BaseDAL {
   public getQuizcard(id: number): IQuizcard {
     const card: IQuizcard = this.getCard<IQuizcard>(id);
     if (card.type !== "quiz") {
-      throw new Error("Card was found, but it is a Falshcard, not a Quizcard.");
+      throw new Error("Card was found, but it is a Flashcard, not a Quizcard.");
     }
     return card;
   }
