@@ -382,3 +382,40 @@ describe("getFlashcard", () => {
     );
   });
 });
+
+describe("getQuizcard", () => {
+  it("gets a specified quizcard from an existing cards array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    expect(cardsDAL.getQuizcard(10)).toEqual({
+      id: 10,
+      packId: 6,
+      type: "quiz",
+      quizType: "mc",
+      question: "what is the symbol for water?",
+      answers: [
+        { text: "H3O", correct: false },
+        { text: "H2O", correct: true },
+        { text: "B2O", correct: false },
+        { text: "W2O", correct: false },
+      ],
+      starred: false,
+    });
+  });
+  it("throws an error when a specified quizcard cannot be found", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    expect(() => {
+      cardsDAL.getQuizcard(10);
+    }).toThrow(new Error("Could not find matching Card ID."));
+  });
+  it("throws an error when card found has a type of 'flash'", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    expect(() => {
+      cardsDAL.getQuizcard(8);
+    }).toThrow(
+      new Error("Card was found, but it is a Flashcard, not a Quizcard.")
+    );
+  });
+});
