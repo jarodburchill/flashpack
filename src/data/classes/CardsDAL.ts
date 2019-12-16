@@ -49,7 +49,7 @@ export class CardsDAL extends BaseDAL {
     const requestedCard: Card = cards.find((card: Card) => {
       return card.id === id;
     });
-    if (requestedCard !== undefined) {
+    if (requestedCard === undefined) {
       throw new Error("Could not find matching Card ID.");
     }
     return requestedCard as T;
