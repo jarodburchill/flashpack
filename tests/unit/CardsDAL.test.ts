@@ -88,3 +88,82 @@ describe("getCards", () => {
     ]);
   });
 });
+
+describe("getPackFlashcards", () => {
+  it("gets an array of flashcards that belong to an existing pack", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const pack: IPack = electronStore.store.packs[0];
+    expect(cardsDAL.getPackFlashcards(pack)).toEqual([
+      {
+        id: 7,
+        packId: 4,
+        type: "flash",
+        term: "2 + 2",
+        definition: "4",
+        starred: false,
+      },
+      {
+        id: 8,
+        packId: 4,
+        type: "flash",
+        term: "2 - 2",
+        definition: "0",
+        starred: true,
+      },
+    ]);
+  });
+  it("gets an empty array for an existing pack that has no cards", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const packsDAL: CardsDAL = new CardsDAL(electronStore);
+    const pack: IPack = electronStore.store.packs[1];
+    expect(packsDAL.getPackFlashcards(pack)).toEqual([]);
+  });
+  it("throws an error when attempting to get cards for a non-existing pack", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const pack: IPack = {
+      id: 2,
+      groupId: 1,
+      name: "Does not exist",
+      type: "flash",
+      timed: false,
+      liveResults: false,
+    };
+    expect(() => {
+      cardsDAL.getPackFlashcards(pack);
+    }).toThrow(new Error("Could not find matching Pack to get Cards from."));
+  });
+  it("throws an error when attempting to get cards for an existing pack with modified values", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const pack: IPack = {
+      id: 4,
+      groupId: 2,
+      name: "Wrong name",
+      type: "flash",
+      timed: false,
+      liveResults: false,
+    };
+    expect(() => {
+      cardsDAL.getPackFlashcards(pack);
+    }).toThrow(new Error("Could not find matching Pack to get Cards from."));
+  });
+  it("should ", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const pack: IPack = {
+      id: 4,
+      groupId: 1,
+      name: "Unit 1",
+      type: "quiz",
+      timed: false,
+      liveResults: false,
+    };
+    expect(() => {
+      cardsDAL.getPackFlashcards(pack);
+    }).toThrow(
+      new Error("Given Pack is a Quizcard Pack, not a Flashcard Pack.")
+    );
+  });
+});
