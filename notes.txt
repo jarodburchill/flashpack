@@ -1,3 +1,4 @@
 - find lodash function for mapToString
 - look into using io-ts
 - do rollback better
+- check rollback in all DAL add/update tests
