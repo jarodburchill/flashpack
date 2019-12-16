@@ -40,7 +40,7 @@ export class CardsDAL extends BaseDAL {
   public findCard(searchCard: Card): boolean {
     const cards: Card[] = this.getCards();
     const requestedCard: Card = cards.find((card: Card) => {
-      return card.id === searchCard.id;
+      return _.isEqual(card, searchCard);
     });
     return requestedCard !== undefined;
   }
