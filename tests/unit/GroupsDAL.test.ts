@@ -48,7 +48,10 @@ describe("getGroup", () => {
   it("gets a specified group from an existing groups array", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
-    expect(groupsDAL.getGroup(1)).toEqual({ id: 1, name: "Math" });
+    expect(groupsDAL.getGroup(1)).toEqual({
+      id: 1,
+      name: "Math",
+    });
   });
   it("throws an error when a specified group cannot be found", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
