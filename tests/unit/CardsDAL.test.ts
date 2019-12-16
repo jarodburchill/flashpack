@@ -2,9 +2,9 @@ import ElectronStore = require("electron-store");
 import { CardsDAL } from "../../src/data/classes/CardsDAL";
 import { IFlashcard } from "../../src/models/Flashcard";
 import { IPack } from "../../src/models/Pack";
+import { IQuizcard } from "../../src/models/Quizcard";
 import { ISchema } from "../../src/models/Schema";
 import { getEmptyStore, getPopulatedStore } from "../testData";
-import { IQuizcard } from "../../src/models/Quizcard";
 
 jest.mock("electron-store");
 
@@ -349,5 +349,36 @@ describe("findCard", () => {
       starred: true,
     };
     expect(cardsDAL.findCard(card)).toBe(false);
+  });
+});
+
+describe("getFlashcard", () => {
+  it("gets a specified flashcard from an existing cards array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    expect(cardsDAL.getFlashcard(8)).toEqual({
+      id: 8,
+      packId: 4,
+      type: "flash",
+      term: "2 + 2",
+      definition: "4",
+      starred: false,
+    });
+  });
+  it("throws an error when a specified flashcard cannot be found", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    expect(() => {
+      cardsDAL.getFlashcard(8);
+    }).toThrow(new Error("Could not find matching Card ID."));
+  });
+  it("throws an error when card found has a type of 'quiz'", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    expect(() => {
+      cardsDAL.getFlashcard(10);
+    }).toThrow(
+      new Error("Card was found, but it is a Quizcard, not a Flashcard.")
+    );
   });
 });
