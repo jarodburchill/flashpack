@@ -1,0 +1,3 @@
+- find lodash function for mapToString
+- look into using io-ts
+- do rollback better
