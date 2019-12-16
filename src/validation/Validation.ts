@@ -94,6 +94,7 @@ export abstract class Validation {
     quizcard: IQuizcard,
     errorsRef: string[]
   ): void {
+    // TODO: schema validation
     if (quizcard.type !== Types.quiz) {
       errorsRef.push("Type must be 'quiz'");
     }
@@ -126,7 +127,6 @@ export abstract class Validation {
     answers: IQuizAnswer[],
     errorsRef: string[]
   ): void {
-    // TODO: schema validation
     if (answers.length < this.minAnswers || answers.length > this.maxAnswers) {
       errorsRef.push(
         `Multiple Choice Quizcards must contain between ${this.minAnswers}-${this.maxAnswers} answer objects`

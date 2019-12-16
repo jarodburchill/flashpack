@@ -2,3 +2,4 @@
 - look into using io-ts
 - do rollback better
 - check rollback in all DAL add/update tests
+- try removing validation brances from DAL to check coverage
