@@ -149,7 +149,7 @@ describe("getPackFlashcards", () => {
       cardsDAL.getPackFlashcards(pack);
     }).toThrow(new Error("Could not find matching Pack to get Cards from."));
   });
-  it("should ", () => {
+  it("throws an error when attempting to get cards for a pack with a type of 'quiz'", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const cardsDAL: CardsDAL = new CardsDAL(electronStore);
     const pack: IPack = {
