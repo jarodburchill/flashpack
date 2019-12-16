@@ -17,7 +17,7 @@ describe("getCards", () => {
     const cardsDAL: CardsDAL = new CardsDAL(electronStore);
     expect(cardsDAL.getCards()).toEqual([
       {
-        id: 7,
+        id: 8,
         packId: 4,
         type: "flash",
         term: "2 + 2",
@@ -25,7 +25,7 @@ describe("getCards", () => {
         starred: false,
       },
       {
-        id: 8,
+        id: 9,
         packId: 4,
         type: "flash",
         term: "2 - 2",
@@ -33,7 +33,7 @@ describe("getCards", () => {
         starred: true,
       },
       {
-        id: 9,
+        id: 10,
         packId: 6,
         type: "quiz",
         quizType: "mc",
@@ -47,7 +47,7 @@ describe("getCards", () => {
         starred: false,
       },
       {
-        id: 10,
+        id: 11,
         packId: 6,
         type: "quiz",
         quizType: "tf",
@@ -59,7 +59,7 @@ describe("getCards", () => {
         starred: true,
       },
       {
-        id: 11,
+        id: 12,
         packId: 6,
         type: "quiz",
         quizType: "chk",
@@ -74,7 +74,7 @@ describe("getCards", () => {
         starred: false,
       },
       {
-        id: 12,
+        id: 13,
         packId: 6,
         type: "quiz",
         quizType: "blank",
@@ -96,7 +96,7 @@ describe("getPackFlashcards", () => {
     const pack: IPack = electronStore.store.packs[0];
     expect(cardsDAL.getPackFlashcards(pack)).toEqual([
       {
-        id: 7,
+        id: 8,
         packId: 4,
         type: "flash",
         term: "2 + 2",
@@ -104,7 +104,7 @@ describe("getPackFlashcards", () => {
         starred: false,
       },
       {
-        id: 8,
+        id: 9,
         packId: 4,
         type: "flash",
         term: "2 - 2",

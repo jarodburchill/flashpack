@@ -19,7 +19,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
   return new ElectronStore<ISchema>({
     defaults: {
       darkMode: false,
-      nextId: 13,
+      nextId: 14,
       groups: [
         { id: 1, name: "Math" },
         { id: 2, name: "Science" },
@@ -50,10 +50,18 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           timed: true,
           liveResults: false,
         },
+        {
+          id: 7,
+          groupId: 2,
+          name: "Semester 2",
+          type: "quiz",
+          timed: false,
+          liveResults: true,
+        },
       ],
       cards: [
         {
-          id: 7,
+          id: 8,
           packId: 4,
           type: "flash",
           term: "2 + 2",
@@ -61,7 +69,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           starred: false,
         },
         {
-          id: 8,
+          id: 9,
           packId: 4,
           type: "flash",
           term: "2 - 2",
@@ -69,7 +77,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           starred: true,
         },
         {
-          id: 9,
+          id: 10,
           packId: 6,
           type: "quiz",
           quizType: "mc",
@@ -83,7 +91,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           starred: false,
         },
         {
-          id: 10,
+          id: 11,
           packId: 6,
           type: "quiz",
           quizType: "tf",
@@ -95,7 +103,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           starred: true,
         },
         {
-          id: 11,
+          id: 12,
           packId: 6,
           type: "quiz",
           quizType: "chk",
@@ -110,7 +118,7 @@ export const getPopulatedStore: () => ElectronStore<ISchema> = () => {
           starred: false,
         },
         {
-          id: 12,
+          id: 13,
           packId: 6,
           type: "quiz",
           quizType: "blank",

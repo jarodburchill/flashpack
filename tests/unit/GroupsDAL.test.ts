@@ -74,7 +74,7 @@ describe("addGroup", () => {
       { id: 1, name: "Math" },
       { id: 2, name: "Science" },
       { id: 3, name: "Art" },
-      { id: 13, name: "Web Development" },
+      { id: 14, name: "Web Development" },
     ]);
   });
   it("auto increments next id upon adding a group", () => {
@@ -173,7 +173,7 @@ describe("removeGroup", () => {
     ]);
     expect(electronStore.store.cards).toEqual([
       {
-        id: 7,
+        id: 8,
         packId: 4,
         type: "flash",
         term: "2 + 2",
@@ -181,7 +181,7 @@ describe("removeGroup", () => {
         starred: false,
       },
       {
-        id: 8,
+        id: 9,
         packId: 4,
         type: "flash",
         term: "2 - 2",

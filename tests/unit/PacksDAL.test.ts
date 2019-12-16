@@ -41,6 +41,14 @@ describe("getPacks", () => {
         timed: true,
         liveResults: false,
       },
+      {
+        id: 7,
+        groupId: 2,
+        name: "Semester 2",
+        type: "quiz",
+        timed: false,
+        liveResults: true,
+      },
     ]);
   });
 });
@@ -194,7 +202,15 @@ describe("addPack", () => {
         liveResults: false,
       },
       {
-        id: 13,
+        id: 7,
+        groupId: 2,
+        name: "Semester 2",
+        type: "quiz",
+        timed: false,
+        liveResults: true,
+      },
+      {
+        id: 14,
         groupId: 1,
         name: "New pack",
         type: "flash",
@@ -245,7 +261,15 @@ describe("addPack", () => {
         liveResults: false,
       },
       {
-        id: 13,
+        id: 7,
+        groupId: 2,
+        name: "Semester 2",
+        type: "quiz",
+        timed: false,
+        liveResults: true,
+      },
+      {
+        id: 14,
         groupId: 1,
         name: "Pack 1",
         type: "flash",
@@ -253,7 +277,7 @@ describe("addPack", () => {
         liveResults: false,
       },
       {
-        id: 14,
+        id: 15,
         groupId: 1,
         name: "Pack 2",
         type: "quiz",
@@ -328,6 +352,14 @@ describe("updatePack", () => {
         timed: true,
         liveResults: false,
       },
+      {
+        id: 7,
+        groupId: 2,
+        name: "Semester 2",
+        type: "quiz",
+        timed: false,
+        liveResults: true,
+      },
     ]);
   });
   it("updates the name of the multiple packs in an existing packs array", () => {
@@ -363,6 +395,14 @@ describe("updatePack", () => {
         type: "quiz",
         timed: true,
         liveResults: false,
+      },
+      {
+        id: 7,
+        groupId: 2,
+        name: "Semester 2",
+        type: "quiz",
+        timed: false,
+        liveResults: true,
       },
     ]);
   });
@@ -438,10 +478,18 @@ describe("removePack", () => {
         timed: false,
         liveResults: false,
       },
+      {
+        id: 7,
+        groupId: 2,
+        name: "Semester 2",
+        type: "quiz",
+        timed: false,
+        liveResults: true,
+      },
     ]);
     expect(electronStore.store.cards).toEqual([
       {
-        id: 7,
+        id: 8,
         packId: 4,
         type: "flash",
         term: "2 + 2",
@@ -449,7 +497,7 @@ describe("removePack", () => {
         starred: false,
       },
       {
-        id: 8,
+        id: 9,
         packId: 4,
         type: "flash",
         term: "2 - 2",
