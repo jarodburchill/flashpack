@@ -33,7 +33,7 @@ export class CardsDAL extends BaseDAL {
   }
   public getPackQuizcards(pack: IPack): IQuizcard[] {
     if (pack.type !== "quiz") {
-      throw new Error("Given Pack is a Falshcard Pack, not a Quizcard Pack.");
+      throw new Error("Given Pack is a Flashcard Pack, not a Quizcard Pack.");
     }
     return this.getPackCards<IQuizcard>(pack);
   }
