@@ -422,7 +422,7 @@ describe("updatePack", () => {
     }).toThrow(new Error("Could not find matching Pack to update."));
   });
   it("throws an error when attempting to update an existing group with modified readonly values", () => {
-    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const packsDAL: PacksDAL = new PacksDAL(electronStore);
     const pack: IPack = {
       id: 4,
