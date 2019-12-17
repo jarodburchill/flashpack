@@ -771,32 +771,328 @@ describe("addCard", () => {
     }).toThrow(new Error("Card type and Pack type must match."));
   });
   it("throws an error when attempting to add a card to a non existing pack", () => {
-    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const cardsDAL: CardsDAL = new CardsDAL(electronStore);
-    const pack: IPack = electronStore.store.packs[0];
+    const pack: IPack = {
+      id: 1,
+      groupId: 1,
+      type: "flash",
+      name: "Does not exist",
+      timed: false,
+      liveResults: false,
+    };
     expect(() => {
       cardsDAL.addCard(pack, {
-        type: "quiz",
-        quizType: "tf",
-        question: "Q",
-        answers: [
-          { text: "false", correct: false },
-          { text: "true", correct: true },
-        ],
+        type: "flash",
+        term: "New",
+        definition: "Test",
         starred: false,
       });
-    }).toThrow(new Error("Card type and Pack type must match."));
+    }).toThrow(new Error("Could not find matching Pack to add Cards to."));
   });
 });
 
 describe("updateCard", () => {
-  it("updates the name of a flashcard in an existing cards array", () => {});
-  it("updates the name of a quizcard in an existing cards array", () => {});
-  it("updates the name of the multiple cards in an existing cards array", () => {});
-  it("throws an error when attempting to update a non-existing card", () => {});
-  it("throws an error when attempting to update an existing card with modified readonly values", () => {});
-  it("throws an error when flashcard is invalid", () => {});
-  it("throws an error when quizcard is invalid", () => {});
+  it("updates the term of a flashcard in an existing cards array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IFlashcard = electronStore.store.cards[0] as IFlashcard;
+    card.term = "Updated";
+    cardsDAL.updateCard(card);
+    expect(electronStore.store.cards).toEqual([
+      {
+        id: 8,
+        packId: 4,
+        type: "flash",
+        term: "Updated",
+        definition: "4",
+        starred: false,
+      },
+      {
+        id: 9,
+        packId: 4,
+        type: "flash",
+        term: "2 - 2",
+        definition: "0",
+        starred: true,
+      },
+      {
+        id: 10,
+        packId: 6,
+        type: "quiz",
+        quizType: "mc",
+        question: "what is the symbol for water?",
+        answers: [
+          { text: "H3O", correct: false },
+          { text: "H2O", correct: true },
+          { text: "B2O", correct: false },
+          { text: "W2O", correct: false },
+        ],
+        starred: false,
+      },
+      {
+        id: 11,
+        packId: 6,
+        type: "quiz",
+        quizType: "tf",
+        question: "water boils at 100 degrees celsius.",
+        answers: [
+          { text: "false", correct: false },
+          { text: "true", correct: true },
+        ],
+        starred: true,
+      },
+      {
+        id: 12,
+        packId: 6,
+        type: "quiz",
+        quizType: "chk",
+        question: "which of the following are states of matter.",
+        answers: [
+          { text: "Liquid", correct: true },
+          { text: "Gas", correct: true },
+          { text: "Gum", correct: false },
+          { text: "Sticky", correct: false },
+          { text: "Solid", correct: true },
+        ],
+        starred: false,
+      },
+      {
+        id: 13,
+        packId: 6,
+        type: "quiz",
+        quizType: "blank",
+        question: "$_$ is the study of the natural $_$.",
+        answers: [
+          { text: "Science", correct: true },
+          { text: "word", correct: true },
+        ],
+        starred: true,
+      },
+    ]);
+  });
+  it("updates the question of a quizcard in an existing cards array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IQuizcard = electronStore.store.cards[2] as IQuizcard;
+    card.question = "Updated";
+    cardsDAL.updateCard(card);
+    expect(electronStore.store.cards).toEqual([
+      {
+        id: 8,
+        packId: 4,
+        type: "flash",
+        term: "2 + 2",
+        definition: "4",
+        starred: false,
+      },
+      {
+        id: 9,
+        packId: 4,
+        type: "flash",
+        term: "2 - 2",
+        definition: "0",
+        starred: true,
+      },
+      {
+        id: 10,
+        packId: 6,
+        type: "quiz",
+        quizType: "mc",
+        question: "Updated",
+        answers: [
+          { text: "H3O", correct: false },
+          { text: "H2O", correct: true },
+          { text: "B2O", correct: false },
+          { text: "W2O", correct: false },
+        ],
+        starred: false,
+      },
+      {
+        id: 11,
+        packId: 6,
+        type: "quiz",
+        quizType: "tf",
+        question: "water boils at 100 degrees celsius.",
+        answers: [
+          { text: "false", correct: false },
+          { text: "true", correct: true },
+        ],
+        starred: true,
+      },
+      {
+        id: 12,
+        packId: 6,
+        type: "quiz",
+        quizType: "chk",
+        question: "which of the following are states of matter.",
+        answers: [
+          { text: "Liquid", correct: true },
+          { text: "Gas", correct: true },
+          { text: "Gum", correct: false },
+          { text: "Sticky", correct: false },
+          { text: "Solid", correct: true },
+        ],
+        starred: false,
+      },
+      {
+        id: 13,
+        packId: 6,
+        type: "quiz",
+        quizType: "blank",
+        question: "$_$ is the study of the natural $_$.",
+        answers: [
+          { text: "Science", correct: true },
+          { text: "word", correct: true },
+        ],
+        starred: true,
+      },
+    ]);
+  });
+  it("updates multiple cards in an existing cards array", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const first: IFlashcard = electronStore.store.cards[0] as IFlashcard;
+    const second: IQuizcard = electronStore.store.cards[2] as IQuizcard;
+    first.term = "Update";
+    second.question = "Next Update";
+    cardsDAL.updateCard(first);
+    cardsDAL.updateCard(second);
+    expect([
+      {
+        id: 8,
+        packId: 4,
+        type: "flash",
+        term: "Update",
+        definition: "4",
+        starred: false,
+      },
+      {
+        id: 9,
+        packId: 4,
+        type: "flash",
+        term: "2 - 2",
+        definition: "0",
+        starred: true,
+      },
+      {
+        id: 10,
+        packId: 6,
+        type: "quiz",
+        quizType: "mc",
+        question: "Next Update",
+        answers: [
+          { text: "H3O", correct: false },
+          { text: "H2O", correct: true },
+          { text: "B2O", correct: false },
+          { text: "W2O", correct: false },
+        ],
+        starred: false,
+      },
+      {
+        id: 11,
+        packId: 6,
+        type: "quiz",
+        quizType: "tf",
+        question: "water boils at 100 degrees celsius.",
+        answers: [
+          { text: "false", correct: false },
+          { text: "true", correct: true },
+        ],
+        starred: true,
+      },
+      {
+        id: 12,
+        packId: 6,
+        type: "quiz",
+        quizType: "chk",
+        question: "which of the following are states of matter.",
+        answers: [
+          { text: "Liquid", correct: true },
+          { text: "Gas", correct: true },
+          { text: "Gum", correct: false },
+          { text: "Sticky", correct: false },
+          { text: "Solid", correct: true },
+        ],
+        starred: false,
+      },
+      {
+        id: 13,
+        packId: 6,
+        type: "quiz",
+        quizType: "blank",
+        question: "$_$ is the study of the natural $_$.",
+        answers: [
+          { text: "Science", correct: true },
+          { text: "word", correct: true },
+        ],
+        starred: true,
+      },
+    ]);
+  });
+  it("throws an error when attempting to update a non-existing card", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IFlashcard = {
+      id: 2,
+      packId: 1,
+      type: "flash",
+      term: "Does not exist",
+      definition: "Def",
+      starred: false,
+    };
+    expect(() => {
+      cardsDAL.updateCard(card);
+    }).toThrow(new Error("Could not find matching Card to update."));
+  });
+  it("throws an error when attempting to update an existing card with modified readonly values", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IFlashcard = {
+      id: 8,
+      packId: 5,
+      type: "flash",
+      term: "Update",
+      definition: "Def",
+      starred: false,
+    };
+    expect(() => {
+      cardsDAL.updateCard(card);
+    }).toThrow(new Error("Could not find matching Card to update."));
+  });
+  it("throws an error when flashcard is invalid", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IFlashcard = electronStore.store.cards[0] as IFlashcard;
+    card.term = "";
+    card.definition = "";
+    expect(() => {
+      cardsDAL.updateCard(card);
+    }).toThrow(
+      new Error(
+        "Invalid Card:" +
+          "\nTerm cannot be empty," +
+          "\nDefinition cannot be empty."
+      )
+    );
+  });
+  it("throws an error when quizcard is invalid", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IQuizcard = electronStore.store.cards[2] as IQuizcard;
+    card.question = "";
+    card.answers = [];
+    expect(() => {
+      cardsDAL.updateCard(card);
+    }).toThrow(
+      new Error(
+        "Invalid Card:" +
+          "\nQuestion cannot be empty," +
+          "\nMultiple Choice Quizcards must contain between 3-24 answer objects," +
+          "\nMultiple Choice Quizcards must have exactly 1 correct answer."
+      )
+    );
+  });
 });
 
 describe("removeCard", () => {
