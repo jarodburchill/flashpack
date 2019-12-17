@@ -788,3 +788,20 @@ describe("addCard", () => {
     }).toThrow(new Error("Card type and Pack type must match."));
   });
 });
+
+describe("updateCard", () => {
+  it("updates the name of a flashcard in an existing cards array", () => {});
+  it("updates the name of a quizcard in an existing cards array", () => {});
+  it("updates the name of the multiple cards in an existing cards array", () => {});
+  it("throws an error when attempting to update a non-existing card", () => {});
+  it("throws an error when attempting to update an existing card with modified readonly values", () => {});
+  it("throws an error when flashcard is invalid", () => {});
+  it("throws an error when quizcard is invalid", () => {});
+});
+
+describe("removeCard", () => {
+  it("removes existing flashcard", () => {});
+  it("removes existing quizcard", () => {});
+  it("throws an error when attempting to remove an existing card with modified values", () => {});
+  it("throws an error when attempting to remove a non-existing card", () => {});
+});
