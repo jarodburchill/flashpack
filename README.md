@@ -2,19 +2,16 @@
 
 ## Dependencies
 
-<a href="https://www.typescriptlang.org/">
+<a href="https://www.typescriptlang.org/" style="padding-right: 5px;">
   <img src="https://github.com/jarodburchill/flashpack/blob/master/github/img/typescript.png" title="TypeScript" width="80" height="80">
 </a>
-&nbsp;
-<a href="https://electronjs.org/">
+<a href="https://electronjs.org/" style="padding-right: 5px;">
   <img src="https://github.com/jarodburchill/flashpack/blob/master/github/img/electron.png" title="Electron" width="80" height="80">
 </a>
-&nbsp;
-<a href="https://lit-element.polymer-project.org/">
+<a href="https://lit-element.polymer-project.org/" style="padding-right: 5px;">
   <img src="https://github.com/jarodburchill/flashpack/blob/master/github/img/lit-element.png" title="LitElement" width="220" height="80">
 </a>
-&nbsp;
-<a href="https://jestjs.io/">
+<a href="https://jestjs.io/" style="padding-right: 5px;">
   <img src="https://github.com/jarodburchill/flashpack/blob/master/github/img/jest.png" title="Jest" width="80" height="80">
 </a><br><br>
 
