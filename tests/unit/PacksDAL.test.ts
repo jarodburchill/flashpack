@@ -286,7 +286,7 @@ describe("addPack", () => {
       },
     ]);
   });
-  it("throws an error when pack name is too short and bool values are invalid", () => {
+  it("throws an error when pack name is too short and bool values are invalid and rolls back id", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const packsDAL: PacksDAL = new PacksDAL(electronStore);
     const group: IGroup = electronStore.store.groups[0];
@@ -304,11 +304,15 @@ describe("addPack", () => {
           "\nName must be at least 2 characters."
       )
     );
+    expect(electronStore.store.nextId).toBe(14);
   });
-  it("throws an error when attempting to add a pack to a non existing group", () => {
+  it("throws an error when attempting to add a pack to a non existing group and rolls back id", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const packsDAL: PacksDAL = new PacksDAL(electronStore);
-    const group: IGroup = { id: 1, name: "Does not exist" };
+    const group: IGroup = {
+      id: 1,
+      name: "Does not exist",
+    };
     expect(() => {
       packsDAL.addPack(group, {
         name: "New pack",
@@ -317,6 +321,7 @@ describe("addPack", () => {
         liveResults: false,
       });
     }).toThrow(new Error("Could not find matching Group to add Pack to."));
+    expect(electronStore.store.nextId).toBe(1);
   });
 });
 

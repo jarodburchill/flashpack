@@ -713,7 +713,7 @@ describe("addCard", () => {
       },
     ]);
   });
-  it("throws an error when flashcard is invalid", () => {
+  it("throws an error when flashcard is invalid and rolls back id", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const cardsDAL: CardsDAL = new CardsDAL(electronStore);
     const pack: IPack = electronStore.store.packs[0];
@@ -731,8 +731,9 @@ describe("addCard", () => {
           "\nDefinition cannot be empty."
       )
     );
+    expect(electronStore.store.nextId).toBe(14);
   });
-  it("throws an error when quizcard is invalid", () => {
+  it("throws an error when quizcard is invalid and rolls back id", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const cardsDAL: CardsDAL = new CardsDAL(electronStore);
     const pack: IPack = electronStore.store.packs[3];
@@ -752,8 +753,9 @@ describe("addCard", () => {
           "\nMultiple Choice Quizcards must have exactly 1 correct answer."
       )
     );
+    expect(electronStore.store.nextId).toBe(14);
   });
-  it("throws an error when card type does not equal pack type", () => {
+  it("throws an error when card type does not equal pack type and rolls back id", () => {
     const electronStore: ElectronStore<ISchema> = getPopulatedStore();
     const cardsDAL: CardsDAL = new CardsDAL(electronStore);
     const pack: IPack = electronStore.store.packs[0];
@@ -763,14 +765,21 @@ describe("addCard", () => {
         quizType: "tf",
         question: "Q",
         answers: [
-          { text: "false", correct: false },
-          { text: "true", correct: true },
+          {
+            text: "false",
+            correct: false,
+          },
+          {
+            text: "true",
+            correct: true,
+          },
         ],
         starred: false,
       });
     }).toThrow(new Error("Card type and Pack type must match."));
+    expect(electronStore.store.nextId).toBe(14);
   });
-  it("throws an error when attempting to add a card to a non existing pack", () => {
+  it("throws an error when attempting to add a card to a non existing pack and rolls back id", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const cardsDAL: CardsDAL = new CardsDAL(electronStore);
     const pack: IPack = {
@@ -789,6 +798,7 @@ describe("addCard", () => {
         starred: false,
       });
     }).toThrow(new Error("Could not find matching Pack to add Cards to."));
+    expect(electronStore.store.nextId).toBe(1);
   });
 });
 

@@ -90,7 +90,7 @@ describe("addGroup", () => {
       { id: 2, name: "Science" },
     ]);
   });
-  it("throws an error when group name is too short", () => {
+  it("throws an error when group name is too short and rolls back id", () => {
     const electronStore: ElectronStore<ISchema> = getEmptyStore();
     const groupsDAL: GroupsDAL = new GroupsDAL(electronStore);
     expect(() => {
@@ -98,6 +98,7 @@ describe("addGroup", () => {
     }).toThrow(
       new Error("Invalid Group:\nName must be at least 2 characters.")
     );
+    expect(electronStore.store.nextId).toBe(1);
   });
 });
 
