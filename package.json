@@ -1,7 +1,7 @@
 {
   "name": "flashpack",
   "version": "1.0.0",
-  "description": "A flash card Electron application written with Typescript",
+  "description": "A flashcard/quiz application to help you study. Built using Electron and TypeScript.",
   "main": "./dist/main.js",
   "scripts": {
     "build": "tsc",
