@@ -1096,8 +1096,172 @@ describe("updateCard", () => {
 });
 
 describe("removeCard", () => {
-  it("removes existing flashcard", () => {});
-  it("removes existing quizcard", () => {});
-  it("throws an error when attempting to remove an existing card with modified values", () => {});
-  it("throws an error when attempting to remove a non-existing card", () => {});
+  it("removes existing flashcard", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IFlashcard = electronStore.store.cards[0] as IFlashcard;
+    cardsDAL.removeCard(card);
+    expect(electronStore.store.cards).toEqual([
+      {
+        id: 9,
+        packId: 4,
+        type: "flash",
+        term: "2 - 2",
+        definition: "0",
+        starred: true,
+      },
+      {
+        id: 10,
+        packId: 6,
+        type: "quiz",
+        quizType: "mc",
+        question: "what is the symbol for water?",
+        answers: [
+          { text: "H3O", correct: false },
+          { text: "H2O", correct: true },
+          { text: "B2O", correct: false },
+          { text: "W2O", correct: false },
+        ],
+        starred: false,
+      },
+      {
+        id: 11,
+        packId: 6,
+        type: "quiz",
+        quizType: "tf",
+        question: "water boils at 100 degrees celsius.",
+        answers: [
+          { text: "false", correct: false },
+          { text: "true", correct: true },
+        ],
+        starred: true,
+      },
+      {
+        id: 12,
+        packId: 6,
+        type: "quiz",
+        quizType: "chk",
+        question: "which of the following are states of matter.",
+        answers: [
+          { text: "Liquid", correct: true },
+          { text: "Gas", correct: true },
+          { text: "Gum", correct: false },
+          { text: "Sticky", correct: false },
+          { text: "Solid", correct: true },
+        ],
+        starred: false,
+      },
+      {
+        id: 13,
+        packId: 6,
+        type: "quiz",
+        quizType: "blank",
+        question: "$_$ is the study of the natural $_$.",
+        answers: [
+          { text: "Science", correct: true },
+          { text: "word", correct: true },
+        ],
+        starred: true,
+      },
+    ]);
+  });
+  it("removes existing quizcard", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IQuizcard = electronStore.store.cards[2] as IQuizcard;
+    cardsDAL.removeCard(card);
+    expect(electronStore.store.cards).toEqual([
+      {
+        id: 8,
+        packId: 4,
+        type: "flash",
+        term: "2 + 2",
+        definition: "4",
+        starred: false,
+      },
+      {
+        id: 9,
+        packId: 4,
+        type: "flash",
+        term: "2 - 2",
+        definition: "0",
+        starred: true,
+      },
+      {
+        id: 11,
+        packId: 6,
+        type: "quiz",
+        quizType: "tf",
+        question: "water boils at 100 degrees celsius.",
+        answers: [
+          { text: "false", correct: false },
+          { text: "true", correct: true },
+        ],
+        starred: true,
+      },
+      {
+        id: 12,
+        packId: 6,
+        type: "quiz",
+        quizType: "chk",
+        question: "which of the following are states of matter.",
+        answers: [
+          { text: "Liquid", correct: true },
+          { text: "Gas", correct: true },
+          { text: "Gum", correct: false },
+          { text: "Sticky", correct: false },
+          { text: "Solid", correct: true },
+        ],
+        starred: false,
+      },
+      {
+        id: 13,
+        packId: 6,
+        type: "quiz",
+        quizType: "blank",
+        question: "$_$ is the study of the natural $_$.",
+        answers: [
+          { text: "Science", correct: true },
+          { text: "word", correct: true },
+        ],
+        starred: true,
+      },
+    ]);
+  });
+  it("throws an error when attempting to remove an existing card with modified values", () => {
+    const electronStore: ElectronStore<ISchema> = getPopulatedStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IFlashcard = {
+      id: 8,
+      packId: 5,
+      type: "flash",
+      term: "Update",
+      definition: "Def",
+      starred: false,
+    };
+    expect(() => {
+      cardsDAL.removeCard(card);
+    }).toThrow(new Error("Could not find matching Card to remove."));
+  });
+  it("throws an error when attempting to remove a non-existing card", () => {
+    const electronStore: ElectronStore<ISchema> = getEmptyStore();
+    const cardsDAL: CardsDAL = new CardsDAL(electronStore);
+    const card: IQuizcard = {
+      id: 2,
+      packId: 1,
+      type: "quiz",
+      quizType: "mc",
+      question: "Does not exist",
+      answers: [
+        { text: "H3O", correct: false },
+        { text: "H2O", correct: true },
+        { text: "B2O", correct: false },
+        { text: "W2O", correct: false },
+      ],
+      starred: false,
+    };
+    expect(() => {
+      cardsDAL.removeCard(card);
+    }).toThrow(new Error("Could not find matching Card to remove."));
+  });
 });
