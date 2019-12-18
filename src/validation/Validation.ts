@@ -31,7 +31,7 @@ export abstract class Validation {
     // TODO: schema validation
     if (!_.isEmpty(errorsRef)) {
       throw new Error(
-        "errorsRef parameter must be passed in as an empty string array"
+        "errorsRef parameter must be passed in as an empty string array."
       );
     }
     if (group.name.length < this.minNameLength) {
@@ -43,7 +43,7 @@ export abstract class Validation {
     // TODO: schema validation
     if (!_.isEmpty(errorsRef)) {
       throw new Error(
-        "errorsRef parameter must be passed in as an empty string array"
+        "errorsRef parameter must be passed in as an empty string array."
       );
     }
     if (pack.type === Types.flash && (pack.timed || pack.liveResults)) {
@@ -59,7 +59,7 @@ export abstract class Validation {
   public static isValidCard(card: Card, errorsRef: string[]): boolean {
     if (!_.isEmpty(errorsRef)) {
       throw new Error(
-        "errorsRef parameter must be passed in as an empty string array"
+        "errorsRef parameter must be passed in as an empty string array."
       );
     }
     switch (card.type) {

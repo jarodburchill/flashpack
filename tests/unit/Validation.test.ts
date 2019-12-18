@@ -1,4 +1,5 @@
 import { IGroup } from "../../src/models/Group";
+import { IPack } from "../../src/models/Pack";
 import { Validation } from "../../src/validation/Validation";
 
 describe("isValidGroup", () => {
@@ -9,7 +10,7 @@ describe("isValidGroup", () => {
       Validation.isValidGroup(group, errors);
     }).toThrow(
       new Error(
-        "errorsRef parameter must be passed in as an empty string array"
+        "errorsRef parameter must be passed in as an empty string array."
       )
     );
   });
@@ -19,7 +20,7 @@ describe("isValidGroup", () => {
     expect(Validation.isValidGroup(group, errors)).toBe(true);
     expect(errors).toEqual([]);
   });
-  it("returns false with all possible errors in errorsRef array", () => {
+  it("returns false with a error message when group name is too short", () => {
     const errors: string[] = [];
     const group: IGroup = { id: 1, name: "" };
     expect(Validation.isValidGroup(group, errors)).toBe(false);
