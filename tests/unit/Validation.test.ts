@@ -1,3 +1,4 @@
+import { IFlashcard } from "../../src/models/Flashcard";
 import { IGroup } from "../../src/models/Group";
 import { IPack } from "../../src/models/Pack";
 import { Validation } from "../../src/validation/Validation";
@@ -103,5 +104,38 @@ describe("isValidPack", () => {
       "If type is 'flash' then timed and liveResults must be false",
       "Name must be at least 2 characters",
     ]);
+  });
+});
+
+describe("isValidCard", () => {
+  it("throws an error if errorsRef is not an empty string array", () => {
+    const errors: string[] = ["data", "data"];
+    const card: IFlashcard = {
+      id: 3,
+      packId: 2,
+      type: "flash",
+      term: "Term",
+      definition: "Def",
+      starred: false,
+    };
+    expect(() => {
+      Validation.isValidCard(card, errors);
+    }).toThrow(
+      new Error(
+        "errorsRef parameter must be passed in as an empty string array."
+      )
+    );
+  });
+  it("", () => {
+    const errors: string[] = [];
+    const card: any = {
+      id: 3,
+      packId: 2,
+      term: "Term",
+      definition: "Def",
+      starred: false,
+    };
+    expect(Validation.isValidCard(card, errors)).toBe(false);
+    expect(errors).toEqual(["Type must be 'flash' or 'quiz'"]);
   });
 });
