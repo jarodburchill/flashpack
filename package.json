@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/lodash": "^4.14.149",
-    "electron": "^7.1.2",
+    "electron": "^15.5.5",
     "electron-store": "^5.1.0",
     "esm": "^3.2.25",
     "jest": "^24.9.0",
